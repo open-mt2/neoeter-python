@@ -142,6 +142,8 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 	if (!RunLine("import sys"))
 		return false;
 
+	RunLine("sys.path.insert(0, 'lib')");
+
 	return true;
 }
 
