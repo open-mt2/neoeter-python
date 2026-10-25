@@ -2,6 +2,103 @@
 #include <EterPack/EterPackManager.h>
 
 #include "PythonLauncher.h"
+#include <chrono>
+#include <ctime>
+
+static PyObject* py_time_time(PyObject* self, PyObject* args)
+{
+	auto now = std::chrono::system_clock::now().time_since_epoch();
+	double s = std::chrono::duration<double>(now).count();
+	return PyFloat_FromDouble(s);
+}
+
+static PyObject* py_time_clock(PyObject* self, PyObject* args)
+{
+	static auto start = std::chrono::steady_clock::now();
+	auto now = std::chrono::steady_clock::now();
+	double s = std::chrono::duration<double>(now - start).count();
+	return PyFloat_FromDouble(s);
+}
+
+static PyObject* py_time_sleep(PyObject* self, PyObject* args)
+{
+	double secs;
+	if (!PyArg_ParseTuple(args, "d", &secs))
+		return NULL;
+	struct timespec ts;
+	ts.tv_sec = (time_t)secs;
+	ts.tv_nsec = (long)((secs - ts.tv_sec) * 1e9);
+	nanosleep(&ts, NULL);
+	Py_RETURN_NONE;
+}
+
+static PyObject* py_time_localtime(PyObject* self, PyObject* args)
+{
+	time_t t;
+	double dt;
+	if (args && PyTuple_Size(args) > 0) {
+		if (!PyArg_ParseTuple(args, "d", &dt))
+			return NULL;
+		t = (time_t)dt;
+	} else {
+		t = ::time(NULL);
+	}
+	struct tm* tm_info = localtime(&t);
+	if (!tm_info)
+		return PyErr_SetFromErrno(PyExc_ValueError);
+	return Py_BuildValue("(iiiiiiiii)",
+		tm_info->tm_year + 1900,
+		tm_info->tm_mon + 1,
+		tm_info->tm_mday,
+		tm_info->tm_hour,
+		tm_info->tm_min,
+		tm_info->tm_sec,
+		(tm_info->tm_wday + 6) % 7,
+		tm_info->tm_yday + 1,
+		tm_info->tm_isdst
+	);
+}
+
+static PyObject* py_time_strftime(PyObject* self, PyObject* args)
+{
+	const char* fmt;
+	PyObject* tup = NULL;
+	if (!PyArg_ParseTuple(args, "s|O", &fmt, &tup))
+		return NULL;
+
+	time_t t = ::time(NULL);
+	struct tm* tm_info = localtime(&t);
+	struct tm custom_tm;
+	if (tup && PyTuple_Check(tup) && PyTuple_Size(tup) >= 9) {
+		custom_tm.tm_year = PyInt_AsLong(PyTuple_GetItem(tup, 0)) - 1900;
+		custom_tm.tm_mon  = PyInt_AsLong(PyTuple_GetItem(tup, 1)) - 1;
+		custom_tm.tm_mday = PyInt_AsLong(PyTuple_GetItem(tup, 2));
+		custom_tm.tm_hour = PyInt_AsLong(PyTuple_GetItem(tup, 3));
+		custom_tm.tm_min  = PyInt_AsLong(PyTuple_GetItem(tup, 4));
+		custom_tm.tm_sec  = PyInt_AsLong(PyTuple_GetItem(tup, 5));
+		custom_tm.tm_wday = PyInt_AsLong(PyTuple_GetItem(tup, 6));
+		custom_tm.tm_yday = PyInt_AsLong(PyTuple_GetItem(tup, 7)) - 1;
+		custom_tm.tm_isdst= PyInt_AsLong(PyTuple_GetItem(tup, 8));
+		tm_info = &custom_tm;
+	}
+	char buf[256];
+	size_t len = strftime(buf, sizeof(buf), fmt, tm_info);
+	return PyString_FromStringAndSize(buf, len);
+}
+
+static PyMethodDef s_time_methods[] = {
+	{ "time", py_time_time, METH_NOARGS, "time() -> floating point number" },
+	{ "clock", py_time_clock, METH_NOARGS, "clock() -> floating point number" },
+	{ "sleep", py_time_sleep, METH_VARARGS, "sleep(seconds)" },
+	{ "localtime", py_time_localtime, METH_VARARGS, "localtime([seconds]) -> tuple" },
+	{ "strftime", py_time_strftime, METH_VARARGS, "strftime(format[, tuple]) -> string" },
+	{ NULL, NULL, 0, NULL }
+};
+
+static void init_embedded_time()
+{
+	Py_InitModule("time", s_time_methods);
+}
 
 CPythonLauncher::CPythonLauncher()
 {
@@ -135,6 +232,8 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 	PyModule_AddIntConstant(builtins, "FALSE", 0);
     PyDict_SetItemString(m_poDic, "__builtins__", builtins);
 	Py_DECREF(builtins);
+
+	init_embedded_time();
 
 	if (!RunLine("import __main__"))
 		return false;
