@@ -6,6 +6,10 @@
 CPythonLauncher::CPythonLauncher()
 {
 	Py_NoSiteFlag = 1;
+#if defined(__LINUX__) || defined(UNIX)
+	static char s_pythonHome[] = ".";
+	Py_SetPythonHome(s_pythonHome);
+#endif
 	Py_Initialize();
 }
 
