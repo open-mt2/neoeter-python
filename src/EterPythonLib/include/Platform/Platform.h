@@ -97,6 +97,17 @@
     #define MAKELONG(a, b) ((LONG)(((WORD)(((DWORD_PTR)(a)) & 0xffff)) | ((DWORD)((WORD)(((DWORD_PTR)(b)) & 0xffff))) << 16))
     #endif
 
+    #ifndef UNREFERENCED_PARAMETER
+    #define UNREFERENCED_PARAMETER(P) ((void)(P))
+    #endif
+
+    #ifndef __min
+    #define __min(a, b) (((a) < (b)) ? (a) : (b))
+    #endif
+    #ifndef __max
+    #define __max(a, b) (((a) > (b)) ? (a) : (b))
+    #endif
+
     typedef union _LARGE_INTEGER {
         struct {
             DWORD LowPart;
