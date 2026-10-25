@@ -25,7 +25,10 @@ target_include_directories(test_eterpythonlib
 
 if(UNIX)
     target_compile_definitions(test_eterpythonlib PRIVATE __LINUX__ _GNU_SOURCE)
-    target_compile_options(test_eterpythonlib PRIVATE -Wno-register -Wno-macro-redefined)
+    target_compile_options(test_eterpythonlib PRIVATE -Wno-register)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(test_eterpythonlib PRIVATE -Wno-macro-redefined)
+    endif()
 endif()
 
 add_test(NAME EterPythonLib_SmokeTests COMMAND test_eterpythonlib)

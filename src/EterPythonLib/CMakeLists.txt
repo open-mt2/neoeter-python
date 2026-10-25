@@ -102,7 +102,10 @@ target_link_libraries(EterPythonLib
 
 if(UNIX)
     target_compile_definitions(EterPythonLib PUBLIC __LINUX__ _GNU_SOURCE)
-    target_compile_options(EterPythonLib PUBLIC -Wno-register -Wno-macro-redefined)
+    target_compile_options(EterPythonLib PUBLIC -Wno-register)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(EterPythonLib PUBLIC -Wno-macro-redefined)
+    endif()
 endif()
 
 if((ETERPYTHONLIB_STANDALONE AND BUILD_TESTING) OR (NOT ETERPYTHONLIB_STANDALONE AND BUILD_TESTS))
