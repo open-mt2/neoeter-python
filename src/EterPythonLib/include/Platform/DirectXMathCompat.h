@@ -690,6 +690,15 @@ struct D3DXCOLOR {
     bool operator != (const D3DXCOLOR& c) const { return !(*this == c); }
 };
 
+inline D3DXCOLOR* D3DXColorModulate(D3DXCOLOR* pOut, const D3DXCOLOR* pC1, const D3DXCOLOR* pC2) {
+    if (!pOut || !pC1 || !pC2) return pOut;
+    pOut->r = pC1->r * pC2->r;
+    pOut->g = pC1->g * pC2->g;
+    pOut->b = pC1->b * pC2->b;
+    pOut->a = pC1->a * pC2->a;
+    return pOut;
+}
+
 struct D3DXMATRIX : public D3DMATRIX {
     D3DXMATRIX() {
         _11 = 1.0f; _12 = 0.0f; _13 = 0.0f; _14 = 0.0f;
@@ -941,6 +950,27 @@ inline float D3DXVec2CCW(const D3DXVECTOR2* pV1, const D3DXVECTOR2* pV2) {
     return pV1->x * pV2->y - pV1->y * pV2->x;
 }
 
+inline D3DXVECTOR2* D3DXVec2Add(D3DXVECTOR2* pOut, const D3DXVECTOR2* pV1, const D3DXVECTOR2* pV2) {
+    if (!pOut || !pV1 || !pV2) return nullptr;
+    pOut->x = pV1->x + pV2->x;
+    pOut->y = pV1->y + pV2->y;
+    return pOut;
+}
+
+inline D3DXVECTOR2* D3DXVec2Subtract(D3DXVECTOR2* pOut, const D3DXVECTOR2* pV1, const D3DXVECTOR2* pV2) {
+    if (!pOut || !pV1 || !pV2) return nullptr;
+    pOut->x = pV1->x - pV2->x;
+    pOut->y = pV1->y - pV2->y;
+    return pOut;
+}
+
+inline D3DXVECTOR2* D3DXVec2Scale(D3DXVECTOR2* pOut, const D3DXVECTOR2* pV, float s) {
+    if (!pOut || !pV) return nullptr;
+    pOut->x = pV->x * s;
+    pOut->y = pV->y * s;
+    return pOut;
+}
+
 inline D3DXVECTOR2* D3DXVec2Normalize(D3DXVECTOR2* pOut, const D3DXVECTOR2* pV) {
     if (!pOut || !pV) return nullptr;
     float len = D3DXVec2Length(pV);
@@ -980,6 +1010,38 @@ inline D3DXVECTOR3* D3DXVec3Cross(D3DXVECTOR3* pOut, const D3DXVECTOR3* pV1, con
     return pOut;
 }
 
+inline D3DXVECTOR3* D3DXVec3Add(D3DXVECTOR3* pOut, const D3DXVECTOR3* pV1, const D3DXVECTOR3* pV2) {
+    if (!pOut || !pV1 || !pV2) return nullptr;
+    pOut->x = pV1->x + pV2->x;
+    pOut->y = pV1->y + pV2->y;
+    pOut->z = pV1->z + pV2->z;
+    return pOut;
+}
+
+inline D3DXVECTOR3* D3DXVec3Subtract(D3DXVECTOR3* pOut, const D3DXVECTOR3* pV1, const D3DXVECTOR3* pV2) {
+    if (!pOut || !pV1 || !pV2) return nullptr;
+    pOut->x = pV1->x - pV2->x;
+    pOut->y = pV1->y - pV2->y;
+    pOut->z = pV1->z - pV2->z;
+    return pOut;
+}
+
+inline D3DXVECTOR3* D3DXVec3Scale(D3DXVECTOR3* pOut, const D3DXVECTOR3* pV, float s) {
+    if (!pOut || !pV) return nullptr;
+    pOut->x = pV->x * s;
+    pOut->y = pV->y * s;
+    pOut->z = pV->z * s;
+    return pOut;
+}
+
+inline D3DXVECTOR3* D3DXVec3Lerp(D3DXVECTOR3* pOut, const D3DXVECTOR3* pV1, const D3DXVECTOR3* pV2, float s) {
+    if (!pOut || !pV1 || !pV2) return nullptr;
+    pOut->x = pV1->x + s * (pV2->x - pV1->x);
+    pOut->y = pV1->y + s * (pV2->y - pV1->y);
+    pOut->z = pV1->z + s * (pV2->z - pV1->z);
+    return pOut;
+}
+
 inline D3DXVECTOR3* D3DXVec3Normalize(D3DXVECTOR3* pOut, const D3DXVECTOR3* pV) {
     if (!pOut || !pV) return nullptr;
     float len = D3DXVec3Length(pV);
@@ -1007,6 +1069,16 @@ inline D3DXVECTOR3* D3DXVec3TransformCoord(D3DXVECTOR3* pOut, const D3DXVECTOR3*
         x *= invW; y *= invW; z *= invW;
     }
     pOut->x = x; pOut->y = y; pOut->z = z;
+    return pOut;
+}
+
+inline D3DXVECTOR4* D3DXVec3Transform(D3DXVECTOR4* pOut, const D3DXVECTOR3* pV, const D3DXMATRIX* pM) {
+    if (!pOut || !pV || !pM) return nullptr;
+    float x = pV->x * pM->_11 + pV->y * pM->_21 + pV->z * pM->_31 + pM->_41;
+    float y = pV->x * pM->_12 + pV->y * pM->_22 + pV->z * pM->_32 + pM->_42;
+    float z = pV->x * pM->_13 + pV->y * pM->_23 + pV->z * pM->_33 + pM->_43;
+    float w = pV->x * pM->_14 + pV->y * pM->_24 + pV->z * pM->_34 + pM->_44;
+    pOut->x = x; pOut->y = y; pOut->z = z; pOut->w = w;
     return pOut;
 }
 
@@ -1332,6 +1404,25 @@ inline D3DXQUATERNION* D3DXQuaternionRotationAxis(D3DXQUATERNION* pOut, const D3
     return pOut;
 }
 
+inline D3DXQUATERNION* D3DXQuaternionRotationYawPitchRoll(D3DXQUATERNION* pOut, float Yaw, float Pitch, float Roll) {
+    if (!pOut) return nullptr;
+    float halfYaw = Yaw * 0.5f;
+    float halfPitch = Pitch * 0.5f;
+    float halfRoll = Roll * 0.5f;
+    float cosYaw = std::cos(halfYaw);
+    float sinYaw = std::sin(halfYaw);
+    float cosPitch = std::cos(halfPitch);
+    float sinPitch = std::sin(halfPitch);
+    float cosRoll = std::cos(halfRoll);
+    float sinRoll = std::sin(halfRoll);
+
+    pOut->x = cosYaw * sinPitch * cosRoll + sinYaw * cosPitch * sinRoll;
+    pOut->y = sinYaw * cosPitch * cosRoll - cosYaw * sinPitch * sinRoll;
+    pOut->z = cosYaw * cosPitch * sinRoll - sinYaw * sinPitch * cosRoll;
+    pOut->w = cosYaw * cosPitch * cosRoll + sinYaw * sinPitch * sinRoll;
+    return pOut;
+}
+
 inline D3DXQUATERNION* D3DXQuaternionConjugate(D3DXQUATERNION* pOut, const D3DXQUATERNION* pQ) {
     if (!pOut || !pQ) return nullptr;
     pOut->x = -pQ->x; pOut->y = -pQ->y; pOut->z = -pQ->z; pOut->w = pQ->w;
@@ -1526,7 +1617,10 @@ private:
 };
 typedef IDirect3DSurface9* LPDIRECT3DSURFACE9;
 
-class IDirect3DBaseTexture9 : public IDirect3DResource9 {};
+class IDirect3DBaseTexture9 : public IDirect3DResource9 {
+public:
+    virtual DWORD GetLevelCount() { return 1; }
+};
 typedef IDirect3DBaseTexture9* LPDIRECT3DBASETEXTURE9;
 
 class IDirect3DTexture9 : public IDirect3DBaseTexture9 {
