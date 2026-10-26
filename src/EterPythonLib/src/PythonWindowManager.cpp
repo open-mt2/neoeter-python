@@ -1089,17 +1089,17 @@ namespace UI
 	{
 		if (m_pLockWindow)
 		{
-			m_pLockWindow->OnKeyDown(vkey);
-			return;
+			if (m_pLockWindow->RunIMEKeyDownEvent(vkey))
+				return;
 		}
 		if (m_pActiveWindow)
 		if (m_pActiveWindow->IsRendering())
 		{
-			if (m_pActiveWindow->OnIMEKeyDownEvent(vkey))
+			if (m_pActiveWindow->RunIMEKeyDownEvent(vkey))
 				return;
 		}
 
-		// NOTE : 전체로 돌리지 않고 Activate되어있는 EditLine에만 보내는 이벤트
+		m_pRootWindow->RunIMEKeyDownEvent(vkey);
 	}
 
 	void CWindowManager::RunChangeCodePage()
