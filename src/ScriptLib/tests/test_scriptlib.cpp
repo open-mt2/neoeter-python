@@ -176,6 +176,23 @@ void test_python_resource()
 
 } // namespace
 
+void test_embedded_modules()
+{
+    CPythonLauncher& launcher = CPythonLauncher::Instance();
+    bool ok = launcher.RunLine(
+        "import math\n"
+        "assert math.pi > 3.14\n"
+        "assert math.sin(0) == 0.0\n"
+        "assert math.cos(0) == 1.0\n"
+        "assert math.ceil(2.3) == 3.0\n"
+        "import time\n"
+        "t = time.time()\n"
+        "assert t > 0\n"
+    );
+    assert(ok);
+    std::printf("[PASS] test_embedded_modules\n");
+}
+
 int main()
 {
     CPythonLauncher launcher;
@@ -186,6 +203,7 @@ int main()
     test_python_utils();
     test_debug_module();
     test_python_resource();
+    test_embedded_modules();
 
     std::printf("All ScriptLib smoke tests passed!\n");
     return 0;

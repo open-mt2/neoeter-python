@@ -4,6 +4,7 @@
 #include "PythonLauncher.h"
 #include <chrono>
 #include <ctime>
+#include <cmath>
 
 static PyObject* py_time_time(PyObject* self, PyObject* args)
 {
@@ -98,6 +99,228 @@ static PyMethodDef s_time_methods[] = {
 static void init_embedded_time()
 {
 	Py_InitModule("time", s_time_methods);
+}
+
+static PyObject* py_math_sin(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:sin", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::sin(x));
+}
+
+static PyObject* py_math_cos(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:cos", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::cos(x));
+}
+
+static PyObject* py_math_tan(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:tan", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::tan(x));
+}
+
+static PyObject* py_math_asin(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:asin", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::asin(x));
+}
+
+static PyObject* py_math_acos(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:acos", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::acos(x));
+}
+
+static PyObject* py_math_atan(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:atan", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::atan(x));
+}
+
+static PyObject* py_math_atan2(PyObject* self, PyObject* args)
+{
+	double y, x;
+	if (!PyArg_ParseTuple(args, "dd:atan2", &y, &x))
+		return NULL;
+	return PyFloat_FromDouble(std::atan2(y, x));
+}
+
+static PyObject* py_math_sqrt(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:sqrt", &x))
+		return NULL;
+	if (x < 0.0) {
+		PyErr_SetString(PyExc_ValueError, "math domain error");
+		return NULL;
+	}
+	return PyFloat_FromDouble(std::sqrt(x));
+}
+
+static PyObject* py_math_ceil(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:ceil", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::ceil(x));
+}
+
+static PyObject* py_math_floor(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:floor", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::floor(x));
+}
+
+static PyObject* py_math_fabs(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:fabs", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::fabs(x));
+}
+
+static PyObject* py_math_hypot(PyObject* self, PyObject* args)
+{
+	double x, y;
+	if (!PyArg_ParseTuple(args, "dd:hypot", &x, &y))
+		return NULL;
+	return PyFloat_FromDouble(std::hypot(x, y));
+}
+
+static PyObject* py_math_pow(PyObject* self, PyObject* args)
+{
+	double x, y;
+	if (!PyArg_ParseTuple(args, "dd:pow", &x, &y))
+		return NULL;
+	return PyFloat_FromDouble(std::pow(x, y));
+}
+
+static PyObject* py_math_exp(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:exp", &x))
+		return NULL;
+	return PyFloat_FromDouble(std::exp(x));
+}
+
+static PyObject* py_math_log(PyObject* self, PyObject* args)
+{
+	double x;
+	PyObject* baseObj = NULL;
+	if (!PyArg_ParseTuple(args, "d|O:log", &x, &baseObj))
+		return NULL;
+	if (x <= 0.0) {
+		PyErr_SetString(PyExc_ValueError, "math domain error");
+		return NULL;
+	}
+	if (baseObj && baseObj != Py_None) {
+		double base = PyFloat_AsDouble(baseObj);
+		if (PyErr_Occurred())
+			return NULL;
+		if (base <= 0.0 || base == 1.0) {
+			PyErr_SetString(PyExc_ValueError, "math domain error");
+			return NULL;
+		}
+		return PyFloat_FromDouble(std::log(x) / std::log(base));
+	}
+	return PyFloat_FromDouble(std::log(x));
+}
+
+static PyObject* py_math_log10(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:log10", &x))
+		return NULL;
+	if (x <= 0.0) {
+		PyErr_SetString(PyExc_ValueError, "math domain error");
+		return NULL;
+	}
+	return PyFloat_FromDouble(std::log10(x));
+}
+
+static PyObject* py_math_degrees(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:degrees", &x))
+		return NULL;
+	return PyFloat_FromDouble(x * (180.0 / 3.14159265358979323846));
+}
+
+static PyObject* py_math_radians(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:radians", &x))
+		return NULL;
+	return PyFloat_FromDouble(x * (3.14159265358979323846 / 180.0));
+}
+
+static PyObject* py_math_fmod(PyObject* self, PyObject* args)
+{
+	double x, y;
+	if (!PyArg_ParseTuple(args, "dd:fmod", &x, &y))
+		return NULL;
+	if (y == 0.0) {
+		PyErr_SetString(PyExc_ValueError, "math domain error");
+		return NULL;
+	}
+	return PyFloat_FromDouble(std::fmod(x, y));
+}
+
+static PyObject* py_math_modf(PyObject* self, PyObject* args)
+{
+	double x;
+	if (!PyArg_ParseTuple(args, "d:modf", &x))
+		return NULL;
+	double intpart;
+	double fractpart = std::modf(x, &intpart);
+	return Py_BuildValue("(dd)", fractpart, intpart);
+}
+
+static PyMethodDef s_math_methods[] = {
+	{ "sin", py_math_sin, METH_VARARGS, "sin(x)" },
+	{ "cos", py_math_cos, METH_VARARGS, "cos(x)" },
+	{ "tan", py_math_tan, METH_VARARGS, "tan(x)" },
+	{ "asin", py_math_asin, METH_VARARGS, "asin(x)" },
+	{ "acos", py_math_acos, METH_VARARGS, "acos(x)" },
+	{ "atan", py_math_atan, METH_VARARGS, "atan(x)" },
+	{ "atan2", py_math_atan2, METH_VARARGS, "atan2(y, x)" },
+	{ "sqrt", py_math_sqrt, METH_VARARGS, "sqrt(x)" },
+	{ "ceil", py_math_ceil, METH_VARARGS, "ceil(x)" },
+	{ "floor", py_math_floor, METH_VARARGS, "floor(x)" },
+	{ "fabs", py_math_fabs, METH_VARARGS, "fabs(x)" },
+	{ "hypot", py_math_hypot, METH_VARARGS, "hypot(x, y)" },
+	{ "pow", py_math_pow, METH_VARARGS, "pow(x, y)" },
+	{ "exp", py_math_exp, METH_VARARGS, "exp(x)" },
+	{ "log", py_math_log, METH_VARARGS, "log(x[, base])" },
+	{ "log10", py_math_log10, METH_VARARGS, "log10(x)" },
+	{ "degrees", py_math_degrees, METH_VARARGS, "degrees(x)" },
+	{ "radians", py_math_radians, METH_VARARGS, "radians(x)" },
+	{ "fmod", py_math_fmod, METH_VARARGS, "fmod(x, y)" },
+	{ "modf", py_math_modf, METH_VARARGS, "modf(x)" },
+	{ NULL, NULL, 0, NULL }
+};
+
+static void init_embedded_math()
+{
+	PyObject* m = Py_InitModule("math", s_math_methods);
+	if (m) {
+		PyModule_AddObject(m, "pi", PyFloat_FromDouble(3.14159265358979323846));
+		PyModule_AddObject(m, "e", PyFloat_FromDouble(2.71828182845904523536));
+	}
 }
 
 CPythonLauncher::CPythonLauncher()
@@ -234,6 +457,7 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 	Py_DECREF(builtins);
 
 	init_embedded_time();
+	init_embedded_math();
 
 	if (!RunLine("import __main__"))
 		return false;
