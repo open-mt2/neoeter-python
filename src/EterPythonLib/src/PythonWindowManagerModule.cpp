@@ -1147,8 +1147,8 @@ PyObject * wndMgrSetSlot(PyObject * poSelf, PyObject * poArgs)
 	if (!PyTuple_GetInteger(poArgs, 4, &iHeight))
 		return Py_BuildException();
 
-	int iImageHandle;
-	if (!PyTuple_GetInteger(poArgs, 5, &iImageHandle))
+	long iImageHandle;
+	if (!PyTuple_GetLong(poArgs, 5, &iImageHandle))
 		return Py_BuildException();
 
 	D3DXCOLOR diffuseColor;

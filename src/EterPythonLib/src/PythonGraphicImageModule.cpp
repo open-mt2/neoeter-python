@@ -40,7 +40,7 @@ PyObject* grpImageGenerate(PyObject * poSelf, PyObject* poArgs)
 		return Py_BadArgument();
 
 	if (!*szFileName)
-		return Py_BuildValue("i", 0);
+		return Py_BuildValue("l", (intptr_t)0);
 
 	CResource * pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
