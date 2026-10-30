@@ -2,6 +2,10 @@ add_executable(test_eterpythonlib
     test_eterpythonlib.cpp
 )
 
+add_executable(test_python_eterpythonlib_api
+    test_python_eterpythonlib_api.cpp
+)
+
 target_link_libraries(test_eterpythonlib
     PRIVATE
         EterPythonLib
@@ -11,6 +15,14 @@ target_link_libraries(test_eterpythonlib
         EffectLib
         EterPack
         EterBase
+        ${PYTHON_LIBRARIES}
+        util
+        dl
+)
+
+target_link_libraries(test_python_eterpythonlib_api
+    PRIVATE
+        EterPythonLib
         ${PYTHON_LIBRARIES}
         util
         dl
@@ -32,9 +44,13 @@ if(UNIX)
 endif()
 
 add_test(NAME EterPythonLib_SmokeTests COMMAND test_eterpythonlib)
+add_test(NAME test_python_eterpythonlib_api
+    COMMAND test_python_eterpythonlib_api
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/python_api_eterpythonlib.txt
+)
 
 # TA.1: shared test helpers and always-on asserts (tests/support/TestAssert.h)
-foreach(_test_target test_eterpythonlib)
+foreach(_test_target test_eterpythonlib test_python_eterpythonlib_api)
     target_include_directories(${_test_target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     target_compile_options(${_test_target} PRIVATE $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-UNDEBUG>)
 endforeach()
