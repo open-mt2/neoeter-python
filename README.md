@@ -2,12 +2,29 @@
 
 CPython 2.7 host and Python bindings for the OpenMT2 client.
 
-**Status:** scaffold. The `pkg_*` sources are not imported yet (`TB.2`).
+**Status:** consolidated.
 
-| Path | Package | Role target |
+## Layout
+
+```
+include/
+├── Neoeter/Python/Host/        CPython host API
+├── Neoeter/Python/Bindings/    UI object model (wndMgr, grp*, wndSlot, wndText)
+└── python2.7/                  vendored headers (Linux)
+src/
+├── host/                       launcher, dbg/time/math
+└── bindings/                   window/graphic bindings
+```
+
+Each directory holds the code directly; tests sit next to their code.
+
+| Path | Target | Alias |
 |---|---|---|
-| `src/ScriptLib/` | `pkg_scriptlib` | `NeoeterPython::Script` |
-| `src/EterPythonLib/` | `pkg_eterpythonlib` | `NeoeterPython::Bindings` |
+| `src/host/` | `neoeter_python_host` | `NeoeterPython::Host` |
+| `src/bindings/` | `neoeter_python_bindings` | `NeoeterPython::Bindings` |
 
-`layout.map` records the old repository → path mapping used by
-`devkit/scripts/import-repo.sh`. See `docs/architecture.md`.
+Headers are included as `<Neoeter/Python/Host/...>` and
+`<Neoeter/Python/Bindings/...>`. The engine is consumed through its
+`Neoeter::*` targets and `<Neoeter/...>` headers.
+
+See `docs/architecture.md`.
