@@ -96,8 +96,8 @@ target_link_libraries(EterPythonLib
         EffectLib
         ScriptLib
         ${PYTHON_LIBRARIES}
-        util
-        dl
+        $<$<PLATFORM_ID:Linux>:util>
+        $<$<PLATFORM_ID:Linux>:dl>
 )
 
 if(UNIX)
