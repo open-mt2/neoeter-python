@@ -291,7 +291,7 @@ namespace UI
 		}
 		m_rect.right = m_rect.left + m_lWidth;
 #endif
-		std::for_each(m_pChildList.begin(), m_pChildList.end(), std::mem_fun(&CWindow::UpdateRect));
+		std::for_each(m_pChildList.begin(), m_pChildList.end(), std::mem_fn(&CWindow::UpdateRect));
 
 		OnChangePosition();
 
@@ -2003,7 +2003,7 @@ namespace UI
 		m_rect.right = m_rect.left + m_lWidth;
 		m_rect.bottom = m_rect.top + m_lHeight;
 
-		std::for_each(m_pChildList.begin(), m_pChildList.end(), std::mem_fun(&CWindow::UpdateRect));
+		std::for_each(m_pChildList.begin(), m_pChildList.end(), std::mem_fn(&CWindow::UpdateRect));
 
 		if (m_pcurVisual)
 			m_pcurVisual->SetPosition(m_rect.left, m_rect.top);
