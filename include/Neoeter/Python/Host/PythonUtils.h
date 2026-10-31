@@ -15,6 +15,24 @@ bool PyTuple_GetDouble(PyObject* poArgs, int pos, double* ret);
 bool PyTuple_GetObject(PyObject* poArgs, int pos, PyObject** ret);
 bool PyTuple_GetBoolean(PyObject* poArgs, int pos, bool* ret);
 
+// Native pointers cross the Python boundary as integers. They must be pointer
+// wide: C long is 32-bit on 64-bit Windows (LLP64), so "l" / PyTuple_GetLong
+// drop the upper half of the address. Python 2 int and long are both accepted.
+// A null handle is the integer 0; callers that reject it test the result.
+PyObject* Py_BuildHandle(const void* pHandle);
+bool PyTuple_GetHandle(PyObject* poArgs, int pos, void** ppHandle);
+
+template <typename T>
+bool PyTuple_GetHandle(PyObject* poArgs, int pos, T** ppHandle)
+{
+	void* pHandle;
+	if (!PyTuple_GetHandle(poArgs, pos, &pHandle))
+		return false;
+
+	*ppHandle = static_cast<T*>(pHandle);
+	return true;
+}
+
 bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs);
 bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, bool* pisRet);
 bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, long * plRetValue);

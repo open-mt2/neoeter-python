@@ -74,6 +74,33 @@ bool PyTuple_GetLong(PyObject* poArgs, int pos, long* ret)
 	return true;
 }
 
+PyObject* Py_BuildHandle(const void* pHandle)
+{
+	return PyLong_FromVoidPtr(const_cast<void*>(pHandle));
+}
+
+bool PyTuple_GetHandle(PyObject* poArgs, int pos, void** ppHandle)
+{
+	if (pos >= PyTuple_Size(poArgs))
+		return false;
+
+	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
+
+	if (!poItem)
+		return false;
+
+	if (!PyInt_Check(poItem) && !PyLong_Check(poItem))
+		return false;
+
+	void* pHandle = PyLong_AsVoidPtr(poItem);
+
+	if (!pHandle && PyErr_Occurred())
+		return false;
+
+	*ppHandle = pHandle;
+	return true;
+}
+
 bool PyTuple_GetDouble(PyObject* poArgs, int pos, double* ret)
 {
 	if (pos >= PyTuple_Size(poArgs))
