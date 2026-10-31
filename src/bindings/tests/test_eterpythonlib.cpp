@@ -57,10 +57,12 @@ void test_wndmgr_window_lifecycle_and_properties()
     PyObject* pyHwnd = PyObject_GetAttrString(pyWin, "hWnd");
     assert(pyHwnd != nullptr);
 
-    long handleVal = PyLong_AsLong(pyHwnd);
-    assert(handleVal != 0);
+    // Handles are native pointers: read them at pointer width, not as a C long
+    // (32-bit on LLP64), and check the window behind the handle really is ours.
+    void* handleVal = PyLong_AsVoidPtr(pyHwnd);
+    assert(handleVal != nullptr);
 
-    UI::CWindow* pCppWindow = reinterpret_cast<UI::CWindow*>(handleVal);
+    UI::CWindow* pCppWindow = static_cast<UI::CWindow*>(handleVal);
     assert(pCppWindow != nullptr);
     assert(std::strcmp(pCppWindow->GetName(), "TestWindow") == 0);
     assert(pCppWindow->GetWidth() == 320);
@@ -167,7 +169,7 @@ void test_window_event_routing()
     PyObject* pyHwnd = PyObject_GetAttrString(pyHandler, "hWnd");
     assert(pyHwnd != nullptr);
 
-    UI::CWindow* pWin = reinterpret_cast<UI::CWindow*>(PyLong_AsLong(pyHwnd));
+    UI::CWindow* pWin = static_cast<UI::CWindow*>(PyLong_AsVoidPtr(pyHwnd));
     assert(pWin != nullptr);
 
     // Dispatch click event from C++

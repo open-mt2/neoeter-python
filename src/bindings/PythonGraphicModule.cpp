@@ -11,12 +11,7 @@
 
 bool PyTuple_GetTextBar(PyObject* poArgs, int pos, CTextBar** ppTextBar)
 {
-	long iHandle;
-	if (!PyTuple_GetLong(poArgs, pos, &iHandle))
-		return false;
-
-	*ppTextBar = (CTextBar*)iHandle;
-	return true;
+	return PyTuple_GetHandle(poArgs, pos, ppTextBar);
 }
 
 PyObject* grpCreateTextBar(PyObject* poSelf, PyObject* poArgs)
@@ -32,10 +27,10 @@ PyObject* grpCreateTextBar(PyObject* poSelf, PyObject* poArgs)
 	if (!pTextBar->Create(NULL, iWidth, iHeight))
 	{
 		delete pTextBar;
-		return Py_BuildValue("l", (intptr_t)NULL);
+		return Py_BuildHandle(NULL);
 	}
 
-	return Py_BuildValue("l", (intptr_t)pTextBar);
+	return Py_BuildHandle(pTextBar);
 }
 
 PyObject* grpCreateBigTextBar(PyObject* poSelf, PyObject* poArgs)
@@ -55,10 +50,10 @@ PyObject* grpCreateBigTextBar(PyObject* poSelf, PyObject* poArgs)
 	if (!pTextBar->Create(NULL, iWidth, iHeight))
 	{
 		delete pTextBar;
-		return Py_BuildValue("l", (intptr_t)NULL);
+		return Py_BuildHandle(NULL);
 	}
 
-	return Py_BuildValue("l", (intptr_t)pTextBar);
+	return Py_BuildHandle(pTextBar);
 }
 
 PyObject* grpDestroyTextBar(PyObject* poSelf, PyObject* poArgs)

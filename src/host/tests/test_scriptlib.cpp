@@ -5,6 +5,7 @@
 #include <Neoeter/Python/Host/Resource.h>
 
 #include <cassert>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <string>
@@ -137,6 +138,82 @@ void test_python_utils()
     std::printf("[PASS] test_python_utils\n");
 }
 
+void test_pointer_handles()
+{
+    // A 64-bit Windows heap address: bits 32..47 are set. C long is 32-bit
+    // there (LLP64), so a handle that goes through long loses them.
+    if (sizeof(void*) < 8)
+    {
+        std::printf("[SKIP] test_pointer_handles (32-bit pointers)\n");
+        return;
+    }
+
+    const uintptr_t kHeapAddress = static_cast<uintptr_t>(0x0000025357464d80ULL);
+    void* const pNative = reinterpret_cast<void*>(kHeapAddress);
+
+    // 1. Native -> Python keeps the full address, as an integer Python can compare
+    PyObject* poHandle = Py_BuildHandle(pNative);
+    assert(poHandle != nullptr);
+    assert(PyInt_Check(poHandle) || PyLong_Check(poHandle));
+    assert(PyLong_AsVoidPtr(poHandle) == pNative);
+
+    PyObject* poExpected = PyLong_FromString(const_cast<char*>("25357464d80"), nullptr, 16);
+    assert(poExpected != nullptr);
+    assert(PyObject_RichCompareBool(poHandle, poExpected, Py_EQ) == 1);
+    Py_DECREF(poExpected);
+
+    // 2. Python -> native, through a tuple like the bindings receive
+    PyObject* poArgs = PyTuple_Pack(1, poHandle);
+    assert(poArgs != nullptr);
+    void* pParsed = nullptr;
+    assert(PyTuple_GetHandle(poArgs, 0, &pParsed));
+    assert(pParsed == pNative);
+
+    struct Target;
+    Target* pTyped = nullptr;
+    assert(PyTuple_GetHandle(poArgs, 0, &pTyped));
+    assert(reinterpret_cast<void*>(pTyped) == pNative);
+    Py_DECREF(poArgs);
+    Py_DECREF(poHandle);
+
+    // 3. Python 2 int and long objects are both accepted
+    PyObject* poSmallInt = PyInt_FromLong(0x1234);
+    PyObject* poLong = PyLong_FromUnsignedLongLong(kHeapAddress);
+    assert(poSmallInt && poLong);
+    PyObject* poMixed = PyTuple_Pack(2, poSmallInt, poLong);
+    assert(poMixed != nullptr);
+    pParsed = nullptr;
+    assert(PyTuple_GetHandle(poMixed, 0, &pParsed));
+    assert(pParsed == reinterpret_cast<void*>(static_cast<uintptr_t>(0x1234)));
+    assert(PyTuple_GetHandle(poMixed, 1, &pParsed));
+    assert(pParsed == pNative);
+    Py_DECREF(poMixed);
+    Py_DECREF(poSmallInt);
+    Py_DECREF(poLong);
+
+    // 4. A null pointer is the Python integer 0; the caller decides whether to reject it
+    PyObject* poNull = Py_BuildHandle(nullptr);
+    assert(poNull != nullptr);
+    assert(PyLong_AsVoidPtr(poNull) == nullptr);
+    PyObject* poNullArgs = PyTuple_Pack(1, poNull);
+    assert(poNullArgs != nullptr);
+    pParsed = pNative;
+    assert(PyTuple_GetHandle(poNullArgs, 0, &pParsed));
+    assert(pParsed == nullptr);
+    Py_DECREF(poNullArgs);
+    Py_DECREF(poNull);
+
+    // 5. Missing and non-integer arguments are rejected
+    PyObject* poBad = Py_BuildValue("(s)", "not a handle");
+    assert(poBad != nullptr);
+    assert(!PyTuple_GetHandle(poBad, 0, &pParsed));
+    assert(!PyTuple_GetHandle(poBad, 1, &pParsed));
+    PyErr_Clear();
+    Py_DECREF(poBad);
+
+    std::printf("[PASS] test_pointer_handles\n");
+}
+
 void test_debug_module()
 {
     TestExceptionSender sender;
@@ -201,6 +278,7 @@ int main()
 
     test_python_launcher_and_execution();
     test_python_utils();
+    test_pointer_handles();
     test_debug_module();
     test_python_resource();
     test_embedded_modules();
