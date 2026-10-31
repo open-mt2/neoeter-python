@@ -101,7 +101,12 @@ target_link_libraries(EterPythonLib
 )
 
 if(UNIX)
-    target_compile_definitions(EterPythonLib PUBLIC __LINUX__ _GNU_SOURCE)
+    target_compile_definitions(EterPythonLib PUBLIC
+        OPENMT2_PLATFORM_LINUX=1
+        OPENMT2_RENDERER_GL=1
+        OPENMT2_SDL_WINDOW=1
+        _GNU_SOURCE
+    )
     target_compile_options(EterPythonLib PUBLIC -Wno-register)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_options(EterPythonLib PUBLIC -Wno-macro-redefined)
