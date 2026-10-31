@@ -326,7 +326,7 @@ static void init_embedded_math()
 CPythonLauncher::CPythonLauncher()
 {
 	Py_NoSiteFlag = 1;
-#if defined(__LINUX__) || defined(UNIX)
+#if defined(OPENMT2_PLATFORM_LINUX) || defined(UNIX)
 	static char s_pythonHome[] = ".";
 	Py_SetPythonHome(s_pythonHome);
 #endif
