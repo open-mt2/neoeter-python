@@ -95,8 +95,8 @@ target_link_libraries(ScriptLib
         EterGrnLib
         EffectLib
         ${PYTHON_LIBRARIES}
-        util
-        dl
+        $<$<PLATFORM_ID:Linux>:util>
+        $<$<PLATFORM_ID:Linux>:dl>
 )
 
 if(UNIX)
