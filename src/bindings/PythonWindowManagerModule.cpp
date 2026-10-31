@@ -2490,7 +2490,7 @@ void initwndMgr()
 		{ "SetOutlineFlag",				wndMgrSetOutlineFlag,				METH_VARARGS },
 		{ "ShowOverInWindowName",		wndMgrShowOverInWindowName,			METH_VARARGS },
 
-		{ NULL,							NULL,								NULL },
+		{ NULL,							NULL,								0 },
 	};
 
 	PyObject * poModule = Py_InitModule("wndMgr", s_methods);

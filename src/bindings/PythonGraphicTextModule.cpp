@@ -418,7 +418,7 @@ void initgrpText()
 		{ "GetSplitingTextLineCount",			grpGetSplitingTextLineCount,				METH_VARARGS },
 		{ "GetSplitingTextLine",				grpGetSplitingTextLine,						METH_VARARGS },
 		{ "PixelPositionToCharacterPosition",	grpTextPixelPositionToCharacterPosition,	METH_VARARGS },
-		{ NULL, NULL, NULL },
+		{ NULL, NULL, 0 },
 	};
 
 	Py_InitModule("grpText", s_methods);
