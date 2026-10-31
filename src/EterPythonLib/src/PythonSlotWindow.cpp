@@ -1,6 +1,6 @@
 #include "StdAfx.h"
-#include <EterBase/CRC32.h>
-#include <EterBase/Filename.h>
+#include <Neoeter/Platform/Base/CRC32.h>
+#include <Neoeter/Platform/Base/Filename.h>
 #include "PythonWindow.h"
 #include "PythonSlotWindow.h"
 

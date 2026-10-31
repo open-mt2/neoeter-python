@@ -1,14 +1,14 @@
 #include "StdAfx.h"
-#include <EterLib/GrpExpandedImageInstance.h>
-#include <EterLib/GrpTextInstance.h>
-#include <EterLib/GrpMarkInstance.h>
-#include <EterLib/GrpSubImage.h>
-#include <EterLib/GrpText.h>
-#include <EterLib/AttributeData.h>
-#include <EterGrnLib/Thing.h>
-#include <EterGrnLib/ThingInstance.h>
-#include <EffectLib/EffectMesh.h>
-#include <EffectLib/EffectInstance.h>
+#include <Neoeter/Render/GrpExpandedImageInstance.h>
+#include <Neoeter/Render/GrpTextInstance.h>
+#include <Neoeter/Render/GrpMarkInstance.h>
+#include <Neoeter/Render/GrpSubImage.h>
+#include <Neoeter/Render/GrpText.h>
+#include <Neoeter/Render/AttributeData.h>
+#include <Neoeter/Model/Grn/Thing.h>
+#include <Neoeter/Model/Grn/ThingInstance.h>
+#include <Neoeter/Effect/EffectMesh.h>
+#include <Neoeter/Effect/EffectInstance.h>
 
 #include "Resource.h"
 

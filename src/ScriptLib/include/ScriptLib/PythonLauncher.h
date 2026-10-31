@@ -3,7 +3,7 @@
 #include <vector>
 #include <python2.7/frameobject.h>
 
-#include <EterBase/Singleton.h>
+#include <Neoeter/Platform/Base/Singleton.h>
 
 class CPythonLauncher : public CSingleton<CPythonLauncher>
 {

@@ -1,6 +1,6 @@
 #include "StdAfx.h"
-#include <EterLib/Camera.h>
-#include <EterLib/TextBar.h>
+#include <Neoeter/Render/Camera.h>
+#include <Neoeter/Render/TextBar.h>
 
 #ifdef _WIN32
 #include <shlobj.h>

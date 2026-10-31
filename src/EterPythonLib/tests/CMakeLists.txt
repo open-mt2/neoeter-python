@@ -10,11 +10,11 @@ target_link_libraries(test_eterpythonlib
     PRIVATE
         EterPythonLib
         ScriptLib
-        EterLib
-        EterGrnLib
-        EffectLib
-        EterPack
-        EterBase
+        neoeter_render
+        neoeter_model_grn
+        neoeter_effect
+        neoeter_io
+        neoeter_platform_base
         ${PYTHON_LIBRARIES}
         util
         dl

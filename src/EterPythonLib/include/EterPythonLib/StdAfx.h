@@ -5,7 +5,7 @@
 #endif
 
 #include <Platform/Platform.h>
-#include <EterLib/StdAfx.h>
+#include <Neoeter/Render/StdAfx.h>
 #include <ScriptLib/StdAfx.h>
 
 #include "PythonGraphic.h"

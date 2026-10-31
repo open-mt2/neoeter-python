@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include <EterPack/EterPackManager.h>
+#include <Neoeter/IO/EterPackManager.h>
 
 #include "PythonLauncher.h"
 #include <chrono>

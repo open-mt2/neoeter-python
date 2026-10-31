@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include <EterBase/CRC32.h>
+#include <Neoeter/Platform/Base/CRC32.h>
 #include "PythonGridSlotWindow.h"
 
 using namespace UI;

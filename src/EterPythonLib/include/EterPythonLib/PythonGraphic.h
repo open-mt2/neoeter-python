@@ -1,11 +1,11 @@
 #pragma once
 
-#include <EterLib/GrpTextInstance.h>
-#include <EterLib/GrpMarkInstance.h>
-#include <EterLib/GrpImageInstance.h>
-#include <EterLib/GrpExpandedImageInstance.h>
+#include <Neoeter/Render/GrpTextInstance.h>
+#include <Neoeter/Render/GrpMarkInstance.h>
+#include <Neoeter/Render/GrpImageInstance.h>
+#include <Neoeter/Render/GrpExpandedImageInstance.h>
 
-#include <EterGrnLib/ThingInstance.h>
+#include <Neoeter/Model/Grn/ThingInstance.h>
 
 class CPythonGraphic : public CScreen, public CSingleton<CPythonGraphic>
 {

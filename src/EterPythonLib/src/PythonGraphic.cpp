@@ -1,6 +1,6 @@
 #include "StdAfx.h"
-#include <EterLib/StateManager.h>
-#include <EterLib/JpegFile.h>
+#include <Neoeter/Render/StateManager.h>
+#include <Neoeter/Render/JpegFile.h>
 #include "PythonGraphic.h"
 
 bool g_isScreenShotKey = false;

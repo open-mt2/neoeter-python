@@ -1,8 +1,8 @@
 #pragma once
 
-#include <EffectLib/StdAfx.h>
-#include <EterLib/Resource.h>
-#include <EterLib/ResourceManager.h>
+#include <Neoeter/Effect/StdAfx.h>
+#include <Neoeter/Render/Resource.h>
+#include <Neoeter/Render/ResourceManager.h>
 #include <vector>
 
 enum EResourceTypes

@@ -91,11 +91,11 @@ target_include_directories(ScriptLib
 
 target_link_libraries(ScriptLib
     PUBLIC
-        EterBase
-        EterPack
-        EterLib
-        EterGrnLib
-        EffectLib
+        neoeter_platform_base
+        neoeter_io
+        neoeter_render
+        neoeter_model_grn
+        neoeter_effect
         ${PYTHON_LIBRARIES}
         $<$<PLATFORM_ID:Linux>:util>
         $<$<PLATFORM_ID:Linux>:dl>
