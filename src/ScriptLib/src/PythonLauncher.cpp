@@ -26,10 +26,15 @@ static PyObject* py_time_sleep(PyObject* self, PyObject* args)
 	double secs;
 	if (!PyArg_ParseTuple(args, "d", &secs))
 		return NULL;
+#if defined(_WIN32)
+	// nanosleep is POSIX; the Windows build uses the Win32 equivalent (T1.9).
+	Sleep((DWORD)(secs * 1000.0));
+#else
 	struct timespec ts;
 	ts.tv_sec = (time_t)secs;
 	ts.tv_nsec = (long)((secs - ts.tv_sec) * 1e9);
 	nanosleep(&ts, NULL);
+#endif
 	Py_RETURN_NONE;
 }
 
