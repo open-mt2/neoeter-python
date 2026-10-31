@@ -4,7 +4,7 @@
 #include <EterLib/StdAfx.h>
 #include <EterGrnLib/StdAfx.h>
 
-#include <python2.7/Python.h>
+#include <Python.h>  // T1.9: the include dir selects the platform copy
 
 #include "PythonUtils.h"
 #include "PythonLauncher.h"

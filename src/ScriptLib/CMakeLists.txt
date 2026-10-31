@@ -80,11 +80,13 @@ target_include_directories(ScriptLib
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ScriptLib>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/python2.7>
+        # The vendored copy is a Linux Python 2.7 include set; on Windows the
+        # headers must come from the cross-built prefix (T2.4/T1.9).
+        $<$<NOT:$<PLATFORM_ID:Windows>>:$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/python2.7>>
+        ${PYTHON_INCLUDE_DIRS}
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${PYTHON_INCLUDE_DIRS}
 )
 
 target_link_libraries(ScriptLib
