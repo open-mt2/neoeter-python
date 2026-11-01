@@ -102,6 +102,24 @@ target_link_libraries(neoeter_python_host
         $<$<PLATFORM_ID:Linux>:dl>
 )
 
+# The launcher overrides PYTHONHOME, so record where the linked libpython's
+# stdlib lives as a fallback search location (see PythonLauncher.cpp).
+if(UNIX AND PYTHON_LIBRARIES)
+    foreach(_pylib IN LISTS PYTHON_LIBRARIES)
+        if(_pylib MATCHES "python2\\.?7")
+            get_filename_component(_pylib_real "${_pylib}" REALPATH)
+            get_filename_component(_pylib_dir "${_pylib_real}" DIRECTORY)
+            set(NEOETER_PYTHON_STDLIB "${_pylib_dir}/python2.7")
+            break()
+        endif()
+    endforeach()
+    if(NEOETER_PYTHON_STDLIB)
+        message(STATUS "neoeter_python_host: build-time Python stdlib ${NEOETER_PYTHON_STDLIB}")
+        target_compile_definitions(neoeter_python_host PRIVATE
+            OPENMT2_PYTHON_STDLIB_BUILD="${NEOETER_PYTHON_STDLIB}")
+    endif()
+endif()
+
 if(UNIX)
     target_compile_definitions(neoeter_python_host PUBLIC
         OPENMT2_PLATFORM_LINUX=1

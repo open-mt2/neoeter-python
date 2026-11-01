@@ -6,6 +6,14 @@
 #include <ctime>
 #include <cmath>
 
+#if !defined(_WIN32)
+#include <dlfcn.h>
+#include <cstdlib>
+#include <string>
+#include <vector>
+#include <sys/stat.h>
+#endif
+
 static PyObject* py_time_time(PyObject* self, PyObject* args)
 {
 	auto now = std::chrono::system_clock::now().time_since_epoch();
@@ -437,6 +445,78 @@ int TraceFunc(PyObject * obj, PyFrameObject * f, int what, PyObject *arg)
 	return 0;
 }
 
+#if !defined(_WIN32)
+static bool IsDirectory(const std::string& path)
+{
+	struct stat st;
+	return stat(path.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
+}
+
+static bool IsPythonStdlib(const std::string& dir)
+{
+	struct stat st;
+	return !dir.empty() &&
+		(stat((dir + "/os.py").c_str(), &st) == 0 || stat((dir + "/os.pyc").c_str(), &st) == 0);
+}
+
+// Py_SetPythonHome(".") hides the host's standard library, and bin/lib only
+// carries the modules the Windows client needed (no posixpath, ...). Find the
+// real Python 2.7 stdlib so anything missing from lib falls back to it.
+static std::string FindPythonStdlib()
+{
+	std::vector<std::string> candidates;
+
+	if (const char* env = getenv("OPENMT2_PYTHON_STDLIB"))
+		candidates.push_back(env);
+	if (const char* env = getenv("PYTHONHOME"))
+		candidates.push_back(std::string(env) + "/lib/python2.7");
+
+	// Next to the libpython that is actually loaded.
+	Dl_info info;
+	if (dladdr((void*)&Py_Initialize, &info) && info.dli_fname) {
+		std::string lib = info.dli_fname;
+		std::string::size_type slash = lib.rfind('/');
+		if (slash != std::string::npos) {
+			std::string libDir = lib.substr(0, slash);
+			candidates.push_back(libDir + "/python2.7");
+			// Debian: /usr/lib/x86_64-linux-gnu/libpython2.7.so -> /usr/lib/python2.7
+			std::string::size_type parent = libDir.rfind('/');
+			if (parent != std::string::npos)
+				candidates.push_back(libDir.substr(0, parent) + "/python2.7");
+		}
+	}
+
+#ifdef OPENMT2_PYTHON_STDLIB_BUILD
+	candidates.push_back(OPENMT2_PYTHON_STDLIB_BUILD);
+#endif
+	candidates.push_back("/usr/lib/python2.7");
+	candidates.push_back("/usr/lib64/python2.7");
+	candidates.push_back("/usr/local/lib/python2.7");
+
+	for (const std::string& dir : candidates)
+		if (IsPythonStdlib(dir))
+			return dir;
+
+	return std::string();
+}
+
+static void AppendSysPath(const std::string& dir)
+{
+	if (!IsDirectory(dir))
+		return;
+
+	PyObject* path = PySys_GetObject((char*)"path");
+	if (!path || !PyList_Check(path))
+		return;
+
+	PyObject* item = PyString_FromString(dir.c_str());
+	if (item) {
+		PyList_Append(path, item);
+		Py_DECREF(item);
+	}
+}
+#endif
+
 void CPythonLauncher::SetTraceFunc(int (*pFunc)(PyObject * obj, PyFrameObject * f, int what, PyObject *arg))
 {
 	PyEval_SetTrace(pFunc, NULL);
@@ -471,6 +551,19 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 		return false;
 
 	RunLine("sys.path.insert(0, 'lib')");
+
+#if !defined(_WIN32)
+	// After lib, so the modules shipped with the client keep priority.
+	std::string stdlib = FindPythonStdlib();
+	if (!stdlib.empty()) {
+		Tracef("Python standard library: %s\n", stdlib.c_str());
+		AppendSysPath(stdlib);
+		AppendSysPath(stdlib + "/plat-linux2");
+		AppendSysPath(stdlib + "/lib-dynload");
+	} else {
+		TraceError("Python 2.7 standard library not found; set OPENMT2_PYTHON_STDLIB");
+	}
+#endif
 
 	return true;
 }
