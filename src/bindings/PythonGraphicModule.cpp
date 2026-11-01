@@ -1008,7 +1008,7 @@ void initgrp()
 		{ "ClearTextBar",				grpClearTextBar,				METH_VARARGS },
 		{ "SetTextBarClipRect",			grpSetTextBarClipRect,			METH_VARARGS },
 
-		{ NULL,							NULL,							NULL		},
+		{ NULL,							NULL,							0		},
 	};
 
 	Py_InitModule("grp", s_methods);

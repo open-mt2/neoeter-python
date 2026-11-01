@@ -157,7 +157,7 @@ void initgrpThing()
 		{ "SetFileName",			grpThingSetFileName,			METH_VARARGS },		
 		{ "SetRotation",			grpSetThingRotation,			METH_VARARGS },
 		{ "SetScale",				grpSetThingScale,				METH_VARARGS },
-		{ NULL,						NULL,							NULL		 },
+		{ NULL,						NULL,							0		 },
 	};	
 
 	Py_InitModule("grpThing", s_methods);

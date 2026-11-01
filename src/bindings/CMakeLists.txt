@@ -81,13 +81,19 @@ target_include_directories(neoeter_python_bindings
     PUBLIC
         $<BUILD_INTERFACE:${NEOETER_PYTHON_INCLUDE_DIR}>
         $<BUILD_INTERFACE:${NEOETER_PYTHON_INCLUDE_DIR}>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Python's own headers are third-party: include them as SYSTEM so their
+# warnings (`register` in C++17) do not drown the project's own.
+target_include_directories(neoeter_python_bindings SYSTEM
+    PUBLIC
         # The vendored copy is a Linux Python 2.7 include set; on Windows the
         # headers must come from the cross-built prefix (T2.4/T1.9).
         $<$<NOT:$<PLATFORM_ID:Windows>>:$<BUILD_INTERFACE:${NEOETER_PYTHON_INCLUDE_DIR}/python2.7>>
         ${PYTHON_INCLUDE_DIRS}
-        $<INSTALL_INTERFACE:include>
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(neoeter_python_bindings

@@ -303,7 +303,7 @@ void initgrpImage()
 		{ "SetDiffuseColor",		grpSetImageDiffuseColor,		METH_VARARGS },
 		{ "GetWidth",				grpGetWidth,					METH_VARARGS },
 		{ "GetHeight",				grpGetHeight,					METH_VARARGS },
-		{ NULL,						NULL,							NULL		 },
+		{ NULL,						NULL,							0		 },
 	};	
 
 	Py_InitModule("grpImage", s_methods);
