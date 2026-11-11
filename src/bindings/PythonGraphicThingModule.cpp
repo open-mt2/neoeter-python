@@ -149,15 +149,15 @@ void initgrpThing()
 {
 	static PyMethodDef s_methods[] =
 		{
-			{"Update", grpThingUpdate, METH_VARARGS},
-			{"Render", grpThingRender, METH_VARARGS},
-			{"SetPosition", grpSetThingPosition, METH_VARARGS},
-			{"Generate", grpThingGenerate, METH_VARARGS},
-			{"Delete", grpThingDelete, METH_VARARGS},
-			{"SetFileName", grpThingSetFileName, METH_VARARGS},
-			{"SetRotation", grpSetThingRotation, METH_VARARGS},
-			{"SetScale", grpSetThingScale, METH_VARARGS},
-			{NULL, NULL, 0},
+			{"Update", grpThingUpdate, METH_VARARGS, NULL},
+			{"Render", grpThingRender, METH_VARARGS, NULL},
+			{"SetPosition", grpSetThingPosition, METH_VARARGS, NULL},
+			{"Generate", grpThingGenerate, METH_VARARGS, NULL},
+			{"Delete", grpThingDelete, METH_VARARGS, NULL},
+			{"SetFileName", grpThingSetFileName, METH_VARARGS, NULL},
+			{"SetRotation", grpSetThingRotation, METH_VARARGS, NULL},
+			{"SetScale", grpSetThingScale, METH_VARARGS, NULL},
+			{NULL, NULL, 0, NULL},
 		};
 
 	Py_InitModule("grpThing", s_methods);

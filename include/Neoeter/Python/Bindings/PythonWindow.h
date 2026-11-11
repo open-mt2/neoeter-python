@@ -253,6 +253,8 @@ namespace UI
 			CBar3D(PyObject* ppyObject);
 			virtual ~CBar3D();
 
+			using CWindow::SetColor;
+
 			void SetColor(DWORD dwLeft, DWORD dwRight, DWORD dwCenter);
 
 		protected:

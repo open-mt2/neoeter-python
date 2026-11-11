@@ -13,10 +13,10 @@ namespace UI
 											m_y(0),
 											m_lWidth(0),
 											m_lHeight(0),
-											m_poHandler(ppyObject),
 											m_bShow(false),
-											m_pParent(NULL),
 											m_dwFlag(0),
+											m_poHandler(ppyObject),
+											m_pParent(NULL),
 											m_isUpdatingChildren(FALSE)
 	{
 #ifdef _DEBUG
@@ -234,6 +234,8 @@ namespace UI
 				case VERTICAL_ALIGN_CENTER:
 					m_rect.top = (m_pParent->GetHeight() - GetHeight()) / 2 + m_rect.top;
 					break;
+				default:
+					break;
 			}
 			m_rect.top += m_pParent->m_rect.top;
 		}
@@ -289,6 +291,8 @@ namespace UI
 					break;
 				case HORIZONTAL_ALIGN_CENTER:
 					m_rect.left = m_pParent->GetWidth() / 2 - GetWidth() / 2 + m_rect.left;
+					break;
+				default:
 					break;
 			}
 			m_rect.left += 0L < m_pParent->GetWidth() ? m_pParent->m_rect.left : m_pParent->m_rect.right + ::abs(m_pParent->GetWidth());
@@ -1625,10 +1629,10 @@ namespace UI
 
 	CButton::CButton(PyObject* ppyObject)
 		: CWindow(ppyObject),
-		  m_pcurVisual(NULL),
 		  m_bEnable(TRUE),
 		  m_isPressed(FALSE),
-		  m_isFlash(FALSE)
+		  m_isFlash(FALSE),
+		  m_pcurVisual(NULL)
 	{
 		CWindow::AddFlag(CWindow::FLAG_NOT_CAPTURE);
 	}

@@ -65,12 +65,12 @@ void initdbg()
 {
 	static PyMethodDef s_methods[] =
 		{
-			{"LogBox", dbgLogBox, METH_VARARGS},
-			{"Trace", dbgTrace, METH_VARARGS},
-			{"Tracen", dbgTracen, METH_VARARGS},
-			{"TraceError", dbgTraceError, METH_VARARGS},
-			{"RegisterExceptionString", dbgRegisterExceptionString, METH_VARARGS},
-			{NULL, NULL},
+			{"LogBox", dbgLogBox, METH_VARARGS, NULL},
+			{"Trace", dbgTrace, METH_VARARGS, NULL},
+			{"Tracen", dbgTracen, METH_VARARGS, NULL},
+			{"TraceError", dbgTraceError, METH_VARARGS, NULL},
+			{"RegisterExceptionString", dbgRegisterExceptionString, METH_VARARGS, NULL},
+			{NULL, NULL, 0, NULL},
 		};
 
 	Py_InitModule("dbg", s_methods);

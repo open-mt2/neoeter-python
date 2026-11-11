@@ -288,22 +288,22 @@ void initgrpImage()
 {
 	static PyMethodDef s_methods[] =
 		{
-			{"Render", grpImageRender, METH_VARARGS},
-			{"SetPosition", grpSetImagePosition, METH_VARARGS},
-			{"Generate", grpImageGenerate, METH_VARARGS},
-			{"GenerateExpanded", grpImageGenerateExpanded, METH_VARARGS},
-			{"GenerateFromHandle", grpImageGenerateFromHandle, METH_VARARGS},
-			{"Delete", grpImageDelete, METH_VARARGS},
-			{"DeleteExpanded", grpImageDeleteExpanded, METH_VARARGS},
-			{"SetFileName", grpImageSetFileName, METH_VARARGS},
-			{"SetOrigin", grpSetImageOrigin, METH_VARARGS},
-			{"SetRotation", grpSetImageRotation, METH_VARARGS},
-			{"SetScale", grpSetImageScale, METH_VARARGS},
-			{"SetRenderingRect", grpSetRenderingRect, METH_VARARGS},
-			{"SetDiffuseColor", grpSetImageDiffuseColor, METH_VARARGS},
-			{"GetWidth", grpGetWidth, METH_VARARGS},
-			{"GetHeight", grpGetHeight, METH_VARARGS},
-			{NULL, NULL, 0},
+			{"Render", grpImageRender, METH_VARARGS, NULL},
+			{"SetPosition", grpSetImagePosition, METH_VARARGS, NULL},
+			{"Generate", grpImageGenerate, METH_VARARGS, NULL},
+			{"GenerateExpanded", grpImageGenerateExpanded, METH_VARARGS, NULL},
+			{"GenerateFromHandle", grpImageGenerateFromHandle, METH_VARARGS, NULL},
+			{"Delete", grpImageDelete, METH_VARARGS, NULL},
+			{"DeleteExpanded", grpImageDeleteExpanded, METH_VARARGS, NULL},
+			{"SetFileName", grpImageSetFileName, METH_VARARGS, NULL},
+			{"SetOrigin", grpSetImageOrigin, METH_VARARGS, NULL},
+			{"SetRotation", grpSetImageRotation, METH_VARARGS, NULL},
+			{"SetScale", grpSetImageScale, METH_VARARGS, NULL},
+			{"SetRenderingRect", grpSetRenderingRect, METH_VARARGS, NULL},
+			{"SetDiffuseColor", grpSetImageDiffuseColor, METH_VARARGS, NULL},
+			{"GetWidth", grpGetWidth, METH_VARARGS, NULL},
+			{"GetHeight", grpGetHeight, METH_VARARGS, NULL},
+			{NULL, NULL, 0, NULL},
 		};
 
 	Py_InitModule("grpImage", s_methods);

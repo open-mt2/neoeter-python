@@ -404,14 +404,14 @@ static PyObject* r_object(RFILE* p)
 
 int _PyMarshal_ReadShortFromFile(FILE* fp)
 {
-	RFILE rf;
+	RFILE rf = {};
 	rf.fp = fp;
 	return r_short(&rf);
 }
 
 long _PyMarshal_ReadLongFromFile(FILE* fp)
 {
-	RFILE rf;
+	RFILE rf = {};
 	rf.fp = fp;
 	return r_long(&rf);
 }
@@ -478,7 +478,7 @@ PyObject* _PyMarshal_ReadLastObjectFromFile(FILE* fp)
 
 PyObject* _PyMarshal_ReadObjectFromFile(FILE* fp)
 {
-	RFILE rf;
+	RFILE rf = {};
 	if (PyErr_Occurred())
 	{
 		fprintf(stderr, "XXX rd_object called with exception set\n");
@@ -490,7 +490,7 @@ PyObject* _PyMarshal_ReadObjectFromFile(FILE* fp)
 
 PyObject* _PyMarshal_ReadObjectFromString(char* str, int len)
 {
-	RFILE rf;
+	RFILE rf = {};
 	if (PyErr_Occurred())
 	{
 		fprintf(stderr, "XXX rds_object called with exception set\n");

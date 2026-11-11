@@ -156,7 +156,7 @@ void GenScreenShotTag(const char* src, DWORD crc32, char* leaf, size_t leafLen)
 {
 	const char* p = src;
 	const char* n = p;
-	while (n = strchr(p, '\\'))
+	while ((n = strchr(p, '\\')))
 		p = n + 1;
 
 	_snprintf(leaf, leafLen, "YMIR_METIN2:%s:0x%.8x", p, crc32);
@@ -206,6 +206,8 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 			TraceError("Unsupported BackBuffer Format(%d). Please contact Metin 2 Administrator.", stSurfaceDesc.Format);
 			SAFE_RELEASE(lpSurface);
 			return false;
+		default:
+			break;
 	}
 
 	D3DLOCKED_RECT lockRect;
@@ -285,6 +287,8 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 				}
 			}
 			break;
+			default:
+				break;
 		}
 
 		// increase by one line
@@ -505,7 +509,6 @@ void CPythonGraphic::RenderCoolTimeBox(float fxCenter, float fyCenter, float fRa
 	fTime = max(0.0f, fTime);
 
 	static D3DXCOLOR color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.5f);
-	static WORD s_wBoxIndicies[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	static D3DXVECTOR2 s_v2BoxPos[8] =
 		{
 			D3DXVECTOR2(-1.0f, -1.0f),

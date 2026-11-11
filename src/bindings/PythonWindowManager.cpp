@@ -21,20 +21,20 @@ namespace UI
 	std::set<CWindow*> gs_kSet_pkWnd;
 
 	CWindowManager::CWindowManager()
-		: m_pActiveWindow(NULL),
-		  m_pPointWindow(NULL),
-		  m_pLeftCaptureWindow(NULL),
-		  m_pMiddleCaptureWindow(NULL),
-		  m_pRightCaptureWindow(NULL),
-		  m_pLockWindow(NULL),
+		: m_iVres(0),
+		  m_iHres(0),
+		  m_bOnceIgnoreMouseLeftButtonUpEventFlag(FALSE),
+		  m_poMouseHandler(NULL),
 		  m_bAttachingFlag(FALSE),
 		  m_dwAttachingType(0),
 		  m_dwAttachingIndex(0),
 		  m_dwAttachingSlotNumber(0),
-		  m_poMouseHandler(NULL),
-		  m_iHres(0),
-		  m_iVres(0),
-		  m_bOnceIgnoreMouseLeftButtonUpEventFlag(FALSE)
+		  m_pActiveWindow(NULL),
+		  m_pLockWindow(NULL),
+		  m_pPointWindow(NULL),
+		  m_pLeftCaptureWindow(NULL),
+		  m_pRightCaptureWindow(NULL),
+		  m_pMiddleCaptureWindow(NULL)
 	{
 		m_pRootWindow = new CWindow(NULL);
 		m_pRootWindow->SetName("root");
