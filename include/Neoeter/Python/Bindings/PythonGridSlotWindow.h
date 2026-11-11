@@ -2,7 +2,7 @@
 
 #include <Neoeter/Python/Bindings/PythonSlotWindow.h>
 
-namespace UI 
+namespace UI
 {
 	class CGridSlotWindow : public CSlotWindow
 	{
@@ -10,7 +10,7 @@ namespace UI
 			static DWORD Type();
 
 		public:
-			CGridSlotWindow(PyObject * ppyObject);
+			CGridSlotWindow(PyObject* ppyObject);
 			virtual ~CGridSlotWindow();
 
 			void Destroy();
@@ -20,11 +20,11 @@ namespace UI
 		protected:
 			void __Initialize();
 
-			BOOL GetPickedSlotPointer(TSlot ** ppSlot);
-			BOOL GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot*> * pSlotPointerList);
-			BOOL GetGridSlotPointer(int ix, int iy, TSlot ** ppSlot);
-			BOOL GetPickedGridSlotPosition(int ixLocal, int iyLocal, int * pix, int * piy);
-			BOOL CheckMoving(DWORD dwSlotNumber, DWORD dwItemIndex, const std::list<TSlot*> & c_rSlotList);
+			BOOL GetPickedSlotPointer(TSlot** ppSlot);
+			BOOL GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot*>* pSlotPointerList);
+			BOOL GetGridSlotPointer(int ix, int iy, TSlot** ppSlot);
+			BOOL GetPickedGridSlotPosition(int ixLocal, int iyLocal, int* pix, int* piy);
+			BOOL CheckMoving(DWORD dwSlotNumber, DWORD dwItemIndex, const std::list<TSlot*>& c_rSlotList);
 
 			BOOL OnIsType(DWORD dwType);
 
@@ -35,6 +35,6 @@ namespace UI
 			DWORD m_dwxCount;
 			DWORD m_dwyCount;
 
-			std::vector<TSlot *> m_SlotVector;
+			std::vector<TSlot*> m_SlotVector;
 	};
 };

@@ -8,25 +8,24 @@ BOOL g_bOutlineBoxEnable = FALSE;
 
 namespace UI
 {
-	
-	CWindow::CWindow(PyObject * ppyObject) : 
-		m_x(0),
-		m_y(0),
-		m_lWidth(0),
-		m_lHeight(0),
-		m_poHandler(ppyObject),
-		m_bShow(false),
-		m_pParent(NULL),
-		m_dwFlag(0),
-		m_isUpdatingChildren(FALSE)
-	{			
+
+	CWindow::CWindow(PyObject* ppyObject) : m_x(0),
+											m_y(0),
+											m_lWidth(0),
+											m_lHeight(0),
+											m_poHandler(ppyObject),
+											m_bShow(false),
+											m_pParent(NULL),
+											m_dwFlag(0),
+											m_isUpdatingChildren(FALSE)
+	{
 #ifdef _DEBUG
-		static DWORD DEBUG_dwGlobalCounter=0;
-		DEBUG_dwCounter=DEBUG_dwGlobalCounter++;	
+		static DWORD DEBUG_dwGlobalCounter = 0;
+		DEBUG_dwCounter = DEBUG_dwGlobalCounter++;
 
 		m_strName = "!!debug";
 #endif
-		//assert(m_poHandler != NULL);
+		// assert(m_poHandler != NULL);
 		m_HorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		m_VerticalAlign = VERTICAL_ALIGN_TOP;
 		m_rect.bottom = m_rect.left = m_rect.right = m_rect.top = 0;
@@ -58,10 +57,10 @@ namespace UI
 
 	struct FClear
 	{
-		void operator () (CWindow * pWin)
-		{
-			pWin->Clear();
-		}
+			void operator()(CWindow* pWin)
+			{
+				pWin->Clear();
+			}
 	};
 
 	void CWindow::Clear()
@@ -112,7 +111,7 @@ namespace UI
 			return;
 
 		TWindowContainer::iterator it;
-		for(it = m_pReserveChildList.begin(); it != m_pReserveChildList.end(); ++it)
+		for (it = m_pReserveChildList.begin(); it != m_pReserveChildList.end(); ++it)
 		{
 			m_pChildList.remove(*it);
 		}
@@ -130,14 +129,14 @@ namespace UI
 
 		m_isUpdatingChildren = TRUE;
 		TWindowContainer::iterator it;
-		for(it = m_pChildList.begin(); it != m_pChildList.end();)
+		for (it = m_pChildList.begin(); it != m_pChildList.end();)
 		{
 			TWindowContainer::iterator it_next = it;
 			++it_next;
 			(*it)->Update();
 			it = it_next;
 		}
-		m_isUpdatingChildren = FALSE;		
+		m_isUpdatingChildren = FALSE;
 	}
 
 	void CWindow::Render()
@@ -166,9 +165,8 @@ namespace UI
 
 		static PyObject* poFuncName_OnUpdate = PyString_InternFromString("OnUpdate");
 
-		//PyCallClassMemberFunc(m_poHandler, "OnUpdate", BuildEmptyTuple());
+		// PyCallClassMemberFunc(m_poHandler, "OnUpdate", BuildEmptyTuple());
 		PyCallClassMemberFunc_ByPyString(m_poHandler, poFuncName_OnUpdate, BuildEmptyTuple());
-		
 	}
 
 	void CWindow::OnRender()
@@ -179,11 +177,11 @@ namespace UI
 		if (!IsShow())
 			return;
 
-		//PyCallClassMemberFunc(m_poHandler, "OnRender", BuildEmptyTuple());
+		// PyCallClassMemberFunc(m_poHandler, "OnRender", BuildEmptyTuple());
 		PyCallClassMemberFunc(m_poHandler, "OnRender", BuildEmptyTuple());
 	}
 
-	void CWindow::SetName(const char * c_szName)
+	void CWindow::SetName(const char* c_szName)
 	{
 		m_strName = c_szName;
 	}
@@ -212,12 +210,12 @@ namespace UI
 	void CWindow::SetPosition(long x, long y)
 	{
 		m_x = x;
-		m_y = y; 
+		m_y = y;
 
 		UpdateRect();
 	}
 
-	void CWindow::GetPosition(long * plx, long * ply)
+	void CWindow::GetPosition(long* plx, long* ply)
 	{
 		*plx = m_x;
 		*ply = m_y;
@@ -225,7 +223,7 @@ namespace UI
 
 	long CWindow::UpdateRect()
 	{
-		m_rect.top		= m_y;
+		m_rect.top = m_y;
 		if (m_pParent)
 		{
 			switch (m_VerticalAlign)
@@ -239,19 +237,23 @@ namespace UI
 			}
 			m_rect.top += m_pParent->m_rect.top;
 		}
-		m_rect.bottom	= m_rect.top + m_lHeight;
+		m_rect.bottom = m_rect.top + m_lHeight;
 
-#if defined( _USE_CPP_RTL_FLIP )
-		if( m_pParent == NULL ) {
-			m_rect.left		= m_x;
-			m_rect.right	= m_rect.left + m_lWidth;
-		} else {
-			if( m_pParent->IsFlag(UI::CWindow::FLAG_RTL) == true ) {
+#if defined(_USE_CPP_RTL_FLIP)
+		if (m_pParent == NULL)
+		{
+			m_rect.left = m_x;
+			m_rect.right = m_rect.left + m_lWidth;
+		}
+		else
+		{
+			if (m_pParent->IsFlag(UI::CWindow::FLAG_RTL) == true)
+			{
 				m_rect.left = m_pParent->GetWidth() - m_lWidth - m_x;
 				switch (m_HorizontalAlign)
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
-						m_rect.left = - m_x;
+						m_rect.left = -m_x;
 						break;
 					case HORIZONTAL_ALIGN_CENTER:
 						m_rect.left = m_pParent->GetWidth() / 2 - GetWidth() - m_x;
@@ -259,8 +261,10 @@ namespace UI
 				}
 				m_rect.left += m_pParent->m_rect.left;
 				m_rect.right = m_rect.left + m_lWidth;
-			} else {
-				m_rect.left		= m_x;
+			}
+			else
+			{
+				m_rect.left = m_x;
 				switch (m_HorizontalAlign)
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
@@ -275,7 +279,7 @@ namespace UI
 			}
 		}
 #else
-		m_rect.left		= m_x;
+		m_rect.left = m_x;
 		if (m_pParent)
 		{
 			switch (m_HorizontalAlign)
@@ -298,26 +302,26 @@ namespace UI
 		return 1;
 	}
 
-	void CWindow::GetLocalPosition(long & rlx, long & rly)
+	void CWindow::GetLocalPosition(long& rlx, long& rly)
 	{
 		rlx = rlx - m_rect.left;
 		rly = rly - m_rect.top;
 	}
 
-	void CWindow::GetMouseLocalPosition(long & rlx, long & rly)
+	void CWindow::GetMouseLocalPosition(long& rlx, long& rly)
 	{
 		CWindowManager::Instance().GetMousePosition(rlx, rly);
 		rlx = rlx - m_rect.left;
 		rly = rly - m_rect.top;
 	}
 
-	void CWindow::AddChild(CWindow * pWin)
+	void CWindow::AddChild(CWindow* pWin)
 	{
 		m_pChildList.push_back(pWin);
 		pWin->m_pParent = this;
 	}
 
-	CWindow * CWindow::GetRoot()
+	CWindow* CWindow::GetRoot()
 	{
 		if (m_pParent)
 			if (m_pParent->IsWindow())
@@ -326,14 +330,14 @@ namespace UI
 		return this;
 	}
 
-	CWindow * CWindow::GetParent()
+	CWindow* CWindow::GetParent()
 	{
 		return m_pParent;
 	}
 
-	bool CWindow::IsChild(CWindow * pWin)
+	bool CWindow::IsChild(CWindow* pWin)
 	{
-		std::list<CWindow *>::iterator itor = m_pChildList.begin();
+		std::list<CWindow*>::iterator itor = m_pChildList.begin();
 
 		while (itor != m_pChildList.end())
 		{
@@ -346,7 +350,7 @@ namespace UI
 		return false;
 	}
 
-	void CWindow::DeleteChild(CWindow * pWin)
+	void CWindow::DeleteChild(CWindow* pWin)
 	{
 		if (m_isUpdatingChildren)
 		{
@@ -358,7 +362,7 @@ namespace UI
 		}
 	}
 
-	void CWindow::SetTop(CWindow * pWin)
+	void CWindow::SetTop(CWindow* pWin)
 	{
 		if (!pWin->IsFlag(CWindow::FLAG_FLOAT))
 			return;
@@ -389,7 +393,7 @@ namespace UI
 
 	void CWindow::OnSetFocus()
 	{
-		//PyCallClassMemberFunc(m_poHandler, "OnSetFocus", BuildEmptyTuple());
+		// PyCallClassMemberFunc(m_poHandler, "OnSetFocus", BuildEmptyTuple());
 		PyCallClassMemberFunc(m_poHandler, "OnSetFocus", BuildEmptyTuple());
 	}
 
@@ -438,7 +442,7 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->RunIMETabEvent())
 				return TRUE;
@@ -458,7 +462,7 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->RunIMEReturnEvent())
 				return TRUE;
@@ -478,7 +482,7 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->RunIMEKeyDownEvent(ikey))
 				return TRUE;
@@ -487,7 +491,7 @@ namespace UI
 		return FALSE;
 	}
 
-	CWindow * CWindow::RunKeyDownEvent(int ikey)
+	CWindow* CWindow::RunKeyDownEvent(int ikey)
 	{
 		if (OnKeyDown(ikey))
 			return this;
@@ -495,11 +499,11 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->IsShow())
 			{
-				CWindow * pProcessedWindow = pWindow->RunKeyDownEvent(ikey);
+				CWindow* pProcessedWindow = pWindow->RunKeyDownEvent(ikey);
 				if (NULL != pProcessedWindow)
 				{
 					return pProcessedWindow;
@@ -518,11 +522,11 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->IsShow())
-			if (pWindow->RunKeyUpEvent(ikey))
-				return TRUE;
+				if (pWindow->RunKeyUpEvent(ikey))
+					return TRUE;
 		}
 
 		return FALSE;
@@ -533,11 +537,11 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->IsShow())
-			if (pWindow->RunPressEscapeKeyEvent())
-				return TRUE;
+				if (pWindow->RunPressEscapeKeyEvent())
+					return TRUE;
 		}
 
 		if (OnPressEscapeKey())
@@ -551,14 +555,14 @@ namespace UI
 		TWindowContainer::reverse_iterator itor;
 		for (itor = m_pChildList.rbegin(); itor != m_pChildList.rend(); ++itor)
 		{
-			CWindow * pWindow = *itor;
+			CWindow* pWindow = *itor;
 
 			if (pWindow->RunPressExitKeyEvent())
 				return TRUE;
 
 			if (pWindow->IsShow())
-			if (pWindow->OnPressExitKey())
-				return TRUE;
+				if (pWindow->OnPressExitKey())
+					return TRUE;
 		}
 
 		return FALSE;
@@ -568,8 +572,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseLeftButtonDown", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -584,8 +588,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseLeftButtonDoubleClick", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -594,8 +598,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseRightButtonDown", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -604,8 +608,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseRightButtonUp", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -614,8 +618,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseRightButtonDoubleClick", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -624,8 +628,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseMiddleButtonDown", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -634,8 +638,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnMouseMiddleButtonUp", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -644,8 +648,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMETab", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -654,8 +658,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMEReturn", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -664,8 +668,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMEKeyDown", Py_BuildValue("(i)", ikey), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -674,8 +678,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMEChangeCodePage", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -684,8 +688,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMEOpenCandidateList", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -694,8 +698,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMECloseCandidateList", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -704,8 +708,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMEOpenReadingWnd", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -714,8 +718,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnIMECloseReadingWnd", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -724,8 +728,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnKeyDown", Py_BuildValue("(i)", ikey), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -734,8 +738,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnKeyUp", Py_BuildValue("(i)", ikey), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -744,8 +748,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnPressEscapeKey", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -754,8 +758,8 @@ namespace UI
 	{
 		long lValue;
 		if (PyCallClassMemberFunc(m_poHandler, "OnPressExitKey", BuildEmptyTuple(), &lValue))
-		if (0 != lValue)
-			return TRUE;
+			if (0 != lValue)
+				return TRUE;
 
 		return FALSE;
 	}
@@ -779,24 +783,26 @@ namespace UI
 		return IsIn(lx, ly);
 	}
 
-	CWindow * CWindow::PickWindow(long x, long y)
+	CWindow* CWindow::PickWindow(long x, long y)
 	{
-		std::list<CWindow *>::reverse_iterator ritor = m_pChildList.rbegin();
+		std::list<CWindow*>::reverse_iterator ritor = m_pChildList.rbegin();
 		for (; ritor != m_pChildList.rend(); ++ritor)
 		{
-			CWindow * pWin = *ritor;
+			CWindow* pWin = *ritor;
 			if (pWin->IsShow())
 			{
 				if (!pWin->IsFlag(CWindow::FLAG_IGNORE_SIZE))
 				{
-					if (!pWin->IsIn(x, y)) {
-						if (0L <= pWin->GetWidth()) {
+					if (!pWin->IsIn(x, y))
+					{
+						if (0L <= pWin->GetWidth())
+						{
 							continue;
 						}
 					}
 				}
 
-				CWindow * pResult = pWin->PickWindow(x, y);
+				CWindow* pResult = pWin->PickWindow(x, y);
 				if (pResult)
 					return pResult;
 			}
@@ -808,12 +814,12 @@ namespace UI
 		return (this);
 	}
 
-	CWindow * CWindow::PickTopWindow(long x, long y)
+	CWindow* CWindow::PickTopWindow(long x, long y)
 	{
-		std::list<CWindow *>::reverse_iterator ritor = m_pChildList.rbegin();
+		std::list<CWindow*>::reverse_iterator ritor = m_pChildList.rbegin();
 		for (; ritor != m_pChildList.rend(); ++ritor)
 		{
-			CWindow * pWin = *ritor;
+			CWindow* pWin = *ritor;
 			if (pWin->IsShow())
 				if (pWin->IsIn(x, y))
 					if (!pWin->IsFlag(CWindow::FLAG_NOT_PICK))
@@ -827,7 +833,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CBox::CBox(PyObject * ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
+	CBox::CBox(PyObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
 	{
 	}
 	CBox::~CBox()
@@ -849,7 +855,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CBar::CBar(PyObject * ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
+	CBar::CBar(PyObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
 	{
 	}
 	CBar::~CBar()
@@ -871,7 +877,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CLine::CLine(PyObject * ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
+	CLine::CLine(PyObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
 	{
 	}
 	CLine::~CLine()
@@ -885,7 +891,7 @@ namespace UI
 
 	void CLine::OnRender()
 	{
-		CPythonGraphic & rkpyGraphic = CPythonGraphic::Instance();
+		CPythonGraphic& rkpyGraphic = CPythonGraphic::Instance();
 		rkpyGraphic.SetDiffuseColor(m_dwColor);
 		rkpyGraphic.RenderLine2d(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
 	}
@@ -900,7 +906,7 @@ namespace UI
 		return (s_dwType);
 	}
 
-	CBar3D::CBar3D(PyObject * ppyObject) : CWindow(ppyObject)
+	CBar3D::CBar3D(PyObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_dwLeftColor = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 		m_dwRightColor = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
@@ -919,7 +925,7 @@ namespace UI
 
 	void CBar3D::OnRender()
 	{
-		CPythonGraphic & rkpyGraphic = CPythonGraphic::Instance();
+		CPythonGraphic& rkpyGraphic = CPythonGraphic::Instance();
 
 		rkpyGraphic.SetDiffuseColor(m_dwCenterColor);
 		rkpyGraphic.RenderBar2d(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
@@ -937,7 +943,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CTextLine::CTextLine(PyObject * ppyObject) : CWindow(ppyObject)
+	CTextLine::CTextLine(PyObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_TextInstance.SetColor(0.78f, 0.78f, 0.78f);
 		m_TextInstance.SetHorizonalAlign(CGraphicTextInstance::HORIZONTAL_ALIGN_LEFT);
@@ -976,14 +982,14 @@ namespace UI
 	{
 		m_TextInstance.SetMultiLine(bFlag ? true : false);
 	}
-	void CTextLine::SetFontName(const char * c_szFontName)
+	void CTextLine::SetFontName(const char* c_szFontName)
 	{
 		std::string stFontName = c_szFontName;
 		stFontName += ".fnt";
-		
-		CResourceManager& rkResMgr=CResourceManager::Instance();
+
+		CResourceManager& rkResMgr = CResourceManager::Instance();
 		CResource* pkRes = rkResMgr.GetTypeResourcePointer(stFontName.c_str());
-		CGraphicText* pkResFont=static_cast<CGraphicText*>(pkRes);
+		CGraphicText* pkResFont = static_cast<CGraphicText*>(pkRes);
 		m_TextInstance.SetTextPointer(pkResFont);
 	}
 	void CTextLine::SetFontColor(DWORD dwColor)
@@ -994,7 +1000,7 @@ namespace UI
 	{
 		m_TextInstance.SetLimitWidth(fWidth);
 	}
-	void CTextLine::SetText(const char * c_szText)
+	void CTextLine::SetText(const char* c_szText)
 	{
 		OnSetText(c_szText);
 	}
@@ -1002,7 +1008,7 @@ namespace UI
 	{
 		m_TextInstance.GetTextSize(pnWidth, pnHeight);
 	}
-	const char * CTextLine::GetText()
+	const char* CTextLine::GetText()
 	{
 		return m_TextInstance.GetValueStringReference().c_str();
 	}
@@ -1021,7 +1027,7 @@ namespace UI
 		return m_TextInstance.PixelPositionToCharacterPosition(lx);
 	}
 
-	void CTextLine::OnSetText(const char * c_szText)
+	void CTextLine::OnSetText(const char* c_szText)
 	{
 		m_TextInstance.SetValue(c_szText);
 		m_TextInstance.Update();
@@ -1041,8 +1047,8 @@ namespace UI
 	void CTextLine::OnChangePosition()
 	{
 		// FOR_ARABIC_ALIGN
-		//if (m_TextInstance.GetHorizontalAlign() == CGraphicTextInstance::HORIZONTAL_ALIGN_ARABIC)
-		if( GetDefaultCodePage() == CP_ARABIC )
+		// if (m_TextInstance.GetHorizontalAlign() == CGraphicTextInstance::HORIZONTAL_ALIGN_ARABIC)
+		if (GetDefaultCodePage() == CP_ARABIC)
 		{
 			m_TextInstance.SetPosition(m_rect.right, m_rect.top);
 		}
@@ -1056,13 +1062,13 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CNumberLine::CNumberLine(PyObject * ppyObject) : CWindow(ppyObject)
+	CNumberLine::CNumberLine(PyObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_strPath = "d:/ymir work/ui/game/taskbar/";
 		m_iHorizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		m_dwWidthSummary = 0;
 	}
-	CNumberLine::CNumberLine(CWindow * pParent) : CWindow(NULL)
+	CNumberLine::CNumberLine(CWindow* pParent) : CWindow(NULL)
 	{
 		m_strPath = "d:/ymir work/ui/game/taskbar/";
 		m_iHorizontalAlign = HORIZONTAL_ALIGN_LEFT;
@@ -1075,7 +1081,7 @@ namespace UI
 		ClearNumber();
 	}
 
-	void CNumberLine::SetPath(const char * c_szPath)
+	void CNumberLine::SetPath(const char* c_szPath)
 	{
 		m_strPath = c_szPath;
 	}
@@ -1083,7 +1089,7 @@ namespace UI
 	{
 		m_iHorizontalAlign = iType;
 	}
-	void CNumberLine::SetNumber(const char * c_szNumber)
+	void CNumberLine::SetNumber(const char* c_szNumber)
 	{
 		if (0 == m_strNumber.compare(c_szNumber))
 			return;
@@ -1141,9 +1147,9 @@ namespace UI
 			if (!CResourceManager::Instance().IsFileExist(strImageFileName.c_str()))
 				continue;
 
-			CGraphicImage * pImage = (CGraphicImage *)CResourceManager::Instance().GetResourcePointer(strImageFileName.c_str());
+			CGraphicImage* pImage = (CGraphicImage*)CResourceManager::Instance().GetResourcePointer(strImageFileName.c_str());
 
-			CGraphicImageInstance * pInstance = CGraphicImageInstance::New();
+			CGraphicImageInstance* pInstance = CGraphicImageInstance::New();
 			pInstance->SetImagePointer(pImage);
 			m_ImageInstanceVector.push_back(pInstance);
 
@@ -1200,7 +1206,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CImageBox::CImageBox(PyObject * ppyObject) : CWindow(ppyObject)
+	CImageBox::CImageBox(PyObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_pImageInstance = NULL;
 	}
@@ -1212,7 +1218,7 @@ namespace UI
 	void CImageBox::OnCreateInstance()
 	{
 		OnDestroyInstance();
-		
+
 		m_pImageInstance = CGraphicImageInstance::New();
 	}
 	void CImageBox::OnDestroyInstance()
@@ -1220,18 +1226,18 @@ namespace UI
 		if (m_pImageInstance)
 		{
 			CGraphicImageInstance::Delete(m_pImageInstance);
-			m_pImageInstance=NULL;
+			m_pImageInstance = NULL;
 		}
 	}
 
-	BOOL CImageBox::LoadImage(const char * c_szFileName)
+	BOOL CImageBox::LoadImage(const char* c_szFileName)
 	{
 		if (!c_szFileName[0])
 			return FALSE;
 
 		OnCreateInstance();
 
-		CResource * pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
+		CResource* pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
 		if (!pResource)
 		{
 			TraceError("[UI] CImageBox::LoadImage failed: resource '%s' not found", c_szFileName);
@@ -1302,7 +1308,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// MarkBox - 마크 출력용 UI 윈도우
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	CMarkBox::CMarkBox(PyObject * ppyObject) : CWindow(ppyObject)
+	CMarkBox::CMarkBox(PyObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_pMarkInstance = NULL;
 	}
@@ -1323,14 +1329,14 @@ namespace UI
 		if (m_pMarkInstance)
 		{
 			CGraphicMarkInstance::Delete(m_pMarkInstance);
-			m_pMarkInstance=NULL;
+			m_pMarkInstance = NULL;
 		}
 	}
 
-	void CMarkBox::LoadImage(const char * c_szFilename)
+	void CMarkBox::LoadImage(const char* c_szFilename)
 	{
 		OnCreateInstance();
-		
+
 		m_pMarkInstance->SetImageFileName(c_szFilename);
 		m_pMarkInstance->Load();
 		SetSize(m_pMarkInstance->GetWidth(), m_pMarkInstance->GetHeight());
@@ -1401,7 +1407,7 @@ namespace UI
 		return FALSE;
 	}
 
-	CExpandedImageBox::CExpandedImageBox(PyObject * ppyObject) : CImageBox(ppyObject)
+	CExpandedImageBox::CExpandedImageBox(PyObject* ppyObject) : CImageBox(ppyObject)
 	{
 	}
 	CExpandedImageBox::~CExpandedImageBox()
@@ -1420,7 +1426,7 @@ namespace UI
 		if (m_pImageInstance)
 		{
 			CGraphicExpandedImageInstance::Delete((CGraphicExpandedImageInstance*)m_pImageInstance);
-			m_pImageInstance=NULL;
+			m_pImageInstance = NULL;
 		}
 	}
 
@@ -1430,7 +1436,7 @@ namespace UI
 			return;
 
 		((CGraphicExpandedImageInstance*)m_pImageInstance)->SetScale(fx, fy);
-		CWindow::SetSize(long(float(GetWidth())*fx), long(float(GetHeight())*fy));
+		CWindow::SetSize(long(float(GetWidth()) * fx), long(float(GetHeight()) * fy));
 	}
 	void CExpandedImageBox::SetOrigin(float fx, float fy)
 	{
@@ -1489,11 +1495,11 @@ namespace UI
 		return FALSE;
 	}
 
-	CAniImageBox::CAniImageBox(PyObject * ppyObject)
-		:	CWindow(ppyObject),
-			m_bycurDelay(0),
-			m_byDelay(4),
-			m_bycurIndex(0)
+	CAniImageBox::CAniImageBox(PyObject* ppyObject)
+		: CWindow(ppyObject),
+		  m_bycurDelay(0),
+		  m_byDelay(4),
+		  m_bycurIndex(0)
 	{
 		m_ImageVector.clear();
 	}
@@ -1506,13 +1512,13 @@ namespace UI
 	{
 		m_byDelay = iDelay;
 	}
-	void CAniImageBox::AppendImage(const char * c_szFileName)
+	void CAniImageBox::AppendImage(const char* c_szFileName)
 	{
-		CResource * pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
+		CResource* pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
 		if (!pResource->IsType(CGraphicImage::Type()))
 			return;
 
-		CGraphicExpandedImageInstance * pImageInstance = CGraphicExpandedImageInstance::New();
+		CGraphicExpandedImageInstance* pImageInstance = CGraphicExpandedImageInstance::New();
 
 		pImageInstance->SetImagePointer(static_cast<CGraphicImage*>(pResource));
 		if (pImageInstance->IsEmpty())
@@ -1524,17 +1530,17 @@ namespace UI
 		m_ImageVector.push_back(pImageInstance);
 
 		m_bycurIndex = rand() % m_ImageVector.size();
-//		SetSize(pImageInstance->GetWidth(), pImageInstance->GetHeight());
-//		UpdateRect();
+		//		SetSize(pImageInstance->GetWidth(), pImageInstance->GetHeight());
+		//		UpdateRect();
 	}
 
 	struct FSetRenderingRect
 	{
-		float fLeft, fTop, fRight, fBottom;
-		void operator () (CGraphicExpandedImageInstance * pInstance)
-		{
-			pInstance->SetRenderingRect(fLeft, fTop, fRight, fBottom);
-		}
+			float fLeft, fTop, fRight, fBottom;
+			void operator()(CGraphicExpandedImageInstance* pInstance)
+			{
+				pInstance->SetRenderingRect(fLeft, fTop, fRight, fBottom);
+			}
 	};
 	void CAniImageBox::SetRenderingRect(float fLeft, float fTop, float fRight, float fBottom)
 	{
@@ -1548,11 +1554,11 @@ namespace UI
 
 	struct FSetRenderingMode
 	{
-		int iMode;
-		void operator () (CGraphicExpandedImageInstance * pInstance)
-		{
-			pInstance->SetRenderingMode(iMode);
-		}
+			int iMode;
+			void operator()(CGraphicExpandedImageInstance* pInstance)
+			{
+				pInstance->SetRenderingMode(iMode);
+			}
 	};
 	void CAniImageBox::SetRenderingMode(int iMode)
 	{
@@ -1586,18 +1592,18 @@ namespace UI
 	{
 		if (m_bycurIndex < m_ImageVector.size())
 		{
-			CGraphicExpandedImageInstance * pImage = m_ImageVector[m_bycurIndex];
+			CGraphicExpandedImageInstance* pImage = m_ImageVector[m_bycurIndex];
 			pImage->Render();
 		}
 	}
 
 	struct FChangePosition
 	{
-		float fx, fy;
-		void operator () (CGraphicExpandedImageInstance * pInstance)
-		{
-			pInstance->SetPosition(fx, fy);
-		}
+			float fx, fy;
+			void operator()(CGraphicExpandedImageInstance* pInstance)
+			{
+				pInstance->SetPosition(fx, fy);
+			}
 	};
 
 	void CAniImageBox::OnChangePosition()
@@ -1617,12 +1623,12 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CButton::CButton(PyObject * ppyObject)
-		:	CWindow(ppyObject),
-			m_pcurVisual(NULL),
-			m_bEnable(TRUE),
-			m_isPressed(FALSE),
-			m_isFlash(FALSE)
+	CButton::CButton(PyObject* ppyObject)
+		: CWindow(ppyObject),
+		  m_pcurVisual(NULL),
+		  m_bEnable(TRUE),
+		  m_isPressed(FALSE),
+		  m_isFlash(FALSE)
 	{
 		CWindow::AddFlag(CWindow::FLAG_NOT_CAPTURE);
 	}
@@ -1630,9 +1636,9 @@ namespace UI
 	{
 	}
 
-	BOOL CButton::SetUpVisual(const char * c_szFileName)
+	BOOL CButton::SetUpVisual(const char* c_szFileName)
 	{
-		CResource * pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
+		CResource* pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
 		if (!pResource->IsType(CGraphicImage::Type()))
 			return FALSE;
 
@@ -1647,9 +1653,9 @@ namespace UI
 
 		return TRUE;
 	}
-	BOOL CButton::SetOverVisual(const char * c_szFileName)
+	BOOL CButton::SetOverVisual(const char* c_szFileName)
 	{
-		CResource * pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
+		CResource* pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
 		if (!pResource->IsType(CGraphicImage::Type()))
 			return FALSE;
 
@@ -1661,9 +1667,9 @@ namespace UI
 
 		return TRUE;
 	}
-	BOOL CButton::SetDownVisual(const char * c_szFileName)
+	BOOL CButton::SetDownVisual(const char* c_szFileName)
 	{
-		CResource * pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
+		CResource* pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
 		if (!pResource->IsType(CGraphicImage::Type()))
 			return FALSE;
 
@@ -1675,9 +1681,9 @@ namespace UI
 
 		return TRUE;
 	}
-	BOOL CButton::SetDisableVisual(const char * c_szFileName)
+	BOOL CButton::SetDisableVisual(const char* c_szFileName)
 	{
-		CResource * pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
+		CResource* pResource = CResourceManager::Instance().GetResourcePointer(c_szFileName);
 		if (!pResource->IsType(CGraphicImage::Type()))
 			return FALSE;
 
@@ -1690,15 +1696,15 @@ namespace UI
 		return TRUE;
 	}
 
-	const char * CButton::GetUpVisualFileName()
+	const char* CButton::GetUpVisualFileName()
 	{
 		return m_upVisual.GetGraphicImagePointer()->GetFileName();
 	}
-	const char * CButton::GetOverVisualFileName()
+	const char* CButton::GetOverVisualFileName()
 	{
 		return m_overVisual.GetGraphicImagePointer()->GetFileName();
 	}
-	const char * CButton::GetDownVisualFileName()
+	const char* CButton::GetDownVisualFileName()
 	{
 		return m_downVisual.GetGraphicImagePointer()->GetFileName();
 	}
@@ -1762,11 +1768,11 @@ namespace UI
 		if (m_pcurVisual)
 		{
 			if (m_isFlash)
-			if (!IsIn())
-			if (int(timeGetTime() / 500)%2)
-			{
-				return;
-			}
+				if (!IsIn())
+					if (int(timeGetTime() / 500) % 2)
+					{
+						return;
+					}
 
 			m_pcurVisual->Render();
 		}
@@ -1827,7 +1833,7 @@ namespace UI
 		PyCallClassMemberFunc(m_poHandler, "HideToolTip", BuildEmptyTuple());
 	}
 
-	void CButton::SetCurrentVisual(CGraphicImageInstance * pVisual)
+	void CButton::SetCurrentVisual(CGraphicImageInstance* pVisual)
 	{
 		m_pcurVisual = pVisual;
 		m_pcurVisual->SetPosition(m_rect.left, m_rect.top);
@@ -1847,7 +1853,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CRadioButton::CRadioButton(PyObject * ppyObject) : CButton(ppyObject)
+	CRadioButton::CRadioButton(PyObject* ppyObject) : CButton(ppyObject)
 	{
 	}
 	CRadioButton::~CRadioButton()
@@ -1900,7 +1906,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CToggleButton::CToggleButton(PyObject * ppyObject) : CButton(ppyObject)
+	CToggleButton::CToggleButton(PyObject* ppyObject) : CButton(ppyObject)
 	{
 	}
 	CToggleButton::~CToggleButton()
@@ -1963,7 +1969,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CDragButton::CDragButton(PyObject * ppyObject) : CButton(ppyObject)
+	CDragButton::CDragButton(PyObject* ppyObject) : CButton(ppyObject)
 	{
 		CWindow::RemoveFlag(CWindow::FLAG_NOT_CAPTURE);
 		m_restrictArea.left = 0;
@@ -1995,7 +2001,7 @@ namespace UI
 
 		if (m_pParent)
 		{
-			const RECT & c_rRect = m_pParent->GetRect();
+			const RECT& c_rRect = m_pParent->GetRect();
 			m_rect.left += c_rRect.left;
 			m_rect.top += c_rRect.top;
 		}

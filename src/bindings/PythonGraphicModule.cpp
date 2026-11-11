@@ -23,7 +23,7 @@ PyObject* grpCreateTextBar(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 1, &iHeight))
 		return Py_BuildException();
 
-	CTextBar * pTextBar = new CTextBar(12, false);
+	CTextBar* pTextBar = new CTextBar(12, false);
 	if (!pTextBar->Create(NULL, iWidth, iHeight))
 	{
 		delete pTextBar;
@@ -46,7 +46,7 @@ PyObject* grpCreateBigTextBar(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 2, &iFontSize))
 		return Py_BuildException();
 
-	CTextBar * pTextBar = new CTextBar(iFontSize, true);
+	CTextBar* pTextBar = new CTextBar(iFontSize, true);
 	if (!pTextBar->Create(NULL, iWidth, iHeight))
 	{
 		delete pTextBar;
@@ -58,7 +58,7 @@ PyObject* grpCreateBigTextBar(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpDestroyTextBar(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
 
@@ -69,7 +69,7 @@ PyObject* grpDestroyTextBar(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpRenderTextBar(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
 	int ix;
@@ -87,7 +87,7 @@ PyObject* grpRenderTextBar(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpTextBarSetTextColor(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
 	int r;
@@ -99,7 +99,7 @@ PyObject* grpTextBarSetTextColor(PyObject* poSelf, PyObject* poArgs)
 	int b;
 	if (!PyTuple_GetInteger(poArgs, 3, &b))
 		return Py_BuildException();
-	
+
 	if (pTextBar)
 		pTextBar->SetTextColor(r, g, b);
 
@@ -108,10 +108,10 @@ PyObject* grpTextBarSetTextColor(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpTextBarGetTextExtent(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
-	char * szText;
+	char* szText;
 	if (!PyTuple_GetString(poArgs, 1, &szText))
 		return Py_BuildException();
 
@@ -124,7 +124,7 @@ PyObject* grpTextBarGetTextExtent(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpTextBarTextOut(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
 	int ix;
@@ -133,7 +133,7 @@ PyObject* grpTextBarTextOut(PyObject* poSelf, PyObject* poArgs)
 	int iy;
 	if (!PyTuple_GetInteger(poArgs, 2, &iy))
 		return Py_BuildException();
-	char * szText;
+	char* szText;
 	if (!PyTuple_GetString(poArgs, 3, &szText))
 		return Py_BuildException();
 
@@ -145,7 +145,7 @@ PyObject* grpTextBarTextOut(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpClearTextBar(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
 
@@ -157,7 +157,7 @@ PyObject* grpClearTextBar(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpSetTextBarClipRect(PyObject* poSelf, PyObject* poArgs)
 {
-	CTextBar * pTextBar;
+	CTextBar* pTextBar;
 	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
 		return Py_BuildException();
 	int isx;
@@ -271,7 +271,7 @@ PyObject* grpRotate(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetColorRenderState(PyObject* poSelf, PyObject* poArgs)
+PyObject* grpSetColorRenderState(PyObject* poSelf, PyObject* poArgs)
 {
 	return Py_BuildNone();
 }
@@ -282,14 +282,14 @@ PyObject* grpSetAroundCamera(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetFloat(poArgs, 0, &distance))
 		return Py_BuildException();
 
-	float pitch;	
+	float pitch;
 	if (!PyTuple_GetFloat(poArgs, 1, &pitch))
 		return Py_BuildException();
 
 	float roll;
 	if (!PyTuple_GetFloat(poArgs, 2, &roll))
 		return Py_BuildException();
-	
+
 	float lookAtZ;
 	if (!PyTuple_GetFloat(poArgs, 3, &lookAtZ))
 		return Py_BuildException();
@@ -304,14 +304,14 @@ PyObject* grpSetPositionCamera(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetFloat(poArgs, 0, &fx))
 		return Py_BuildException();
 
-	float fy;	
+	float fy;
 	if (!PyTuple_GetFloat(poArgs, 1, &fy))
 		return Py_BuildException();
 
 	float fz;
 	if (!PyTuple_GetFloat(poArgs, 2, &fz))
 		return Py_BuildException();
-	
+
 	float distance;
 	if (!PyTuple_GetFloat(poArgs, 3, &distance))
 		return Py_BuildException();
@@ -319,7 +319,7 @@ PyObject* grpSetPositionCamera(PyObject* poSelf, PyObject* poArgs)
 	float pitch;
 	if (!PyTuple_GetFloat(poArgs, 4, &pitch))
 		return Py_BuildException();
-	
+
 	float roll;
 	if (!PyTuple_GetFloat(poArgs, 5, &roll))
 		return Py_BuildException();
@@ -334,26 +334,26 @@ PyObject* grpSetEyeCamera(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetFloat(poArgs, 0, &xEye))
 		return Py_BuildException();
 
-	float yEye;	
+	float yEye;
 	if (!PyTuple_GetFloat(poArgs, 1, &yEye))
 		return Py_BuildException();
 
 	float zEye;
 	if (!PyTuple_GetFloat(poArgs, 2, &zEye))
 		return Py_BuildException();
-	
+
 	float xCenter;
 	if (!PyTuple_GetFloat(poArgs, 3, &xCenter))
 		return Py_BuildException();
 
-	float yCenter;	
+	float yCenter;
 	if (!PyTuple_GetFloat(poArgs, 4, &yCenter))
 		return Py_BuildException();
 
 	float zCenter;
 	if (!PyTuple_GetFloat(poArgs, 5, &zCenter))
 		return Py_BuildException();
-	
+
 	float xUp;
 	if (!PyTuple_GetFloat(poArgs, 6, &xUp))
 		return Py_BuildException();
@@ -370,14 +370,13 @@ PyObject* grpSetEyeCamera(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-
 PyObject* grpSetPerspective(PyObject* poSelf, PyObject* poArgs)
 {
 	float fov;
 	if (!PyTuple_GetFloat(poArgs, 0, &fov))
 		return Py_BuildException();
 
-	float aspect;	
+	float aspect;
 	if (!PyTuple_GetFloat(poArgs, 1, &aspect))
 		return Py_BuildException();
 
@@ -388,11 +387,10 @@ PyObject* grpSetPerspective(PyObject* poSelf, PyObject* poArgs)
 	float zFar;
 	if (!PyTuple_GetFloat(poArgs, 3, &zFar))
 		return Py_BuildException();
-	
+
 	CPythonGraphic::Instance().SetPerspective(fov, aspect, zNear, zFar);
 	return Py_BuildNone();
 }
-
 
 PyObject* grpSetOrtho2D(PyObject* poSelf, PyObject* poArgs)
 {
@@ -411,7 +409,6 @@ PyObject* grpSetOrtho2D(PyObject* poSelf, PyObject* poArgs)
 	CPythonGraphic::Instance().SetOrtho2D(width, height, length);
 	return Py_BuildNone();
 }
-
 
 PyObject* grpSetOrtho3D(PyObject* poSelf, PyObject* poArgs)
 {
@@ -435,7 +432,6 @@ PyObject* grpSetOrtho3D(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-
 PyObject* grpGenerateColor(PyObject* poSelf, PyObject* poArgs)
 {
 	float r;
@@ -453,7 +449,7 @@ PyObject* grpGenerateColor(PyObject* poSelf, PyObject* poArgs)
 	float a;
 	if (!PyTuple_GetFloat(poArgs, 3, &a))
 		return Py_BuildException();
-	
+
 	return Py_BuildValue("l", CPythonGraphic::Instance().GenerateColor(r, g, b, a));
 }
 
@@ -473,18 +469,18 @@ PyObject* grpSetAlpha(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetFloat(poArgs, 0, &Alpha))
 		return Py_BuildException();
 
-	//CPythonGraphic::Instance().SetAlpha(Alpha);
+	// CPythonGraphic::Instance().SetAlpha(Alpha);
 	return Py_BuildNone();
 }
 
-PyObject* grpGetCursorPosition3d(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpGetCursorPosition3d(PyObject* poSelf, PyObject* poArgs)
 {
 	float x, y, z;
 	CPythonGraphic::Instance().GetCursorPosition(&x, &y, &z);
 	return Py_BuildValue("(fff)", x, y, z);
 }
 
-PyObject* grpSetCursorPosition(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetCursorPosition(PyObject* poSelf, PyObject* poArgs)
 {
 	int ix;
 	if (!PyTuple_GetInteger(poArgs, 0, &ix))
@@ -515,7 +511,7 @@ PyObject* grpRenderLine(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 3, &height))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().RenderLine2d((float) x, (float) y, (float) x+width, (float) y+height);
+	CPythonGraphic::Instance().RenderLine2d((float)x, (float)y, (float)x + width, (float)y + height);
 	return Py_BuildNone();
 }
 
@@ -542,14 +538,14 @@ PyObject* grpRenderRoundBox(PyObject* poSelf, PyObject* poArgs)
 	float fWidth = float(width);
 	float fHeight = float(height);
 
-	CPythonGraphic::Instance().RenderLine2d(fx+2.0f, fy, fx+2.0f + (fWidth-3.0f), fy);
-	CPythonGraphic::Instance().RenderLine2d(fx+2.0f, fy+fHeight, fx+2.0f + (fWidth-3.0f), fy+fHeight);
-	CPythonGraphic::Instance().RenderLine2d(fx, fy+2.0f, fx, fy+2.0f + fHeight-4.0f);
-	CPythonGraphic::Instance().RenderLine2d(fx+fWidth, fy+1.0f, fx+fWidth, fy+1.0f + fHeight-3.0f);
-	CPythonGraphic::Instance().RenderLine2d(fx, fy+2.0f, fx+2.0f, fy);
-	CPythonGraphic::Instance().RenderLine2d(fx, fy+fHeight-2.0f, fx+2.0f, fy+fHeight);
-	CPythonGraphic::Instance().RenderLine2d(fx+fWidth-2.0f, fy, fx+fWidth, fy+2.0f);
-	CPythonGraphic::Instance().RenderLine2d(fx+fWidth-2.0f, fy+fHeight, fx+fWidth, fy+fHeight-2.0f);
+	CPythonGraphic::Instance().RenderLine2d(fx + 2.0f, fy, fx + 2.0f + (fWidth - 3.0f), fy);
+	CPythonGraphic::Instance().RenderLine2d(fx + 2.0f, fy + fHeight, fx + 2.0f + (fWidth - 3.0f), fy + fHeight);
+	CPythonGraphic::Instance().RenderLine2d(fx, fy + 2.0f, fx, fy + 2.0f + fHeight - 4.0f);
+	CPythonGraphic::Instance().RenderLine2d(fx + fWidth, fy + 1.0f, fx + fWidth, fy + 1.0f + fHeight - 3.0f);
+	CPythonGraphic::Instance().RenderLine2d(fx, fy + 2.0f, fx + 2.0f, fy);
+	CPythonGraphic::Instance().RenderLine2d(fx, fy + fHeight - 2.0f, fx + 2.0f, fy + fHeight);
+	CPythonGraphic::Instance().RenderLine2d(fx + fWidth - 2.0f, fy, fx + fWidth, fy + 2.0f);
+	CPythonGraphic::Instance().RenderLine2d(fx + fWidth - 2.0f, fy + fHeight, fx + fWidth, fy + fHeight - 2.0f);
 	return Py_BuildNone();
 }
 
@@ -571,7 +567,7 @@ PyObject* grpRenderBox(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 3, &height))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().RenderBox2d((float) x, (float) y, (float) x+width, (float) y+height);
+	CPythonGraphic::Instance().RenderBox2d((float)x, (float)y, (float)x + width, (float)y + height);
 	return Py_BuildNone();
 }
 
@@ -593,7 +589,7 @@ PyObject* grpRenderBar(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 3, &height))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().RenderBar2d((float) x, (float) y, (float) x+width, (float) y+height);
+	CPythonGraphic::Instance().RenderBar2d((float)x, (float)y, (float)x + width, (float)y + height);
 	return Py_BuildNone();
 }
 
@@ -657,7 +653,7 @@ PyObject* grpRenderBar3d(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpRenderGradationBar(PyObject* poSelf, PyObject* poArgs)
+PyObject* grpRenderGradationBar(PyObject* poSelf, PyObject* poArgs)
 {
 	int x;
 	if (!PyTuple_GetInteger(poArgs, 0, &x))
@@ -683,7 +679,7 @@ PyObject * grpRenderGradationBar(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 5, &iEndColor))
 		return Py_BadArgument();
 
-	CPythonGraphic::Instance().RenderGradationBar2d((float)x, (float)y, (float)x+width, (float)y+height, iStartColor, iEndColor);
+	CPythonGraphic::Instance().RenderGradationBar2d((float)x, (float)y, (float)x + width, (float)y + height, iStartColor, iEndColor);
 	return Py_BuildNone();
 }
 
@@ -705,7 +701,7 @@ PyObject* grpRenderDownButton(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 3, &height))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().RenderDownButton((float) x, (float) y, (float) x+width, (float) y+height);
+	CPythonGraphic::Instance().RenderDownButton((float)x, (float)y, (float)x + width, (float)y + height);
 	return Py_BuildNone();
 }
 
@@ -727,7 +723,7 @@ PyObject* grpRenderUpButton(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 3, &height))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().RenderUpButton((float) x, (float) y, (float) x+width, (float) y+height);
+	CPythonGraphic::Instance().RenderUpButton((float)x, (float)y, (float)x + width, (float)y + height);
 	return Py_BuildNone();
 }
 
@@ -757,11 +753,11 @@ PyObject* grpRenderBox3d(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetFloat(poArgs, 5, &ez))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().RenderBox3d((float) sx, (float) sy, (float) sz, (float) ex, (float) ey, (float) ez);
+	CPythonGraphic::Instance().RenderBox3d((float)sx, (float)sy, (float)sz, (float)ex, (float)ey, (float)ez);
 	return Py_BuildNone();
 }
 
-PyObject * grpSetClearColor(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetClearColor(PyObject* poSelf, PyObject* poArgs)
 {
 	float fr;
 	if (!PyTuple_GetFloat(poArgs, 0, &fr))
@@ -779,7 +775,7 @@ PyObject * grpSetClearColor(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetDiffuseColor(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetDiffuseColor(PyObject* poSelf, PyObject* poArgs)
 {
 	float r;
 	if (!PyTuple_GetFloat(poArgs, 0, &r))
@@ -801,48 +797,48 @@ PyObject * grpSetDiffuseColor(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpIdentity(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpIdentity(PyObject* poSelf, PyObject* poArgs)
 {
 	CPythonGraphic::Instance().Identity();
 	return Py_BuildNone();
 }
 
-PyObject * grpGetAvailableMemory(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpGetAvailableMemory(PyObject* poSelf, PyObject* poArgs)
 {
 	int iValue = CPythonGraphic::Instance().GetAvailableMemory();
 	return Py_BuildValue("i", iValue);
 }
 
 // SCREENSHOT_CWDSAVE
-PyObject * grpSaveScreenShotToPath(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSaveScreenShotToPath(PyObject* poSelf, PyObject* poArgs)
 {
-	char * szBasePath;
+	char* szBasePath;
 	if (!PyTuple_GetString(poArgs, 0, &szBasePath))
 		return Py_BuildException();
 
-	struct tm * tmNow;
+	struct tm* tmNow;
 	time_t ct;
 
 	ct = time(0);
 	tmNow = localtime(&ct);
 
 	char szPath[MAX_PATH + 256];
-	snprintf(szPath, sizeof(szPath), "%s%02d%02d_%02d%02d%02d.jpg", 
-			szBasePath,
-			tmNow->tm_mon + 1,
-			tmNow->tm_mday,
-			tmNow->tm_hour,
-			tmNow->tm_min,
-			tmNow->tm_sec);
+	snprintf(szPath, sizeof(szPath), "%s%02d%02d_%02d%02d%02d.jpg",
+			 szBasePath,
+			 tmNow->tm_mon + 1,
+			 tmNow->tm_mday,
+			 tmNow->tm_hour,
+			 tmNow->tm_min,
+			 tmNow->tm_sec);
 
 	BOOL bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
 	return Py_BuildValue("(is)", bResult, szPath);
 }
 // END_OF_SCREENSHOT_CWDSAVE
 
-PyObject * grpSaveScreenShot(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSaveScreenShot(PyObject* poSelf, PyObject* poArgs)
 {
-	struct tm * tmNow;
+	struct tm* tmNow;
 	time_t ct;
 
 	ct = time(0);
@@ -867,7 +863,7 @@ PyObject * grpSaveScreenShot(PyObject * poSelf, PyObject * poArgs)
 			return Py_BuildValue("(is)", FALSE, "");
 		}
 
-	sprintf(szPath + strlen(szPath), "%02d%02d_%02d%02d%02d.jpg", 
+	sprintf(szPath + strlen(szPath), "%02d%02d_%02d%02d%02d.jpg",
 			tmNow->tm_mon + 1,
 			tmNow->tm_mday,
 			tmNow->tm_hour,
@@ -878,7 +874,7 @@ PyObject * grpSaveScreenShot(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildValue("(is)", bResult, szPath);
 }
 
-PyObject * grpSetGamma(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetGamma(PyObject* poSelf, PyObject* poArgs)
 {
 	float gamma;
 
@@ -889,19 +885,19 @@ PyObject * grpSetGamma(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetInterfaceRenderState(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetInterfaceRenderState(PyObject* poSelf, PyObject* poArgs)
 {
 	CPythonGraphic::Instance().SetInterfaceRenderState();
 	return Py_BuildNone();
 }
 
-PyObject * grpSetGameRenderState(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetGameRenderState(PyObject* poSelf, PyObject* poArgs)
 {
 	CPythonGraphic::Instance().SetGameRenderState();
 	return Py_BuildNone();
 }
 
-PyObject * grpSetViewport(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetViewport(PyObject* poSelf, PyObject* poArgs)
 {
 	float fx;
 	if (!PyTuple_GetFloat(poArgs, 0, &fx))
@@ -920,29 +916,29 @@ PyObject * grpSetViewport(PyObject * poSelf, PyObject * poArgs)
 	UINT uWidth;
 	UINT uHeight;
 	CPythonGraphic::Instance().GetBackBufferSize(&uWidth, &uHeight);
-	CPythonGraphic::Instance().SetViewport(fx*uWidth, fy*uHeight, fWidth*uWidth, fHeight*uHeight);
+	CPythonGraphic::Instance().SetViewport(fx * uWidth, fy * uHeight, fWidth * uWidth, fHeight * uHeight);
 	return Py_BuildNone();
 }
 
-PyObject * grpRestoreViewport(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpRestoreViewport(PyObject* poSelf, PyObject* poArgs)
 {
 	CPythonGraphic::Instance().RestoreViewport();
 	return Py_BuildNone();
 }
 
-PyObject * grpSetOmniLight(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetOmniLight(PyObject* poSelf, PyObject* poArgs)
 {
 	CPythonGraphic::Instance().SetOmniLight();
 	return Py_BuildNone();
 }
 
-PyObject * grpGetCameraPosition(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpGetCameraPosition(PyObject* poSelf, PyObject* poArgs)
 {
 	D3DXVECTOR3 v3Eye = CCameraManager::Instance().GetCurrentCamera()->GetEye();
 	return Py_BuildValue("fff", v3Eye.x, v3Eye.y, v3Eye.z);
 }
 
-PyObject * grpGetTargetPosition(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpGetTargetPosition(PyObject* poSelf, PyObject* poArgs)
 {
 	D3DXVECTOR3 v3Target = CCameraManager::Instance().GetCurrentCamera()->GetTarget();
 	return Py_BuildValue("fff", v3Target.x, v3Target.y, v3Target.z);
@@ -951,65 +947,65 @@ PyObject * grpGetTargetPosition(PyObject * poSelf, PyObject * poArgs)
 void initgrp()
 {
 	static PyMethodDef s_methods[] =
-	{
-		{ "InitScreenEffect",			grpInitScreenEffect,			METH_VARARGS },
-		{ "Culling",					grpCulling,						METH_VARARGS },
-		{ "ClearDepthBuffer",			grpClearDepthBuffer,			METH_VARARGS },
-		{ "Identity",					grpIdentity,					METH_VARARGS },
-		{ "GenerateColor",				grpGenerateColor,				METH_VARARGS },
-		{ "PopState",					grpPopState,					METH_VARARGS },
-		{ "PushState",					grpPushState,					METH_VARARGS },
-		{ "PushMatrix",					grpPushMatrix,					METH_VARARGS },
-		{ "PopMatrix",					grpPopMatrix,					METH_VARARGS },
-		{ "Translate",					grpTranslate,					METH_VARARGS },
-		{ "Rotate",						grpRotate,						METH_VARARGS },
-		{ "SetColorRenderState",		grpSetColorRenderState,			METH_VARARGS },
-		{ "SetAroundCamera",			grpSetAroundCamera,				METH_VARARGS },
-		{ "SetPositionCamera",			grpSetPositionCamera,			METH_VARARGS },
-		{ "SetEyeCamera",				grpSetEyeCamera,				METH_VARARGS },
-		{ "SetPerspective",				grpSetPerspective,				METH_VARARGS },
-		{ "SetOrtho2d",					grpSetOrtho2D,					METH_VARARGS },
-		{ "SetOrtho3d",					grpSetOrtho3D,					METH_VARARGS },
-		{ "SetColor",					grpSetColor,					METH_VARARGS },
-		{ "SetAlpha",					grpSetAlpha,					METH_VARARGS },
-		{ "SetDiffuseColor",			grpSetDiffuseColor,				METH_VARARGS },
-		{ "SetClearColor",				grpSetClearColor,				METH_VARARGS },
-		{ "GetCursorPosition3d",		grpGetCursorPosition3d,			METH_VARARGS },
-		{ "SetCursorPosition",			grpSetCursorPosition,			METH_VARARGS },
-		{ "RenderLine",					grpRenderLine,					METH_VARARGS },
-		{ "RenderBox",					grpRenderBox,					METH_VARARGS },
-		{ "RenderRoundBox",				grpRenderRoundBox,				METH_VARARGS },
-		{ "RenderBox3d",				grpRenderBox3d,					METH_VARARGS },
-		{ "RenderBar",					grpRenderBar,					METH_VARARGS },
-		{ "RenderBar3d",				grpRenderBar3d,					METH_VARARGS },
-		{ "RenderGradationBar",			grpRenderGradationBar,			METH_VARARGS },
-		{ "RenderCube",					grpRenderCube,					METH_VARARGS },
-		{ "RenderDownButton",			grpRenderDownButton,			METH_VARARGS },
-		{ "RenderUpButton",				grpRenderUpButton,				METH_VARARGS },
-		{ "GetAvailableMemory",			grpGetAvailableMemory,			METH_VARARGS },
-		{ "SaveScreenShot",				grpSaveScreenShot,				METH_VARARGS },
-		{ "SaveScreenShotToPath",		grpSaveScreenShotToPath,		METH_VARARGS },
-		{ "SetGamma",					grpSetGamma,					METH_VARARGS },
-		{ "SetInterfaceRenderState",	grpSetInterfaceRenderState,		METH_VARARGS },
-		{ "SetGameRenderState",			grpSetGameRenderState,			METH_VARARGS },
-		{ "SetViewport",				grpSetViewport,					METH_VARARGS },
-		{ "RestoreViewport",			grpRestoreViewport,				METH_VARARGS },
-		{ "SetOmniLight",				grpSetOmniLight,				METH_VARARGS },
-		{ "GetCameraPosition",			grpGetCameraPosition,			METH_VARARGS },
-		{ "GetTargetPosition",			grpGetTargetPosition,			METH_VARARGS },
+		{
+			{"InitScreenEffect", grpInitScreenEffect, METH_VARARGS},
+			{"Culling", grpCulling, METH_VARARGS},
+			{"ClearDepthBuffer", grpClearDepthBuffer, METH_VARARGS},
+			{"Identity", grpIdentity, METH_VARARGS},
+			{"GenerateColor", grpGenerateColor, METH_VARARGS},
+			{"PopState", grpPopState, METH_VARARGS},
+			{"PushState", grpPushState, METH_VARARGS},
+			{"PushMatrix", grpPushMatrix, METH_VARARGS},
+			{"PopMatrix", grpPopMatrix, METH_VARARGS},
+			{"Translate", grpTranslate, METH_VARARGS},
+			{"Rotate", grpRotate, METH_VARARGS},
+			{"SetColorRenderState", grpSetColorRenderState, METH_VARARGS},
+			{"SetAroundCamera", grpSetAroundCamera, METH_VARARGS},
+			{"SetPositionCamera", grpSetPositionCamera, METH_VARARGS},
+			{"SetEyeCamera", grpSetEyeCamera, METH_VARARGS},
+			{"SetPerspective", grpSetPerspective, METH_VARARGS},
+			{"SetOrtho2d", grpSetOrtho2D, METH_VARARGS},
+			{"SetOrtho3d", grpSetOrtho3D, METH_VARARGS},
+			{"SetColor", grpSetColor, METH_VARARGS},
+			{"SetAlpha", grpSetAlpha, METH_VARARGS},
+			{"SetDiffuseColor", grpSetDiffuseColor, METH_VARARGS},
+			{"SetClearColor", grpSetClearColor, METH_VARARGS},
+			{"GetCursorPosition3d", grpGetCursorPosition3d, METH_VARARGS},
+			{"SetCursorPosition", grpSetCursorPosition, METH_VARARGS},
+			{"RenderLine", grpRenderLine, METH_VARARGS},
+			{"RenderBox", grpRenderBox, METH_VARARGS},
+			{"RenderRoundBox", grpRenderRoundBox, METH_VARARGS},
+			{"RenderBox3d", grpRenderBox3d, METH_VARARGS},
+			{"RenderBar", grpRenderBar, METH_VARARGS},
+			{"RenderBar3d", grpRenderBar3d, METH_VARARGS},
+			{"RenderGradationBar", grpRenderGradationBar, METH_VARARGS},
+			{"RenderCube", grpRenderCube, METH_VARARGS},
+			{"RenderDownButton", grpRenderDownButton, METH_VARARGS},
+			{"RenderUpButton", grpRenderUpButton, METH_VARARGS},
+			{"GetAvailableMemory", grpGetAvailableMemory, METH_VARARGS},
+			{"SaveScreenShot", grpSaveScreenShot, METH_VARARGS},
+			{"SaveScreenShotToPath", grpSaveScreenShotToPath, METH_VARARGS},
+			{"SetGamma", grpSetGamma, METH_VARARGS},
+			{"SetInterfaceRenderState", grpSetInterfaceRenderState, METH_VARARGS},
+			{"SetGameRenderState", grpSetGameRenderState, METH_VARARGS},
+			{"SetViewport", grpSetViewport, METH_VARARGS},
+			{"RestoreViewport", grpRestoreViewport, METH_VARARGS},
+			{"SetOmniLight", grpSetOmniLight, METH_VARARGS},
+			{"GetCameraPosition", grpGetCameraPosition, METH_VARARGS},
+			{"GetTargetPosition", grpGetTargetPosition, METH_VARARGS},
 
-		{ "CreateTextBar",				grpCreateTextBar,				METH_VARARGS },
-		{ "CreateBigTextBar",			grpCreateBigTextBar,			METH_VARARGS },
-		{ "DestroyTextBar",				grpDestroyTextBar,				METH_VARARGS },
-		{ "RenderTextBar",				grpRenderTextBar,				METH_VARARGS },
-		{ "TextBarTextOut",				grpTextBarTextOut,				METH_VARARGS },
-		{ "TextBarSetTextColor",		grpTextBarSetTextColor,			METH_VARARGS },
-		{ "TextBarGetTextExtent",		grpTextBarGetTextExtent,		METH_VARARGS },
-		{ "ClearTextBar",				grpClearTextBar,				METH_VARARGS },
-		{ "SetTextBarClipRect",			grpSetTextBarClipRect,			METH_VARARGS },
+			{"CreateTextBar", grpCreateTextBar, METH_VARARGS},
+			{"CreateBigTextBar", grpCreateBigTextBar, METH_VARARGS},
+			{"DestroyTextBar", grpDestroyTextBar, METH_VARARGS},
+			{"RenderTextBar", grpRenderTextBar, METH_VARARGS},
+			{"TextBarTextOut", grpTextBarTextOut, METH_VARARGS},
+			{"TextBarSetTextColor", grpTextBarSetTextColor, METH_VARARGS},
+			{"TextBarGetTextExtent", grpTextBarGetTextExtent, METH_VARARGS},
+			{"ClearTextBar", grpClearTextBar, METH_VARARGS},
+			{"SetTextBarClipRect", grpSetTextBarClipRect, METH_VARARGS},
 
-		{ NULL,							NULL,							0		},
-	};
+			{NULL, NULL, 0},
+		};
 
 	Py_InitModule("grp", s_methods);
 }

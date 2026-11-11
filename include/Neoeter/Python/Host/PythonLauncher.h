@@ -13,8 +13,8 @@ class CPythonLauncher : public CSingleton<CPythonLauncher>
 
 		void Clear();
 
-		bool Create(const char* c_szProgramName="eter.python");
-		void SetTraceFunc(int (*pFunc)(PyObject * obj, PyFrameObject * f, int what, PyObject *arg));
+		bool Create(const char* c_szProgramName = "eter.python");
+		void SetTraceFunc(int (*pFunc)(PyObject* obj, PyFrameObject* f, int what, PyObject* arg));
 		bool RunLine(const char* c_szLine);
 		bool RunFile(const char* c_szFileName);
 		bool RunMemoryTextFile(const char* c_szFileName, std::shared_ptr<std::vector<char>> fileData);

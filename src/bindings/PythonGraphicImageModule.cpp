@@ -2,7 +2,7 @@
 
 bool PyTuple_GetImageInstance(PyObject* poArgs, int pos, CGraphicImageInstance** ppRetImageInstance)
 {
-	CGraphicImageInstance * pImageInstance;
+	CGraphicImageInstance* pImageInstance;
 
 	if (!PyTuple_GetHandle(poArgs, pos, &pImageInstance))
 		return false;
@@ -14,9 +14,9 @@ bool PyTuple_GetImageInstance(PyObject* poArgs, int pos, CGraphicImageInstance**
 	return true;
 }
 
-bool PyTuple_GetExpandedImageInstance(PyObject* poArgs, int pos, CGraphicExpandedImageInstance ** ppRetImageInstance)
+bool PyTuple_GetExpandedImageInstance(PyObject* poArgs, int pos, CGraphicExpandedImageInstance** ppRetImageInstance)
 {
-	CGraphicImageInstance * pImageInstance;
+	CGraphicImageInstance* pImageInstance;
 
 	if (!PyTuple_GetHandle(poArgs, pos, &pImageInstance))
 		return false;
@@ -32,9 +32,9 @@ bool PyTuple_GetExpandedImageInstance(PyObject* poArgs, int pos, CGraphicExpande
 	return true;
 }
 
-PyObject* grpImageGenerate(PyObject * poSelf, PyObject* poArgs)
+PyObject* grpImageGenerate(PyObject* poSelf, PyObject* poArgs)
 {
-	char * szFileName;
+	char* szFileName;
 
 	if (!PyTuple_GetString(poArgs, 0, &szFileName))
 		return Py_BadArgument();
@@ -42,12 +42,12 @@ PyObject* grpImageGenerate(PyObject * poSelf, PyObject* poArgs)
 	if (!*szFileName)
 		return Py_BuildHandle(NULL);
 
-	CResource * pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
+	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicImage::Type()))
 		return Py_BuildException("Resource is not an image (filename: %s)", szFileName);
 
-	CGraphicImageInstance * pImageInstance = CGraphicImageInstance::New();
+	CGraphicImageInstance* pImageInstance = CGraphicImageInstance::New();
 	pImageInstance->SetImagePointer(static_cast<CGraphicImage*>(pResource));
 
 	if (pImageInstance->IsEmpty())
@@ -57,9 +57,9 @@ PyObject* grpImageGenerate(PyObject * poSelf, PyObject* poArgs)
 }
 
 PyObject* grpImageGenerateExpanded(PyObject* poSelf, PyObject* poArgs)
-{										  
-	char * szFileName;
-	
+{
+	char* szFileName;
+
 	if (!PyTuple_GetString(poArgs, 0, &szFileName))
 		return Py_BadArgument();
 
@@ -71,22 +71,22 @@ PyObject* grpImageGenerateExpanded(PyObject* poSelf, PyObject* poArgs)
 	if (!pResource->IsType(CGraphicImage::Type()))
 		return Py_BuildException("Resource is not an image (filename: %s)", szFileName);
 
-	CGraphicExpandedImageInstance * pImageInstance = CGraphicExpandedImageInstance::New();
+	CGraphicExpandedImageInstance* pImageInstance = CGraphicExpandedImageInstance::New();
 	pImageInstance->SetImagePointer(static_cast<CGraphicImage*>(pResource));
 
 	if (pImageInstance->IsEmpty())
 		return Py_BuildException("Cannot load image (filename: %s)", szFileName);
-	
+
 	return Py_BuildHandle(pImageInstance);
 }
 
-PyObject* grpImageGenerateFromHandle(PyObject * poSelf, PyObject* poArgs)
+PyObject* grpImageGenerateFromHandle(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicImage * pImage;
+	CGraphicImage* pImage;
 	if (!PyTuple_GetHandle(poArgs, 0, &pImage))
 		return Py_BadArgument();
 
-	CGraphicImageInstance * pImageInstance = CGraphicImageInstance::New();
+	CGraphicImageInstance* pImageInstance = CGraphicImageInstance::New();
 	pImageInstance->SetImagePointer(pImage);
 
 	return Py_BuildHandle(pImageInstance);
@@ -94,7 +94,7 @@ PyObject* grpImageGenerateFromHandle(PyObject * poSelf, PyObject* poArgs)
 
 PyObject* grpImageDelete(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicImageInstance * pImageInstance;
+	CGraphicImageInstance* pImageInstance;
 
 	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
@@ -103,31 +103,31 @@ PyObject* grpImageDelete(PyObject* poSelf, PyObject* poArgs)
 		return Py_BuildNone();
 
 	CGraphicImageInstance::Delete(pImageInstance);
-	
+
 	return Py_BuildNone();
 }
 
 PyObject* grpImageDeleteExpanded(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicExpandedImageInstance * pExpandedImageInstance;
+	CGraphicExpandedImageInstance* pExpandedImageInstance;
 	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pExpandedImageInstance))
 		return Py_BadArgument();
 
-	CGraphicExpandedImageInstance::Delete(pExpandedImageInstance);	
+	CGraphicExpandedImageInstance::Delete(pExpandedImageInstance);
 	return Py_BuildNone();
 }
 
 PyObject* grpImageSetFileName(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicImageInstance * pImageInstance;
+	CGraphicImageInstance* pImageInstance;
 	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
-	
-	char * szFileName;
+
+	char* szFileName;
 	if (!PyTuple_GetString(poArgs, 1, &szFileName))
 		return Py_BadArgument();
 
-	CResource * pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
+	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicImage::Type()))
 		return Py_BuildException("Resource is not an image (filename: %s)", szFileName);
@@ -146,12 +146,12 @@ PyObject* grpImageRender(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetImagePosition(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetImagePosition(PyObject* poSelf, PyObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
 	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
-	
+
 	float x;
 	if (!PyTuple_GetFloat(poArgs, 1, &x))
 		return Py_BadArgument();
@@ -164,9 +164,9 @@ PyObject * grpSetImagePosition(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetImageOrigin(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetImageOrigin(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicExpandedImageInstance * pImageInstance;
+	CGraphicExpandedImageInstance* pImageInstance;
 	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
 
@@ -181,9 +181,9 @@ PyObject * grpSetImageOrigin(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetImageRotation(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetImageRotation(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicExpandedImageInstance * pImageInstance;
+	CGraphicExpandedImageInstance* pImageInstance;
 	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
 
@@ -195,12 +195,12 @@ PyObject * grpSetImageRotation(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetImageScale(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetImageScale(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicExpandedImageInstance * pImageInstance;
+	CGraphicExpandedImageInstance* pImageInstance;
 	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
-	
+
 	float x;
 	if (!PyTuple_GetFloat(poArgs, 1, &x))
 		return Py_BadArgument();
@@ -212,12 +212,12 @@ PyObject * grpSetImageScale(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetRenderingRect(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetRenderingRect(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicExpandedImageInstance * pImageInstance;
+	CGraphicExpandedImageInstance* pImageInstance;
 	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
-	
+
 	float fLeft;
 	if (!PyTuple_GetFloat(poArgs, 1, &fLeft))
 		return Py_BadArgument();
@@ -235,7 +235,7 @@ PyObject * grpSetRenderingRect(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetImageDiffuseColor(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetImageDiffuseColor(PyObject* poSelf, PyObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
 	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
@@ -258,22 +258,22 @@ PyObject * grpSetImageDiffuseColor(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpGetWidth(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpGetWidth(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicImageInstance * pImageInstance;
-	
+	CGraphicImageInstance* pImageInstance;
+
 	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
-	
+
 	if (pImageInstance->IsEmpty())
 		return Py_BuildException("Image is empty");
 
 	return Py_BuildValue("i", pImageInstance->GetWidth());
 }
 
-PyObject * grpGetHeight(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpGetHeight(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicImageInstance * pImageInstance;
+	CGraphicImageInstance* pImageInstance;
 
 	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
 		return Py_BadArgument();
@@ -287,24 +287,24 @@ PyObject * grpGetHeight(PyObject * poSelf, PyObject * poArgs)
 void initgrpImage()
 {
 	static PyMethodDef s_methods[] =
-	{
-		{ "Render",					grpImageRender,					METH_VARARGS },
-		{ "SetPosition",			grpSetImagePosition,			METH_VARARGS },
-		{ "Generate",				grpImageGenerate,				METH_VARARGS },
-		{ "GenerateExpanded",		grpImageGenerateExpanded,		METH_VARARGS },
-		{ "GenerateFromHandle",		grpImageGenerateFromHandle,		METH_VARARGS },
-		{ "Delete",					grpImageDelete,					METH_VARARGS },
-		{ "DeleteExpanded",			grpImageDeleteExpanded,			METH_VARARGS },
-		{ "SetFileName",			grpImageSetFileName,			METH_VARARGS },		
-		{ "SetOrigin",				grpSetImageOrigin,				METH_VARARGS },
-		{ "SetRotation",			grpSetImageRotation,			METH_VARARGS },
-		{ "SetScale",				grpSetImageScale,				METH_VARARGS },
-		{ "SetRenderingRect",		grpSetRenderingRect,			METH_VARARGS },
-		{ "SetDiffuseColor",		grpSetImageDiffuseColor,		METH_VARARGS },
-		{ "GetWidth",				grpGetWidth,					METH_VARARGS },
-		{ "GetHeight",				grpGetHeight,					METH_VARARGS },
-		{ NULL,						NULL,							0		 },
-	};	
+		{
+			{"Render", grpImageRender, METH_VARARGS},
+			{"SetPosition", grpSetImagePosition, METH_VARARGS},
+			{"Generate", grpImageGenerate, METH_VARARGS},
+			{"GenerateExpanded", grpImageGenerateExpanded, METH_VARARGS},
+			{"GenerateFromHandle", grpImageGenerateFromHandle, METH_VARARGS},
+			{"Delete", grpImageDelete, METH_VARARGS},
+			{"DeleteExpanded", grpImageDeleteExpanded, METH_VARARGS},
+			{"SetFileName", grpImageSetFileName, METH_VARARGS},
+			{"SetOrigin", grpSetImageOrigin, METH_VARARGS},
+			{"SetRotation", grpSetImageRotation, METH_VARARGS},
+			{"SetScale", grpSetImageScale, METH_VARARGS},
+			{"SetRenderingRect", grpSetRenderingRect, METH_VARARGS},
+			{"SetDiffuseColor", grpSetImageDiffuseColor, METH_VARARGS},
+			{"GetWidth", grpGetWidth, METH_VARARGS},
+			{"GetHeight", grpGetHeight, METH_VARARGS},
+			{NULL, NULL, 0},
+		};
 
 	Py_InitModule("grpImage", s_methods);
 }

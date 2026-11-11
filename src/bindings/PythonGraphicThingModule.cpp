@@ -2,7 +2,7 @@
 
 bool PyTuple_GetThingInstance(PyObject* poArgs, int pos, CGraphicThingInstance** ppRetThingInstance)
 {
-	CGraphicThingInstance * pThingInstance;
+	CGraphicThingInstance* pThingInstance;
 	if (!PyTuple_GetHandle(poArgs, pos, &pThingInstance))
 		return false;
 
@@ -14,8 +14,8 @@ bool PyTuple_GetThingInstance(PyObject* poArgs, int pos, CGraphicThingInstance**
 }
 
 PyObject* grpThingGenerate(PyObject* poSelf, PyObject* poArgs)
-{										  
-	char * szFileName;
+{
+	char* szFileName;
 	if (!PyTuple_GetString(poArgs, 0, &szFileName))
 		return Py_BuildException();
 
@@ -27,7 +27,7 @@ PyObject* grpThingGenerate(PyObject* poSelf, PyObject* poArgs)
 	if (!pResource->IsType(CGraphicThing::Type()))
 		return Py_BuildException();
 
-	CGraphicThingInstance * pThingInstance = CGraphicThingInstance::New();
+	CGraphicThingInstance* pThingInstance = CGraphicThingInstance::New();
 	pThingInstance->ReserveModelThing(1);
 	pThingInstance->ReserveModelInstance(1);
 	pThingInstance->RegisterModelThing(0, static_cast<CGraphicThing*>(pResource));
@@ -37,7 +37,7 @@ PyObject* grpThingGenerate(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpThingDelete(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicThingInstance * pThingInstance;
+	CGraphicThingInstance* pThingInstance;
 	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
 		return Py_BuildException();
 
@@ -47,10 +47,10 @@ PyObject* grpThingDelete(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpThingSetFileName(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicThingInstance * pThingInstance;
+	CGraphicThingInstance* pThingInstance;
 	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
 		return Py_BuildException();
-	
+
 	char* szFileName;
 	if (!PyTuple_GetString(poArgs, 1, &szFileName))
 		return Py_BuildException();
@@ -89,12 +89,12 @@ PyObject* grpThingUpdate(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetThingPosition(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetThingPosition(PyObject* poSelf, PyObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
 	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
 		return Py_BuildException();
-	
+
 	float x;
 	if (!PyTuple_GetFloat(poArgs, 1, &x))
 		return Py_BuildException();
@@ -106,12 +106,12 @@ PyObject * grpSetThingPosition(PyObject * poSelf, PyObject * poArgs)
 	float z;
 	if (!PyTuple_GetFloat(poArgs, 3, &z))
 		return Py_BuildException();
-	
+
 	pThingInstance->SetPosition(x, y, z);
 	return Py_BuildNone();
 }
 
-PyObject * grpSetThingRotation(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetThingRotation(PyObject* poSelf, PyObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
 	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
@@ -125,12 +125,12 @@ PyObject * grpSetThingRotation(PyObject * poSelf, PyObject * poArgs)
 	return Py_BuildNone();
 }
 
-PyObject * grpSetThingScale(PyObject * poSelf, PyObject * poArgs)
+PyObject* grpSetThingScale(PyObject* poSelf, PyObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
 	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
 		return Py_BuildException();
-	
+
 	float x;
 	if (!PyTuple_GetFloat(poArgs, 1, &x))
 		return Py_BuildException();
@@ -140,7 +140,7 @@ PyObject * grpSetThingScale(PyObject * poSelf, PyObject * poArgs)
 	float z;
 	if (!PyTuple_GetFloat(poArgs, 3, &z))
 		return Py_BuildException();
-	
+
 	pThingInstance->SetScale(x, y, z);
 	return Py_BuildNone();
 }
@@ -148,17 +148,17 @@ PyObject * grpSetThingScale(PyObject * poSelf, PyObject * poArgs)
 void initgrpThing()
 {
 	static PyMethodDef s_methods[] =
-	{
-		{ "Update",					grpThingUpdate,					METH_VARARGS },
-		{ "Render",					grpThingRender,					METH_VARARGS },
-		{ "SetPosition",			grpSetThingPosition,			METH_VARARGS },
-		{ "Generate",				grpThingGenerate,				METH_VARARGS },
-		{ "Delete",					grpThingDelete,					METH_VARARGS },
-		{ "SetFileName",			grpThingSetFileName,			METH_VARARGS },		
-		{ "SetRotation",			grpSetThingRotation,			METH_VARARGS },
-		{ "SetScale",				grpSetThingScale,				METH_VARARGS },
-		{ NULL,						NULL,							0		 },
-	};	
+		{
+			{"Update", grpThingUpdate, METH_VARARGS},
+			{"Render", grpThingRender, METH_VARARGS},
+			{"SetPosition", grpSetThingPosition, METH_VARARGS},
+			{"Generate", grpThingGenerate, METH_VARARGS},
+			{"Delete", grpThingDelete, METH_VARARGS},
+			{"SetFileName", grpThingSetFileName, METH_VARARGS},
+			{"SetRotation", grpSetThingRotation, METH_VARARGS},
+			{"SetScale", grpSetThingScale, METH_VARARGS},
+			{NULL, NULL, 0},
+		};
 
 	Py_InitModule("grpThing", s_methods);
 }

@@ -4,7 +4,7 @@
 #include <Neoeter/Render/StdAfx.h>
 #include <Neoeter/Model/Grn/StdAfx.h>
 
-#include <Python.h>  // T1.9: the include dir selects the platform copy
+#include <Python.h> // T1.9: the include dir selects the platform copy
 
 #include <Neoeter/Python/Host/PythonUtils.h>
 #include <Neoeter/Python/Host/PythonLauncher.h>
@@ -22,7 +22,7 @@ class IPythonExceptionSender
 			m_strExceptionString = "";
 		}
 
-		void RegisterExceptionString(const char * c_szString)
+		void RegisterExceptionString(const char* c_szString)
 		{
 			m_strExceptionString += c_szString;
 		}
@@ -33,7 +33,7 @@ class IPythonExceptionSender
 		std::string m_strExceptionString;
 };
 
-extern IPythonExceptionSender * g_pkExceptionSender;
+extern IPythonExceptionSender* g_pkExceptionSender;
 
-void SetExceptionSender(IPythonExceptionSender * pkExceptionSender);
+void SetExceptionSender(IPythonExceptionSender* pkExceptionSender);
 // END_OF_PYTHON_EXCEPTION_SENDER

@@ -35,12 +35,12 @@ bool PyTuple_GetHandle(PyObject* poArgs, int pos, T** ppHandle)
 
 bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs);
 bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, bool* pisRet);
-bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, long * plRetValue);
+bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, long* plRetValue);
 
 bool PyCallClassMemberFunc_ByPyString(PyObject* poClass, PyObject* poFuncName, PyObject* poArgs);
 bool PyCallClassMemberFunc(PyObject* poClass, PyObject* poFunc, PyObject* poArgs);
 
-PyObject * Py_BuildException(const char * c_pszErr = NULL, ...);
-PyObject * Py_BadArgument();
-PyObject * Py_BuildNone();
-PyObject * Py_BuildEmptyTuple();
+PyObject* Py_BuildException(const char* c_pszErr = NULL, ...);
+PyObject* Py_BadArgument();
+PyObject* Py_BuildNone();
+PyObject* Py_BuildEmptyTuple();

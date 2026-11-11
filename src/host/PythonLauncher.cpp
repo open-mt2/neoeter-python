@@ -50,27 +50,29 @@ static PyObject* py_time_localtime(PyObject* self, PyObject* args)
 {
 	time_t t;
 	double dt;
-	if (args && PyTuple_Size(args) > 0) {
+	if (args && PyTuple_Size(args) > 0)
+	{
 		if (!PyArg_ParseTuple(args, "d", &dt))
 			return NULL;
 		t = (time_t)dt;
-	} else {
+	}
+	else
+	{
 		t = ::time(NULL);
 	}
 	struct tm* tm_info = localtime(&t);
 	if (!tm_info)
 		return PyErr_SetFromErrno(PyExc_ValueError);
 	return Py_BuildValue("(iiiiiiiii)",
-		tm_info->tm_year + 1900,
-		tm_info->tm_mon + 1,
-		tm_info->tm_mday,
-		tm_info->tm_hour,
-		tm_info->tm_min,
-		tm_info->tm_sec,
-		(tm_info->tm_wday + 6) % 7,
-		tm_info->tm_yday + 1,
-		tm_info->tm_isdst
-	);
+						 tm_info->tm_year + 1900,
+						 tm_info->tm_mon + 1,
+						 tm_info->tm_mday,
+						 tm_info->tm_hour,
+						 tm_info->tm_min,
+						 tm_info->tm_sec,
+						 (tm_info->tm_wday + 6) % 7,
+						 tm_info->tm_yday + 1,
+						 tm_info->tm_isdst);
 }
 
 static PyObject* py_time_strftime(PyObject* self, PyObject* args)
@@ -83,16 +85,17 @@ static PyObject* py_time_strftime(PyObject* self, PyObject* args)
 	time_t t = ::time(NULL);
 	struct tm* tm_info = localtime(&t);
 	struct tm custom_tm;
-	if (tup && PyTuple_Check(tup) && PyTuple_Size(tup) >= 9) {
+	if (tup && PyTuple_Check(tup) && PyTuple_Size(tup) >= 9)
+	{
 		custom_tm.tm_year = PyInt_AsLong(PyTuple_GetItem(tup, 0)) - 1900;
-		custom_tm.tm_mon  = PyInt_AsLong(PyTuple_GetItem(tup, 1)) - 1;
+		custom_tm.tm_mon = PyInt_AsLong(PyTuple_GetItem(tup, 1)) - 1;
 		custom_tm.tm_mday = PyInt_AsLong(PyTuple_GetItem(tup, 2));
 		custom_tm.tm_hour = PyInt_AsLong(PyTuple_GetItem(tup, 3));
-		custom_tm.tm_min  = PyInt_AsLong(PyTuple_GetItem(tup, 4));
-		custom_tm.tm_sec  = PyInt_AsLong(PyTuple_GetItem(tup, 5));
+		custom_tm.tm_min = PyInt_AsLong(PyTuple_GetItem(tup, 4));
+		custom_tm.tm_sec = PyInt_AsLong(PyTuple_GetItem(tup, 5));
 		custom_tm.tm_wday = PyInt_AsLong(PyTuple_GetItem(tup, 6));
 		custom_tm.tm_yday = PyInt_AsLong(PyTuple_GetItem(tup, 7)) - 1;
-		custom_tm.tm_isdst= PyInt_AsLong(PyTuple_GetItem(tup, 8));
+		custom_tm.tm_isdst = PyInt_AsLong(PyTuple_GetItem(tup, 8));
 		tm_info = &custom_tm;
 	}
 	char buf[256];
@@ -101,13 +104,12 @@ static PyObject* py_time_strftime(PyObject* self, PyObject* args)
 }
 
 static PyMethodDef s_time_methods[] = {
-	{ "time", py_time_time, METH_NOARGS, "time() -> floating point number" },
-	{ "clock", py_time_clock, METH_NOARGS, "clock() -> floating point number" },
-	{ "sleep", py_time_sleep, METH_VARARGS, "sleep(seconds)" },
-	{ "localtime", py_time_localtime, METH_VARARGS, "localtime([seconds]) -> tuple" },
-	{ "strftime", py_time_strftime, METH_VARARGS, "strftime(format[, tuple]) -> string" },
-	{ NULL, NULL, 0, NULL }
-};
+	{"time", py_time_time, METH_NOARGS, "time() -> floating point number"},
+	{"clock", py_time_clock, METH_NOARGS, "clock() -> floating point number"},
+	{"sleep", py_time_sleep, METH_VARARGS, "sleep(seconds)"},
+	{"localtime", py_time_localtime, METH_VARARGS, "localtime([seconds]) -> tuple"},
+	{"strftime", py_time_strftime, METH_VARARGS, "strftime(format[, tuple]) -> string"},
+	{NULL, NULL, 0, NULL}};
 
 static void init_embedded_time()
 {
@@ -175,7 +177,8 @@ static PyObject* py_math_sqrt(PyObject* self, PyObject* args)
 	double x;
 	if (!PyArg_ParseTuple(args, "d:sqrt", &x))
 		return NULL;
-	if (x < 0.0) {
+	if (x < 0.0)
+	{
 		PyErr_SetString(PyExc_ValueError, "math domain error");
 		return NULL;
 	}
@@ -236,15 +239,18 @@ static PyObject* py_math_log(PyObject* self, PyObject* args)
 	PyObject* baseObj = NULL;
 	if (!PyArg_ParseTuple(args, "d|O:log", &x, &baseObj))
 		return NULL;
-	if (x <= 0.0) {
+	if (x <= 0.0)
+	{
 		PyErr_SetString(PyExc_ValueError, "math domain error");
 		return NULL;
 	}
-	if (baseObj && baseObj != Py_None) {
+	if (baseObj && baseObj != Py_None)
+	{
 		double base = PyFloat_AsDouble(baseObj);
 		if (PyErr_Occurred())
 			return NULL;
-		if (base <= 0.0 || base == 1.0) {
+		if (base <= 0.0 || base == 1.0)
+		{
 			PyErr_SetString(PyExc_ValueError, "math domain error");
 			return NULL;
 		}
@@ -258,7 +264,8 @@ static PyObject* py_math_log10(PyObject* self, PyObject* args)
 	double x;
 	if (!PyArg_ParseTuple(args, "d:log10", &x))
 		return NULL;
-	if (x <= 0.0) {
+	if (x <= 0.0)
+	{
 		PyErr_SetString(PyExc_ValueError, "math domain error");
 		return NULL;
 	}
@@ -286,7 +293,8 @@ static PyObject* py_math_fmod(PyObject* self, PyObject* args)
 	double x, y;
 	if (!PyArg_ParseTuple(args, "dd:fmod", &x, &y))
 		return NULL;
-	if (y == 0.0) {
+	if (y == 0.0)
+	{
 		PyErr_SetString(PyExc_ValueError, "math domain error");
 		return NULL;
 	}
@@ -304,33 +312,33 @@ static PyObject* py_math_modf(PyObject* self, PyObject* args)
 }
 
 static PyMethodDef s_math_methods[] = {
-	{ "sin", py_math_sin, METH_VARARGS, "sin(x)" },
-	{ "cos", py_math_cos, METH_VARARGS, "cos(x)" },
-	{ "tan", py_math_tan, METH_VARARGS, "tan(x)" },
-	{ "asin", py_math_asin, METH_VARARGS, "asin(x)" },
-	{ "acos", py_math_acos, METH_VARARGS, "acos(x)" },
-	{ "atan", py_math_atan, METH_VARARGS, "atan(x)" },
-	{ "atan2", py_math_atan2, METH_VARARGS, "atan2(y, x)" },
-	{ "sqrt", py_math_sqrt, METH_VARARGS, "sqrt(x)" },
-	{ "ceil", py_math_ceil, METH_VARARGS, "ceil(x)" },
-	{ "floor", py_math_floor, METH_VARARGS, "floor(x)" },
-	{ "fabs", py_math_fabs, METH_VARARGS, "fabs(x)" },
-	{ "hypot", py_math_hypot, METH_VARARGS, "hypot(x, y)" },
-	{ "pow", py_math_pow, METH_VARARGS, "pow(x, y)" },
-	{ "exp", py_math_exp, METH_VARARGS, "exp(x)" },
-	{ "log", py_math_log, METH_VARARGS, "log(x[, base])" },
-	{ "log10", py_math_log10, METH_VARARGS, "log10(x)" },
-	{ "degrees", py_math_degrees, METH_VARARGS, "degrees(x)" },
-	{ "radians", py_math_radians, METH_VARARGS, "radians(x)" },
-	{ "fmod", py_math_fmod, METH_VARARGS, "fmod(x, y)" },
-	{ "modf", py_math_modf, METH_VARARGS, "modf(x)" },
-	{ NULL, NULL, 0, NULL }
-};
+	{"sin", py_math_sin, METH_VARARGS, "sin(x)"},
+	{"cos", py_math_cos, METH_VARARGS, "cos(x)"},
+	{"tan", py_math_tan, METH_VARARGS, "tan(x)"},
+	{"asin", py_math_asin, METH_VARARGS, "asin(x)"},
+	{"acos", py_math_acos, METH_VARARGS, "acos(x)"},
+	{"atan", py_math_atan, METH_VARARGS, "atan(x)"},
+	{"atan2", py_math_atan2, METH_VARARGS, "atan2(y, x)"},
+	{"sqrt", py_math_sqrt, METH_VARARGS, "sqrt(x)"},
+	{"ceil", py_math_ceil, METH_VARARGS, "ceil(x)"},
+	{"floor", py_math_floor, METH_VARARGS, "floor(x)"},
+	{"fabs", py_math_fabs, METH_VARARGS, "fabs(x)"},
+	{"hypot", py_math_hypot, METH_VARARGS, "hypot(x, y)"},
+	{"pow", py_math_pow, METH_VARARGS, "pow(x, y)"},
+	{"exp", py_math_exp, METH_VARARGS, "exp(x)"},
+	{"log", py_math_log, METH_VARARGS, "log(x[, base])"},
+	{"log10", py_math_log10, METH_VARARGS, "log10(x)"},
+	{"degrees", py_math_degrees, METH_VARARGS, "degrees(x)"},
+	{"radians", py_math_radians, METH_VARARGS, "radians(x)"},
+	{"fmod", py_math_fmod, METH_VARARGS, "fmod(x, y)"},
+	{"modf", py_math_modf, METH_VARARGS, "modf(x)"},
+	{NULL, NULL, 0, NULL}};
 
 static void init_embedded_math()
 {
 	PyObject* m = Py_InitModule("math", s_math_methods);
-	if (m) {
+	if (m)
+	{
 		PyModule_AddObject(m, "pi", PyFloat_FromDouble(3.14159265358979323846));
 		PyModule_AddObject(m, "e", PyFloat_FromDouble(2.71828182845904523536));
 	}
@@ -357,7 +365,7 @@ void CPythonLauncher::Clear()
 }
 
 std::string g_stTraceBuffer[512];
-int	g_nCurTraceN = 0;
+int g_nCurTraceN = 0;
 
 void Traceback()
 {
@@ -368,11 +376,11 @@ void Traceback()
 		str.append(g_stTraceBuffer[i]);
 		str.append("\n");
 	}
-	
-	PyObject * exc;
-	PyObject * v;
-	PyObject * tb;
-	const char * errStr;
+
+	PyObject* exc;
+	PyObject* v;
+	PyObject* tb;
+	const char* errStr;
 
 	PyErr_Fetch(&exc, &v, &tb);
 
@@ -390,9 +398,9 @@ void Traceback()
 	LogBoxf("Traceback:\n\n%s\n", str.c_str());
 }
 
-int TraceFunc(PyObject * obj, PyFrameObject * f, int what, PyObject *arg)
+int TraceFunc(PyObject* obj, PyFrameObject* f, int what, PyObject* arg)
 {
-	const char * funcname;
+	const char* funcname;
 	char szTraceBuffer[128];
 
 	switch (what)
@@ -406,12 +414,12 @@ int TraceFunc(PyObject * obj, PyFrameObject * f, int what, PyObject *arg)
 
 			funcname = PyString_AsString(f->f_code->co_name);
 
-			_snprintf(szTraceBuffer, sizeof(szTraceBuffer), "Call: File \"%s\", line %d, in %s", 
-					  PyString_AsString(f->f_code->co_filename), 
+			_snprintf(szTraceBuffer, sizeof(szTraceBuffer), "Call: File \"%s\", line %d, in %s",
+					  PyString_AsString(f->f_code->co_filename),
 					  f->f_lineno,
 					  funcname);
 
-			g_stTraceBuffer[g_nCurTraceN++]=szTraceBuffer;			
+			g_stTraceBuffer[g_nCurTraceN++] = szTraceBuffer;
 			break;
 
 		case PyTrace_RETURN:
@@ -422,24 +430,24 @@ int TraceFunc(PyObject * obj, PyFrameObject * f, int what, PyObject *arg)
 		case PyTrace_EXCEPTION:
 			if (g_nCurTraceN >= 512)
 				return 0;
-			
-			PyObject * exc_type, * exc_value, * exc_traceback;
+
+			PyObject *exc_type, *exc_value, *exc_traceback;
 
 			PyTuple_GetObject(arg, 0, &exc_type);
 			PyTuple_GetObject(arg, 1, &exc_value);
 			PyTuple_GetObject(arg, 2, &exc_traceback);
 
 			Py_ssize_t len;
-			const char * exc_str;
+			const char* exc_str;
 			PyObject_AsCharBuffer(exc_type, &exc_str, &len);
-			
-			_snprintf(szTraceBuffer, sizeof(szTraceBuffer), "Exception: File \"%s\", line %d, in %s", 
-					  PyString_AS_STRING(f->f_code->co_filename), 
+
+			_snprintf(szTraceBuffer, sizeof(szTraceBuffer), "Exception: File \"%s\", line %d, in %s",
+					  PyString_AS_STRING(f->f_code->co_filename),
 					  f->f_lineno,
 					  PyString_AS_STRING(f->f_code->co_name));
 
-			g_stTraceBuffer[g_nCurTraceN++]=szTraceBuffer;
-			
+			g_stTraceBuffer[g_nCurTraceN++] = szTraceBuffer;
+
 			break;
 	}
 	return 0;
@@ -456,7 +464,7 @@ static bool IsPythonStdlib(const std::string& dir)
 {
 	struct stat st;
 	return !dir.empty() &&
-		(stat((dir + "/os.py").c_str(), &st) == 0 || stat((dir + "/os.pyc").c_str(), &st) == 0);
+		   (stat((dir + "/os.py").c_str(), &st) == 0 || stat((dir + "/os.pyc").c_str(), &st) == 0);
 }
 
 // Py_SetPythonHome(".") hides the host's standard library, and bin/lib only
@@ -473,10 +481,12 @@ static std::string FindPythonStdlib()
 
 	// Next to the libpython that is actually loaded.
 	Dl_info info;
-	if (dladdr((void*)&Py_Initialize, &info) && info.dli_fname) {
+	if (dladdr((void*)&Py_Initialize, &info) && info.dli_fname)
+	{
 		std::string lib = info.dli_fname;
 		std::string::size_type slash = lib.rfind('/');
-		if (slash != std::string::npos) {
+		if (slash != std::string::npos)
+		{
 			std::string libDir = lib.substr(0, slash);
 			candidates.push_back(libDir + "/python2.7");
 			// Debian: /usr/lib/x86_64-linux-gnu/libpython2.7.so -> /usr/lib/python2.7
@@ -510,14 +520,15 @@ static void AppendSysPath(const std::string& dir)
 		return;
 
 	PyObject* item = PyString_FromString(dir.c_str());
-	if (item) {
+	if (item)
+	{
 		PyList_Append(path, item);
 		Py_DECREF(item);
 	}
 }
 #endif
 
-void CPythonLauncher::SetTraceFunc(int (*pFunc)(PyObject * obj, PyFrameObject * f, int what, PyObject *arg))
+void CPythonLauncher::SetTraceFunc(int (*pFunc)(PyObject* obj, PyFrameObject* f, int what, PyObject* arg))
 {
 	PyEval_SetTrace(pFunc, NULL);
 }
@@ -528,17 +539,17 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 #ifdef _DEBUG
 	PyEval_SetTrace(TraceFunc, NULL);
 #endif
-	m_poModule = PyImport_AddModule((char *) "__main__");
+	m_poModule = PyImport_AddModule((char*)"__main__");
 
 	if (!m_poModule)
 		return false;
-	
+
 	m_poDic = PyModule_GetDict(m_poModule);
 
-    PyObject * builtins = PyImport_ImportModule("__builtin__");
+	PyObject* builtins = PyImport_ImportModule("__builtin__");
 	PyModule_AddIntConstant(builtins, "TRUE", 1);
 	PyModule_AddIntConstant(builtins, "FALSE", 0);
-    PyDict_SetItemString(m_poDic, "__builtins__", builtins);
+	PyDict_SetItemString(m_poDic, "__builtins__", builtins);
 	Py_DECREF(builtins);
 
 	init_embedded_time();
@@ -546,7 +557,7 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 
 	if (!RunLine("import __main__"))
 		return false;
-	
+
 	if (!RunLine("import sys"))
 		return false;
 
@@ -555,12 +566,15 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 #if !defined(_WIN32)
 	// After lib, so the modules shipped with the client keep priority.
 	std::string stdlib = FindPythonStdlib();
-	if (!stdlib.empty()) {
+	if (!stdlib.empty())
+	{
 		Tracef("Python standard library: %s\n", stdlib.c_str());
 		AppendSysPath(stdlib);
 		AppendSysPath(stdlib + "/plat-linux2");
 		AppendSysPath(stdlib + "/lib-dynload");
-	} else {
+	}
+	else
+	{
 		TraceError("Python 2.7 standard library not found; set OPENMT2_PYTHON_STDLIB");
 	}
 #endif
@@ -570,13 +584,13 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 
 bool CPythonLauncher::RunCompiledFile(const char* c_szFileName)
 {
-	FILE * fp = fopen(c_szFileName, "rb");
+	FILE* fp = fopen(c_szFileName, "rb");
 
 	if (!fp)
 		return false;
 
-	PyCodeObject *co;
-	PyObject *v;
+	PyCodeObject* co;
+	PyObject* v;
 	long magic;
 	long PyImport_GetMagicNumber(void);
 
@@ -601,10 +615,10 @@ bool CPythonLauncher::RunCompiledFile(const char* c_szFileName)
 		return false;
 	}
 
-	co = (PyCodeObject *) v;
+	co = (PyCodeObject*)v;
 	v = PyEval_EvalCode(co, m_poDic, m_poDic);
-/*	if (v && flags)
-		flags->cf_flags |= (co->co_flags & PyCF_MASK);*/
+	/*	if (v && flags)
+			flags->cf_flags |= (co->co_flags & PyCF_MASK);*/
 	Py_DECREF(co);
 	if (!v)
 	{
@@ -613,35 +627,34 @@ bool CPythonLauncher::RunCompiledFile(const char* c_szFileName)
 	}
 
 	Py_DECREF(v);
-	if (Py_FlushLine()) 
+	if (Py_FlushLine())
 		PyErr_Clear();
 
 	return true;
 }
 
-
 bool CPythonLauncher::RunMemoryTextFile(const char* c_szFileName, std::shared_ptr<std::vector<char>> fileData)
 {
 	std::string stConvFileData;
 	stConvFileData.reserve(fileData->size());
-	stConvFileData+="exec(compile('''";
+	stConvFileData += "exec(compile('''";
 
 	// ConvertPythonTextFormat
 	{
-		for (UINT i=0; i<fileData->size(); ++i)
+		for (UINT i = 0; i < fileData->size(); ++i)
 		{
 			if ((*fileData)[i] != 13)
-				stConvFileData+= (*fileData)[i];
+				stConvFileData += (*fileData)[i];
 		}
 	}
 
-	stConvFileData+= "''', ";
-	stConvFileData+= "'";
-	stConvFileData+= c_szFileName;
-	stConvFileData+= "', ";
-	stConvFileData+= "'exec'))";
+	stConvFileData += "''', ";
+	stConvFileData += "'";
+	stConvFileData += c_szFileName;
+	stConvFileData += "', ";
+	stConvFileData += "'exec'))";
 
-	const CHAR* c_pcConvFileData=stConvFileData.c_str();
+	const CHAR* c_pcConvFileData = stConvFileData.c_str();
 	return RunLine(c_pcConvFileData);
 }
 
@@ -650,16 +663,16 @@ bool CPythonLauncher::RunFile(const char* c_szFileName)
 	CEterPackManager::TPackDataPtr data;
 	if (!CEterPackManager::Instance().Get(c_szFileName, data))
 		return false;
-		
+
 	if (data->size() == 0)
 		return false;
-		
+
 	return RunMemoryTextFile(c_szFileName, data);
 }
 
 bool CPythonLauncher::RunLine(const char* c_szSrc)
 {
-	PyObject * v = PyRun_String((char *) c_szSrc, Py_file_input, m_poDic, m_poDic);
+	PyObject* v = PyRun_String((char*)c_szSrc, Py_file_input, m_poDic, m_poDic);
 
 	if (!v)
 	{
@@ -677,10 +690,10 @@ const char* CPythonLauncher::GetError()
 	PyObject* v;
 	PyObject* tb;
 
-	PyErr_Fetch(&exc, &v, &tb);        
+	PyErr_Fetch(&exc, &v, &tb);
 
 	if (PyString_Check(v))
 		return PyString_AS_STRING(v);
-	
+
 	return "";
 }

@@ -2,7 +2,7 @@
 
 bool PyTuple_GetTextInstance(PyObject* poArgs, int pos, CGraphicTextInstance** ppTextInstance)
 {
-	CGraphicTextInstance * pTextInstance;
+	CGraphicTextInstance* pTextInstance;
 	if (!PyTuple_GetHandle(poArgs, pos, &pTextInstance))
 		return false;
 
@@ -15,7 +15,7 @@ bool PyTuple_GetTextInstance(PyObject* poArgs, int pos, CGraphicTextInstance** p
 
 PyObject* grpTextGenerate(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicTextInstance * pTextInstance = CGraphicTextInstance::New();
+	CGraphicTextInstance* pTextInstance = CGraphicTextInstance::New();
 	return Py_BuildHandle(pTextInstance);
 }
 
@@ -53,7 +53,7 @@ PyObject* grpTextSetPosition(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 2, &iy))
 		return Py_BuildException();
 
-	pTextInstance->SetPosition((float) ix, (float) iy);
+	pTextInstance->SetPosition((float)ix, (float)iy);
 	return Py_BuildNone();
 }
 
@@ -184,7 +184,6 @@ PyObject* grpTextSetOutLineColor(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildNone();
 }
 
-
 PyObject* grpTextRender(PyObject* poSelf, PyObject* poArgs)
 {
 	CGraphicTextInstance* pTextInstance;
@@ -200,7 +199,7 @@ PyObject* grpTextUpdate(PyObject* poSelf, PyObject* poArgs)
 	CGraphicTextInstance* pTextInstance;
 	if (!PyTuple_GetTextInstance(poArgs, 0, &pTextInstance))
 		return Py_BuildException();
-	
+
 	pTextInstance->Update();
 	return Py_BuildNone();
 }
@@ -220,7 +219,7 @@ PyObject* grpTextHideCursor(PyObject* poSelf, PyObject* poArgs)
 	CGraphicTextInstance* pTextInstance;
 	if (!PyTuple_GetTextInstance(poArgs, 0, &pTextInstance))
 		return Py_BuildException();
-	
+
 	pTextInstance->HideCursor();
 	return Py_BuildNone();
 }
@@ -269,7 +268,7 @@ PyObject* grpSetMax(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpGetSplitingTextLineCount(PyObject* poSelf, PyObject* poArgs)
 {
-	char * szText;
+	char* szText;
 	if (!PyTuple_GetString(poArgs, 0, &szText))
 		return Py_BuildException();
 
@@ -285,9 +284,9 @@ PyObject* grpGetSplitingTextLineCount(PyObject* poSelf, PyObject* poArgs)
 		if ('|' == szText[i])
 		{
 			i += 1;
-			
+
 			// 자동 줄 바꿈되고 바로 | 가 있을 경우
-			if (iPosition>0)
+			if (iPosition > 0)
 				++iLineCount;
 
 			iPosition = 0;
@@ -320,7 +319,7 @@ PyObject* grpGetSplitingTextLineCount(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpGetSplitingTextLine(PyObject* poSelf, PyObject* poArgs)
 {
-	char * szText;
+	char* szText;
 	if (!PyTuple_GetString(poArgs, 0, &szText))
 		return Py_BuildException();
 
@@ -345,7 +344,7 @@ PyObject* grpGetSplitingTextLine(PyObject* poSelf, PyObject* poArgs)
 			i += 1;
 
 			// 자동 줄 바꿈되고 바로 | 가 있을 경우
-			if (iPosition>0)
+			if (iPosition > 0)
 				++iLineCount;
 			iPosition = 0;
 			continue;
@@ -354,7 +353,7 @@ PyObject* grpGetSplitingTextLine(PyObject* poSelf, PyObject* poArgs)
 		if (szText[i] & 0x80)
 		{
 			if (iLineCount == iGettingLine)
-				strLine.append(szText+i, 2);
+				strLine.append(szText + i, 2);
 
 			i += 2;
 			iPosition += 2;
@@ -380,7 +379,7 @@ PyObject* grpGetSplitingTextLine(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* grpTextPixelPositionToCharacterPosition(PyObject* poSelf, PyObject* poArgs)
 {
-	CGraphicTextInstance * pTextInstance;
+	CGraphicTextInstance* pTextInstance;
 	if (!PyTuple_GetTextInstance(poArgs, 0, &pTextInstance))
 		return Py_BuildException();
 
@@ -396,30 +395,30 @@ PyObject* grpTextPixelPositionToCharacterPosition(PyObject* poSelf, PyObject* po
 void initgrpText()
 {
 	static PyMethodDef s_methods[] =
-	{
-		{ "Update",								grpTextUpdate,								METH_VARARGS },
-		{ "Render",								grpTextRender,								METH_VARARGS },
-		{ "Generate",							grpTextGenerate,							METH_VARARGS },
-		{ "Destroy",							grpTextDestroy,								METH_VARARGS },
-		{ "SetFontName",						grpTextSetFontName,							METH_VARARGS },
-		{ "SetFontColor",						grpTextSetFontColor,						METH_VARARGS },
-		{ "SetOutLineColor",					grpTextSetOutLineColor,						METH_VARARGS },
-		{ "SetSecret",							grpTextSetSecret,							METH_VARARGS },
-		{ "SetOutline",							grpTextOutline,								METH_VARARGS },
-		{ "SetText",							grpTextSetText,								METH_VARARGS },
-		{ "GetText",							grpTextGetText,								METH_VARARGS },
-		{ "GetSize",							grpTextGetSize,								METH_VARARGS },
-		{ "SetPosition",						grpTextSetPosition,							METH_VARARGS },
-		{ "ShowCursor",							grpTextShowCursor,							METH_VARARGS },
-		{ "HideCursor",							grpTextHideCursor,							METH_VARARGS },
-		{ "SetHorizontalAlign",					grpSetHorizontalAlign,						METH_VARARGS },
-		{ "SetVerticalAlign",					grpSetVerticalAlign,						METH_VARARGS },
-		{ "SetMax",								grpSetMax,									METH_VARARGS },
-		{ "GetSplitingTextLineCount",			grpGetSplitingTextLineCount,				METH_VARARGS },
-		{ "GetSplitingTextLine",				grpGetSplitingTextLine,						METH_VARARGS },
-		{ "PixelPositionToCharacterPosition",	grpTextPixelPositionToCharacterPosition,	METH_VARARGS },
-		{ NULL, NULL, 0 },
-	};
+		{
+			{"Update", grpTextUpdate, METH_VARARGS},
+			{"Render", grpTextRender, METH_VARARGS},
+			{"Generate", grpTextGenerate, METH_VARARGS},
+			{"Destroy", grpTextDestroy, METH_VARARGS},
+			{"SetFontName", grpTextSetFontName, METH_VARARGS},
+			{"SetFontColor", grpTextSetFontColor, METH_VARARGS},
+			{"SetOutLineColor", grpTextSetOutLineColor, METH_VARARGS},
+			{"SetSecret", grpTextSetSecret, METH_VARARGS},
+			{"SetOutline", grpTextOutline, METH_VARARGS},
+			{"SetText", grpTextSetText, METH_VARARGS},
+			{"GetText", grpTextGetText, METH_VARARGS},
+			{"GetSize", grpTextGetSize, METH_VARARGS},
+			{"SetPosition", grpTextSetPosition, METH_VARARGS},
+			{"ShowCursor", grpTextShowCursor, METH_VARARGS},
+			{"HideCursor", grpTextHideCursor, METH_VARARGS},
+			{"SetHorizontalAlign", grpSetHorizontalAlign, METH_VARARGS},
+			{"SetVerticalAlign", grpSetVerticalAlign, METH_VARARGS},
+			{"SetMax", grpSetMax, METH_VARARGS},
+			{"GetSplitingTextLineCount", grpGetSplitingTextLineCount, METH_VARARGS},
+			{"GetSplitingTextLine", grpGetSplitingTextLine, METH_VARARGS},
+			{"PixelPositionToCharacterPosition", grpTextPixelPositionToCharacterPosition, METH_VARARGS},
+			{NULL, NULL, 0},
+		};
 
 	Py_InitModule("grpText", s_methods);
 }

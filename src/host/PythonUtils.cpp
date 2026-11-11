@@ -4,25 +4,25 @@
 #define PyLong_AsLong PyLong_AsLongLong
 #define Pylong_AsUnsignedLong PyLong_AsUnsignedLongLong
 
-IPythonExceptionSender * g_pkExceptionSender = NULL;
+IPythonExceptionSender* g_pkExceptionSender = NULL;
 
 bool __PyCallClassMemberFunc_ByCString(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, PyObject** poRet);
 bool __PyCallClassMemberFunc_ByPyString(PyObject* poClass, PyObject* poFuncName, PyObject* poArgs, PyObject** poRet);
 bool __PyCallClassMemberFunc(PyObject* poClass, PyObject* poFunc, PyObject* poArgs, PyObject** poRet);
 
-PyObject * Py_BadArgument()
+PyObject* Py_BadArgument()
 {
 	PyErr_BadArgument();
 	return NULL;
 }
 
-PyObject * Py_BuildException(const char * c_pszErr, ...)
+PyObject* Py_BuildException(const char* c_pszErr, ...)
 {
 	if (!c_pszErr)
 		PyErr_Clear();
 	else
 	{
-		char szErrBuf[512+1];
+		char szErrBuf[512 + 1];
 		va_list args;
 		va_start(args, c_pszErr);
 		vsnprintf(szErrBuf, sizeof(szErrBuf), c_pszErr, args);
@@ -32,10 +32,10 @@ PyObject * Py_BuildException(const char * c_pszErr, ...)
 	}
 
 	return Py_BuildNone();
-	//return NULL;
+	// return NULL;
 }
 
-PyObject * Py_BuildNone()
+PyObject* Py_BuildNone()
 {
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -51,11 +51,11 @@ bool PyTuple_GetObject(PyObject* poArgs, int pos, PyObject** ret)
 	if (pos >= PyTuple_Size(poArgs))
 		return false;
 
-	PyObject * poItem = PyTuple_GetItem(poArgs, pos);
+	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
 
 	if (!poItem)
 		return false;
-	
+
 	*ret = poItem;
 	return true;
 }
@@ -120,7 +120,7 @@ bool PyTuple_GetFloat(PyObject* poArgs, int pos, float* ret)
 	if (pos >= PyTuple_Size(poArgs))
 		return false;
 
-	PyObject * poItem = PyTuple_GetItem(poArgs, pos);
+	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
 
 	if (!poItem)
 		return false;
@@ -132,7 +132,7 @@ bool PyTuple_GetFloat(PyObject* poArgs, int pos, float* ret)
 bool PyTuple_GetByte(PyObject* poArgs, int pos, unsigned char* ret)
 {
 	int val;
-	bool result = PyTuple_GetInteger(poArgs,pos,&val);
+	bool result = PyTuple_GetInteger(poArgs, pos, &val);
 	*ret = static_cast<unsigned char>(val);
 	return result;
 }
@@ -140,7 +140,7 @@ bool PyTuple_GetByte(PyObject* poArgs, int pos, unsigned char* ret)
 bool PyTuple_GetInteger(PyObject* poArgs, int pos, unsigned char* ret)
 {
 	int val;
-	bool result = PyTuple_GetInteger(poArgs,pos,&val);
+	bool result = PyTuple_GetInteger(poArgs, pos, &val);
 	*ret = static_cast<unsigned char>(val);
 	return result;
 }
@@ -148,7 +148,7 @@ bool PyTuple_GetInteger(PyObject* poArgs, int pos, unsigned char* ret)
 bool PyTuple_GetInteger(PyObject* poArgs, int pos, WORD* ret)
 {
 	int val;
-	bool result = PyTuple_GetInteger(poArgs,pos,&val);
+	bool result = PyTuple_GetInteger(poArgs, pos, &val);
 	*ret = WORD(val);
 	return result;
 }
@@ -159,10 +159,10 @@ bool PyTuple_GetInteger(PyObject* poArgs, int pos, int* ret)
 		return false;
 
 	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
-	
+
 	if (!poItem)
 		return false;
-	
+
 	*ret = PyLong_AsLong(poItem);
 	return true;
 }
@@ -172,11 +172,11 @@ bool PyTuple_GetUnsignedLong(PyObject* poArgs, int pos, unsigned long* ret)
 	if (pos >= PyTuple_Size(poArgs))
 		return false;
 
-	PyObject * poItem = PyTuple_GetItem(poArgs, pos);
-	
+	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
+
 	if (!poItem)
 		return false;
-	
+
 	*ret = PyLong_AsUnsignedLong(poItem);
 	return true;
 }
@@ -187,10 +187,10 @@ bool PyTuple_GetUnsignedInteger(PyObject* poArgs, int pos, unsigned int* ret)
 		return false;
 
 	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
-	
+
 	if (!poItem)
 		return false;
-	
+
 	*ret = PyLong_AsUnsignedLong(poItem);
 	return true;
 }
@@ -205,7 +205,7 @@ bool PyTuple_GetString(PyObject* poArgs, int pos, char** ret)
 	if (!poItem)
 		return false;
 
-	if (!PyString_Check(poItem)) 
+	if (!PyString_Check(poItem))
 		return false;
 
 	*ret = PyString_AsString(poItem);
@@ -216,7 +216,7 @@ bool PyTuple_GetBoolean(PyObject* poArgs, int pos, bool* ret)
 {
 	if (pos >= PyTuple_Size(poArgs))
 		return false;
-	
+
 	PyObject* poItem = PyTuple_GetItem(poArgs, pos);
 
 	if (!poItem)
@@ -275,7 +275,7 @@ bool PyCallClassMemberFunc_ByPyString(PyObject* poClass, PyObject* poFuncName, P
 
 	if (!__PyCallClassMemberFunc_ByPyString(poClass, poFuncName, poArgs, &poRet))
 		return false;
-	
+
 	Py_DECREF(poRet);
 	return true;
 }
@@ -296,7 +296,7 @@ bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* po
 	return true;
 }
 
-bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, long * plRetValue)
+bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, long* plRetValue)
 {
 	PyObject* poRet;
 
@@ -321,29 +321,29 @@ bool PyCallClassMemberFunc(PyObject* poClass, const char* c_szFunc, PyObject* po
  */
 bool __PyCallClassMemberFunc_ByCString(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, PyObject** ppoRet)
 {
-	if (!poClass) 
+	if (!poClass)
 	{
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	PyObject * poFunc = PyObject_GetAttrString(poClass, (char *)c_szFunc);	// New Reference
+	PyObject* poFunc = PyObject_GetAttrString(poClass, (char*)c_szFunc); // New Reference
 
 	if (!poFunc)
-	{		
+	{
 		PyErr_Clear();
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	if (!PyCallable_Check(poFunc)) 
+	if (!PyCallable_Check(poFunc))
 	{
 		Py_DECREF(poFunc);
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	PyObject * poRet = PyObject_CallObject(poFunc, poArgs);	// New Reference
+	PyObject* poRet = PyObject_CallObject(poFunc, poArgs); // New Reference
 
 	if (!poRet)
 	{
@@ -369,29 +369,29 @@ bool __PyCallClassMemberFunc_ByCString(PyObject* poClass, const char* c_szFunc, 
 
 bool __PyCallClassMemberFunc_ByPyString(PyObject* poClass, PyObject* poFuncName, PyObject* poArgs, PyObject** ppoRet)
 {
-	if (!poClass) 
+	if (!poClass)
 	{
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	PyObject * poFunc = PyObject_GetAttr(poClass, poFuncName);	// New Reference
+	PyObject* poFunc = PyObject_GetAttr(poClass, poFuncName); // New Reference
 
 	if (!poFunc)
-	{		
+	{
 		PyErr_Clear();
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	if (!PyCallable_Check(poFunc)) 
+	if (!PyCallable_Check(poFunc))
 	{
 		Py_DECREF(poFunc);
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	PyObject * poRet = PyObject_CallObject(poFunc, poArgs);	// New Reference
+	PyObject* poRet = PyObject_CallObject(poFunc, poArgs); // New Reference
 
 	if (!poRet)
 	{
@@ -415,29 +415,29 @@ bool __PyCallClassMemberFunc_ByPyString(PyObject* poClass, PyObject* poFuncName,
 	return true;
 }
 
-bool __PyCallClassMemberFunc(PyObject* poClass, PyObject * poFunc, PyObject* poArgs, PyObject** ppoRet)
+bool __PyCallClassMemberFunc(PyObject* poClass, PyObject* poFunc, PyObject* poArgs, PyObject** ppoRet)
 {
-	if (!poClass) 
+	if (!poClass)
 	{
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
 	if (!poFunc)
-	{		
+	{
 		PyErr_Clear();
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	if (!PyCallable_Check(poFunc)) 
+	if (!PyCallable_Check(poFunc))
 	{
 		Py_DECREF(poFunc);
 		Py_XDECREF(poArgs);
 		return false;
 	}
 
-	PyObject * poRet = PyObject_CallObject(poFunc, poArgs);	// New Reference
+	PyObject* poRet = PyObject_CallObject(poFunc, poArgs); // New Reference
 
 	if (!poRet)
 	{

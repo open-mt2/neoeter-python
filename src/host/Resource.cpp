@@ -14,32 +14,32 @@
 
 std::vector<CPythonResource::TDestroyHandler> CPythonResource::ms_destroyHandlers;
 
-CResource * NewImage(const char* c_szFileName)
+CResource* NewImage(const char* c_szFileName)
 {
 	return new CGraphicImage(c_szFileName);
 }
 
-CResource * NewSubImage(const char* c_szFileName)
+CResource* NewSubImage(const char* c_szFileName)
 {
 	return new CGraphicSubImage(c_szFileName);
 }
 
-CResource * NewText(const char* c_szFileName)
+CResource* NewText(const char* c_szFileName)
 {
 	return new CGraphicText(c_szFileName);
 }
 
-CResource * NewThing(const char* c_szFileName)
+CResource* NewThing(const char* c_szFileName)
 {
 	return new CGraphicThing(c_szFileName);
 }
 
-CResource * NewEffectMesh(const char* c_szFileName)
+CResource* NewEffectMesh(const char* c_szFileName)
 {
 	return new CEffectMesh(c_szFileName);
 }
 
-CResource * NewAttributeData(const char* c_szFileName)
+CResource* NewAttributeData(const char* c_szFileName)
 {
 	return new CAttributeData(c_szFileName);
 }
@@ -50,7 +50,7 @@ void CPythonResource::RegisterDestroyHandler(TDestroyHandler pfnHandler)
 		ms_destroyHandlers.push_back(pfnHandler);
 }
 
-void CPythonResource::DumpFileList(const char * c_szFileName)
+void CPythonResource::DumpFileList(const char* c_szFileName)
 {
 	m_resManager.DumpFileListToTextFile(c_szFileName);
 }
@@ -64,19 +64,19 @@ void CPythonResource::Destroy()
 	}
 
 	CGraphicExpandedImageInstance::DestroySystem();
-	CGraphicImageInstance::DestroySystem();	
+	CGraphicImageInstance::DestroySystem();
 	CGraphicMarkInstance::DestroySystem();
 	CGraphicThingInstance::DestroySystem();
 	CGrannyModelInstance::DestroySystem();
 	CGraphicTextInstance::DestroySystem();
 	CEffectInstance::DestroySystem();
-	
+
 	m_resManager.DestroyDeletingList();
 
 	CEffectData::DestroySystem();
 	CEffectMesh::SEffectMeshData::DestroySystem();
 
-	m_resManager.Destroy();	
+	m_resManager.Destroy();
 }
 
 CPythonResource::CPythonResource()

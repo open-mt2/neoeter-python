@@ -39,30 +39,30 @@ class CPythonGraphic : public CScreen, public CSingleton<CPythonGraphic>
 		void RenderAlphaImage(CGraphicImageInstance* pImageInstance, float x, float y, float aLeft, float aRight);
 		void RenderCoolTimeBox(float fxCenter, float fyCenter, float fRadius, float fTime);
 
-		bool SaveJPEG(const char * pszFileName, LPBYTE pbyBuffer, UINT uWidth, UINT uHeight);
-		bool SaveScreenShot(const char *szFileName);
+		bool SaveJPEG(const char* pszFileName, LPBYTE pbyBuffer, UINT uWidth, UINT uHeight);
+		bool SaveScreenShot(const char* szFileName);
 
 		DWORD GetAvailableMemory();
 		void SetGamma(float fGammaFactor = 1.0f);
-		
+
 	protected:
 		typedef struct SState
 		{
-			D3DXMATRIX matView;
-			D3DXMATRIX matProj;
+				D3DXMATRIX matView;
+				D3DXMATRIX matProj;
 		} TState;
 
-		DWORD		m_lightColor;
-		DWORD		m_darkColor;
+		DWORD m_lightColor;
+		DWORD m_darkColor;
 
 	protected:
-		std::stack<TState>						m_stateStack;
+		std::stack<TState> m_stateStack;
 
-		D3DXMATRIX								m_SaveWorldMatrix;
+		D3DXMATRIX m_SaveWorldMatrix;
 
-		CCullingManager							m_CullingManager;
+		CCullingManager m_CullingManager;
 
-		D3DVIEWPORT9							m_backupViewport;
+		D3DVIEWPORT9 m_backupViewport;
 
-		float									m_fOrthoDepth;
+		float m_fOrthoDepth;
 };

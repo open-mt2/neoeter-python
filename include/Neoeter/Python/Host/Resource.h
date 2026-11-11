@@ -17,10 +17,10 @@ class CPythonResource : public CSingleton<CPythonResource>
 
 		CPythonResource();
 		virtual ~CPythonResource();
-		
+
 		void Destroy();
 
-		void DumpFileList(const char * c_szFileName);
+		void DumpFileList(const char* c_szFileName);
 
 		static void RegisterDestroyHandler(TDestroyHandler pfnHandler);
 
