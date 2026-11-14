@@ -34,10 +34,7 @@ void CPythonGraphic::SetInterfaceRenderState()
 	STATEMANAGER.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	CPythonGraphic::Instance().SetBlendOperation();
-	CPythonGraphic::Instance().SetOrtho2D(
-		UI::CWindowManager::Instance().GetScreenWidth(),
-		UI::CWindowManager::Instance().GetScreenHeight(),
-		GetOrthoDepth());
+	CPythonGraphic::Instance().SetOrtho2D(ms_iWidth, ms_iHeight, GetOrthoDepth());
 
 	STATEMANAGER.SetRenderState(D3DRS_LIGHTING, FALSE);
 }
