@@ -31,6 +31,11 @@ class CPythonGraphic : public CScreen, public CSingleton<CPythonGraphic>
 		void SetViewport(float fx, float fy, float fWidth, float fHeight);
 		void RestoreViewport();
 
+		void ProjectPositionUI(float x, float y, float z, float* pfX, float* pfY);
+
+		int GetBackBufferWidth() const { return ms_iWidth; }
+		int GetBackBufferHeight() const { return ms_iHeight; }
+
 		long GenerateColor(float r, float g, float b, float a);
 		void RenderDownButton(float sx, float sy, float ex, float ey);
 		void RenderUpButton(float sx, float sy, float ex, float ey);

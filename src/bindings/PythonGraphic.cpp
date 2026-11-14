@@ -34,7 +34,10 @@ void CPythonGraphic::SetInterfaceRenderState()
 	STATEMANAGER.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	CPythonGraphic::Instance().SetBlendOperation();
-	CPythonGraphic::Instance().SetOrtho2D(ms_iWidth, ms_iHeight, GetOrthoDepth());
+	CPythonGraphic::Instance().SetOrtho2D(
+		UI::CWindowManager::Instance().GetScreenWidth(),
+		UI::CWindowManager::Instance().GetScreenHeight(),
+		GetOrthoDepth());
 
 	STATEMANAGER.SetRenderState(D3DRS_LIGHTING, FALSE);
 }
@@ -49,9 +52,35 @@ void CPythonGraphic::SetGameRenderState()
 	STATEMANAGER.SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
+void CPythonGraphic::ProjectPositionUI(float x, float y, float z, float* pfX, float* pfY)
+{
+	ProjectPosition(x, y, z, pfX, pfY);
+
+	const long uiWidth = UI::CWindowManager::Instance().GetScreenWidth();
+	const long uiHeight = UI::CWindowManager::Instance().GetScreenHeight();
+
+	if (uiWidth > 0 && uiHeight > 0 && ms_iWidth > 0 && ms_iHeight > 0)
+	{
+		*pfX *= float(uiWidth) / float(ms_iWidth);
+		*pfY *= float(uiHeight) / float(ms_iHeight);
+	}
+}
+
 void CPythonGraphic::SetCursorPosition(int x, int y)
 {
-	CScreen::SetCursorPosition(x, y, ms_iWidth, ms_iHeight);
+	int physicalX = x;
+	int physicalY = y;
+
+	const long uiWidth = UI::CWindowManager::Instance().GetScreenWidth();
+	const long uiHeight = UI::CWindowManager::Instance().GetScreenHeight();
+
+	if (uiWidth > 0 && uiHeight > 0)
+	{
+		physicalX = int((long long)x * ms_iWidth / uiWidth);
+		physicalY = int((long long)y * ms_iHeight / uiHeight);
+	}
+
+	CScreen::SetCursorPosition(physicalX, physicalY, ms_iWidth, ms_iHeight);
 }
 
 void CPythonGraphic::SetOmniLight()
