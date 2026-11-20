@@ -145,11 +145,11 @@ bool PyTuple_GetInteger(PyObject* poArgs, int pos, unsigned char* ret)
 	return result;
 }
 
-bool PyTuple_GetInteger(PyObject* poArgs, int pos, WORD* ret)
+bool PyTuple_GetInteger(PyObject* poArgs, int pos, uint16_t* ret)
 {
 	int val;
 	bool result = PyTuple_GetInteger(poArgs, pos, &val);
-	*ret = WORD(val);
+	*ret = uint16_t(val);
 	return result;
 }
 

@@ -137,7 +137,7 @@ PyObject* grpTextSetFontColor(PyObject* poSelf, PyObject* poArgs)
 		int iColor;
 		if (!PyTuple_GetInteger(poArgs, 1, &iColor))
 			return Py_BuildException();
-		pTextInstance->SetColor(DWORD(iColor));
+		pTextInstance->SetColor(uint32_t(iColor));
 	}
 	else if (4 == PyTuple_Size(poArgs))
 	{
@@ -279,7 +279,7 @@ PyObject* grpGetSplitingTextLineCount(PyObject* poSelf, PyObject* poArgs)
 	int iPosition = 0;
 	int iLineCount = 0;
 
-	for (DWORD i = 0; i < strlen(szText);)
+	for (uint32_t i = 0; i < strlen(szText);)
 	{
 		if ('|' == szText[i])
 		{
@@ -337,7 +337,7 @@ PyObject* grpGetSplitingTextLine(PyObject* poSelf, PyObject* poArgs)
 
 	// 1차 : 조금 더 깔끔하게 안될까 -_-a
 	// 2차 : 오.. 좀 나아졌다 +_+
-	for (DWORD i = 0; i < strlen(szText);)
+	for (uint32_t i = 0; i < strlen(szText);)
 	{
 		if ('|' == szText[i])
 		{

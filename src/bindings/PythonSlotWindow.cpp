@@ -18,7 +18,7 @@ class UI::CSlotWindow::CSlotButton : public CButton
 		};
 
 	public:
-		CSlotButton(ESlotButtonType dwType, DWORD dwSlotNumber, CSlotWindow* pParent) : CButton(NULL)
+		CSlotButton(ESlotButtonType dwType, uint32_t dwSlotNumber, CSlotWindow* pParent) : CButton(NULL)
 		{
 			m_dwSlotButtonType = dwType;
 			m_dwSlotNumber = dwSlotNumber;
@@ -28,7 +28,7 @@ class UI::CSlotWindow::CSlotButton : public CButton
 		{
 		}
 
-		BOOL OnMouseLeftButtonDown()
+		int32_t OnMouseLeftButtonDown()
 		{
 			if (!IsEnable())
 				return TRUE;
@@ -40,7 +40,7 @@ class UI::CSlotWindow::CSlotButton : public CButton
 
 			return TRUE;
 		}
-		BOOL OnMouseLeftButtonUp()
+		int32_t OnMouseLeftButtonUp()
 		{
 			if (!IsEnable())
 				return TRUE;
@@ -77,7 +77,7 @@ class UI::CSlotWindow::CSlotButton : public CButton
 
 	protected:
 		ESlotButtonType m_dwSlotButtonType;
-		DWORD m_dwSlotNumber;
+		uint32_t m_dwSlotNumber;
 		CSlotWindow* m_pParent;
 };
 
@@ -88,7 +88,7 @@ class UI::CSlotWindow::CSlotButton : public CButton
 class UI::CSlotWindow::CCoverButton : public CSlotButton
 {
 	public:
-		CCoverButton(ESlotButtonType dwType, DWORD dwSlotNumber, CSlotWindow* pParent) : CSlotButton(dwType, dwSlotNumber, pParent)
+		CCoverButton(ESlotButtonType dwType, uint32_t dwSlotNumber, CSlotWindow* pParent) : CSlotButton(dwType, dwSlotNumber, pParent)
 		{
 			m_bLeftButtonEnable = TRUE;
 			m_bRightButtonEnable = TRUE;
@@ -97,11 +97,11 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 		{
 		}
 
-		void SetLeftButtonEnable(BOOL bEnable)
+		void SetLeftButtonEnable(int32_t bEnable)
 		{
 			m_bLeftButtonEnable = bEnable;
 		}
-		void SetRightButtonEnable(BOOL bEnable)
+		void SetRightButtonEnable(int32_t bEnable)
 		{
 			m_bRightButtonEnable = bEnable;
 		}
@@ -115,7 +115,7 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 			CButton::OnRender();
 		}
 
-		BOOL OnMouseLeftButtonDown()
+		int32_t OnMouseLeftButtonDown()
 		{
 			if (!IsEnable())
 				return TRUE;
@@ -129,7 +129,7 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 			}
 			return TRUE;
 		}
-		BOOL OnMouseLeftButtonUp()
+		int32_t OnMouseLeftButtonUp()
 		{
 			if (!IsEnable())
 				return TRUE;
@@ -145,7 +145,7 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 			return TRUE;
 		}
 
-		BOOL OnMouseRightButtonDown()
+		int32_t OnMouseRightButtonDown()
 		{
 			if (!IsEnable())
 				return TRUE;
@@ -153,7 +153,7 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 				CButton::OnMouseLeftButtonDown();
 			return TRUE;
 		}
-		BOOL OnMouseRightButtonUp()
+		int32_t OnMouseRightButtonUp()
 		{
 			if (!IsEnable())
 				return TRUE;
@@ -164,8 +164,8 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 		}
 
 	protected:
-		BOOL m_bLeftButtonEnable;
-		BOOL m_bRightButtonEnable;
+		int32_t m_bLeftButtonEnable;
+		int32_t m_bRightButtonEnable;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,7 +175,7 @@ class UI::CSlotWindow::CCoverButton : public CSlotButton
 class UI::CSlotWindow::CCoolTimeFinishEffect : public CAniImageBox
 {
 	public:
-		CCoolTimeFinishEffect(CSlotWindow* pParent, DWORD dwSlotIndex) : CAniImageBox(NULL)
+		CCoolTimeFinishEffect(CSlotWindow* pParent, uint32_t dwSlotIndex) : CAniImageBox(NULL)
 		{
 			m_pParent = pParent;
 			m_dwSlotIndex = dwSlotIndex;
@@ -190,7 +190,7 @@ class UI::CSlotWindow::CCoolTimeFinishEffect : public CAniImageBox
 		}
 
 	protected:
-		DWORD m_dwSlotIndex;
+		uint32_t m_dwSlotIndex;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,17 +199,17 @@ class UI::CSlotWindow::CCoolTimeFinishEffect : public CAniImageBox
 
 // Set & Append
 
-void CSlotWindow::SetSlotType(DWORD dwType)
+void CSlotWindow::SetSlotType(uint32_t dwType)
 {
 	m_dwSlotType = dwType;
 }
 
-void CSlotWindow::SetSlotStyle(DWORD dwStyle)
+void CSlotWindow::SetSlotStyle(uint32_t dwStyle)
 {
 	m_dwSlotStyle = dwStyle;
 }
 
-void CSlotWindow::AppendSlot(DWORD dwIndex, int ixPosition, int iyPosition, int ixCellSize, int iyCellSize)
+void CSlotWindow::AppendSlot(uint32_t dwIndex, int ixPosition, int iyPosition, int ixCellSize, int iyCellSize)
 {
 	TSlot Slot;
 	Slot.pInstance = NULL;
@@ -229,7 +229,7 @@ void CSlotWindow::AppendSlot(DWORD dwIndex, int ixPosition, int iyPosition, int 
 	m_SlotList.push_back(Slot);
 }
 
-void CSlotWindow::SetCoverButton(DWORD dwIndex, const char* c_szUpImageName, const char* c_szOverImageName, const char* c_szDownImageName, const char* c_szDisableImageName, BOOL bLeftButtonEnable, BOOL bRightButtonEnable)
+void CSlotWindow::SetCoverButton(uint32_t dwIndex, const char* c_szUpImageName, const char* c_szOverImageName, const char* c_szDownImageName, const char* c_szDisableImageName, int32_t bLeftButtonEnable, int32_t bRightButtonEnable)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -259,7 +259,7 @@ void CSlotWindow::SetCoverButton(DWORD dwIndex, const char* c_szUpImageName, con
 	}
 }
 
-void CSlotWindow::EnableCoverButton(DWORD dwIndex)
+void CSlotWindow::EnableCoverButton(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -271,7 +271,7 @@ void CSlotWindow::EnableCoverButton(DWORD dwIndex)
 	pSlot->pCoverButton->Enable();
 }
 
-void CSlotWindow::DisableCoverButton(DWORD dwIndex)
+void CSlotWindow::DisableCoverButton(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -283,7 +283,7 @@ void CSlotWindow::DisableCoverButton(DWORD dwIndex)
 	pSlot->pCoverButton->Disable();
 }
 
-void CSlotWindow::SetAlwaysRenderCoverButton(DWORD dwIndex, bool bAlwaysRender)
+void CSlotWindow::SetAlwaysRenderCoverButton(uint32_t dwIndex, bool bAlwaysRender)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -295,7 +295,7 @@ void CSlotWindow::SetAlwaysRenderCoverButton(DWORD dwIndex, bool bAlwaysRender)
 		REMOVE_BIT(pSlot->dwState, SLOT_STATE_ALWAYS_RENDER_COVER);
 }
 
-void CSlotWindow::ShowSlotBaseImage(DWORD dwIndex)
+void CSlotWindow::ShowSlotBaseImage(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -304,7 +304,7 @@ void CSlotWindow::ShowSlotBaseImage(DWORD dwIndex)
 	pSlot->bRenderBaseSlotImage = true;
 }
 
-void CSlotWindow::HideSlotBaseImage(DWORD dwIndex)
+void CSlotWindow::HideSlotBaseImage(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -313,7 +313,7 @@ void CSlotWindow::HideSlotBaseImage(DWORD dwIndex)
 	pSlot->bRenderBaseSlotImage = false;
 }
 
-BOOL CSlotWindow::IsDisableCoverButton(DWORD dwIndex)
+int32_t CSlotWindow::IsDisableCoverButton(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -370,7 +370,7 @@ void CSlotWindow::AppendRequirementSignImage(const char* c_szImageName)
 	}
 }
 
-BOOL CSlotWindow::HasSlot(DWORD dwIndex)
+int32_t CSlotWindow::HasSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -379,7 +379,7 @@ BOOL CSlotWindow::HasSlot(DWORD dwIndex)
 	return TRUE;
 }
 
-void CSlotWindow::SetSlot(DWORD dwIndex, DWORD dwVirtualNumber, BYTE byWidth, BYTE byHeight, CGraphicImage* pImage, D3DXCOLOR& diffuseColor)
+void CSlotWindow::SetSlot(uint32_t dwIndex, uint32_t dwVirtualNumber, uint8_t byWidth, uint8_t byHeight, CGraphicImage* pImage, D3DXCOLOR& diffuseColor)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -419,7 +419,7 @@ void CSlotWindow::SetSlot(DWORD dwIndex, DWORD dwVirtualNumber, BYTE byWidth, BY
 	}
 }
 
-void CSlotWindow::SetSlotCount(DWORD dwIndex, DWORD dwCount)
+void CSlotWindow::SetSlotCount(uint32_t dwIndex, uint32_t dwCount)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -450,7 +450,7 @@ void CSlotWindow::SetSlotCount(DWORD dwIndex, DWORD dwCount)
 	}
 }
 
-void CSlotWindow::SetSlotCountNew(DWORD dwIndex, DWORD dwGrade, DWORD dwCount)
+void CSlotWindow::SetSlotCountNew(uint32_t dwIndex, uint32_t dwGrade, uint32_t dwCount)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -496,7 +496,7 @@ void CSlotWindow::SetSlotCountNew(DWORD dwIndex, DWORD dwGrade, DWORD dwCount)
 	}
 }
 
-void CSlotWindow::SetSlotCoolTime(DWORD dwIndex, float fCoolTime, float fElapsedTime)
+void CSlotWindow::SetSlotCoolTime(uint32_t dwIndex, float fCoolTime, float fElapsedTime)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -506,7 +506,7 @@ void CSlotWindow::SetSlotCoolTime(DWORD dwIndex, float fCoolTime, float fElapsed
 	pSlot->fStartCoolTime = CTimer::Instance().GetCurrentSecond() - fElapsedTime;
 }
 
-void CSlotWindow::ActivateSlot(DWORD dwIndex)
+void CSlotWindow::ActivateSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -520,7 +520,7 @@ void CSlotWindow::ActivateSlot(DWORD dwIndex)
 	}
 }
 
-void CSlotWindow::DeactivateSlot(DWORD dwIndex)
+void CSlotWindow::DeactivateSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -529,7 +529,7 @@ void CSlotWindow::DeactivateSlot(DWORD dwIndex)
 	pSlot->bActive = FALSE;
 }
 
-void CSlotWindow::ClearSlot(DWORD dwIndex)
+void CSlotWindow::ClearSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -601,12 +601,12 @@ void CSlotWindow::OnRefreshSlot()
 {
 }
 
-DWORD CSlotWindow::GetSlotCount()
+uint32_t CSlotWindow::GetSlotCount()
 {
 	return m_SlotList.size();
 }
 
-void CSlotWindow::LockSlot(DWORD dwIndex)
+void CSlotWindow::LockSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -614,7 +614,7 @@ void CSlotWindow::LockSlot(DWORD dwIndex)
 
 	pSlot->dwState |= SLOT_STATE_LOCK;
 }
-void CSlotWindow::UnlockSlot(DWORD dwIndex)
+void CSlotWindow::UnlockSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -622,7 +622,7 @@ void CSlotWindow::UnlockSlot(DWORD dwIndex)
 
 	pSlot->dwState ^= SLOT_STATE_LOCK;
 }
-void CSlotWindow::SetCantUseSlot(DWORD dwIndex)
+void CSlotWindow::SetCantUseSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -630,7 +630,7 @@ void CSlotWindow::SetCantUseSlot(DWORD dwIndex)
 
 	pSlot->dwState |= SLOT_STATE_CANT_USE;
 }
-void CSlotWindow::SetUseSlot(DWORD dwIndex)
+void CSlotWindow::SetUseSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -638,7 +638,7 @@ void CSlotWindow::SetUseSlot(DWORD dwIndex)
 
 	pSlot->dwState ^= SLOT_STATE_CANT_USE;
 }
-void CSlotWindow::EnableSlot(DWORD dwIndex)
+void CSlotWindow::EnableSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -647,7 +647,7 @@ void CSlotWindow::EnableSlot(DWORD dwIndex)
 	REMOVE_BIT(pSlot->dwState, SLOT_STATE_DISABLE);
 	// pSlot->dwState |= SLOT_STATE_DISABLE;
 }
-void CSlotWindow::DisableSlot(DWORD dwIndex)
+void CSlotWindow::DisableSlot(uint32_t dwIndex)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwIndex, &pSlot))
@@ -658,9 +658,9 @@ void CSlotWindow::DisableSlot(DWORD dwIndex)
 
 // Select
 
-void CSlotWindow::SelectSlot(DWORD dwSelectingIndex)
+void CSlotWindow::SelectSlot(uint32_t dwSelectingIndex)
 {
-	std::list<DWORD>::iterator itor = m_dwSelectedSlotIndexList.begin();
+	std::list<uint32_t>::iterator itor = m_dwSelectedSlotIndexList.begin();
 	for (; itor != m_dwSelectedSlotIndexList.end();)
 	{
 		if (dwSelectingIndex == *itor)
@@ -684,9 +684,9 @@ void CSlotWindow::SelectSlot(DWORD dwSelectingIndex)
 	}
 }
 
-BOOL CSlotWindow::isSelectedSlot(DWORD dwIndex)
+int32_t CSlotWindow::isSelectedSlot(uint32_t dwIndex)
 {
-	std::list<DWORD>::iterator itor = m_dwSelectedSlotIndexList.begin();
+	std::list<uint32_t>::iterator itor = m_dwSelectedSlotIndexList.begin();
 	for (; itor != m_dwSelectedSlotIndexList.end(); ++itor)
 	{
 		if (dwIndex == *itor)
@@ -701,18 +701,18 @@ void CSlotWindow::ClearSelected()
 	m_dwSelectedSlotIndexList.clear();
 }
 
-DWORD CSlotWindow::GetSelectedSlotCount()
+uint32_t CSlotWindow::GetSelectedSlotCount()
 {
 	return m_dwSelectedSlotIndexList.size();
 }
 
-DWORD CSlotWindow::GetSelectedSlotNumber(DWORD dwIndex)
+uint32_t CSlotWindow::GetSelectedSlotNumber(uint32_t dwIndex)
 {
 	if (dwIndex >= m_dwSelectedSlotIndexList.size())
-		return DWORD(-1);
+		return uint32_t(-1);
 
-	DWORD dwCount = 0;
-	std::list<DWORD>::iterator itor = m_dwSelectedSlotIndexList.begin();
+	uint32_t dwCount = 0;
+	std::list<uint32_t>::iterator itor = m_dwSelectedSlotIndexList.begin();
 	for (; itor != m_dwSelectedSlotIndexList.end(); ++itor)
 	{
 		if (dwIndex == dwCount)
@@ -724,7 +724,7 @@ DWORD CSlotWindow::GetSelectedSlotNumber(DWORD dwIndex)
 	return *itor;
 }
 
-void CSlotWindow::ShowSlotButton(DWORD dwSlotNumber)
+void CSlotWindow::ShowSlotButton(uint32_t dwSlotNumber)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwSlotNumber, &pSlot))
@@ -749,7 +749,7 @@ void CSlotWindow::HideAllSlotButton()
 	}
 }
 
-void CSlotWindow::ShowRequirementSign(DWORD dwSlotNumber)
+void CSlotWindow::ShowRequirementSign(uint32_t dwSlotNumber)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwSlotNumber, &pSlot))
@@ -761,7 +761,7 @@ void CSlotWindow::ShowRequirementSign(DWORD dwSlotNumber)
 	pSlot->pSignImage->Show();
 }
 
-void CSlotWindow::HideRequirementSign(DWORD dwSlotNumber)
+void CSlotWindow::HideRequirementSign(uint32_t dwSlotNumber)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwSlotNumber, &pSlot))
@@ -775,7 +775,7 @@ void CSlotWindow::HideRequirementSign(DWORD dwSlotNumber)
 
 // Event
 
-BOOL CSlotWindow::OnMouseLeftButtonDown()
+int32_t CSlotWindow::OnMouseLeftButtonDown()
 {
 	TSlot* pSlot;
 	if (!GetPickedSlotPointer(&pSlot))
@@ -796,7 +796,7 @@ BOOL CSlotWindow::OnMouseLeftButtonDown()
 	return TRUE;
 }
 
-BOOL CSlotWindow::OnMouseLeftButtonUp()
+int32_t CSlotWindow::OnMouseLeftButtonUp()
 {
 	if (UI::CWindowManager::Instance().IsAttaching())
 		if (UI::CWindowManager::Instance().IsDragging())
@@ -830,7 +830,7 @@ BOOL CSlotWindow::OnMouseLeftButtonUp()
 	return FALSE;
 }
 
-BOOL CSlotWindow::OnMouseRightButtonDown()
+int32_t CSlotWindow::OnMouseRightButtonDown()
 {
 	TSlot* pSlot;
 	if (!GetPickedSlotPointer(&pSlot))
@@ -848,7 +848,7 @@ BOOL CSlotWindow::OnMouseRightButtonDown()
 	return TRUE;
 }
 
-BOOL CSlotWindow::OnMouseLeftButtonDoubleClick()
+int32_t CSlotWindow::OnMouseLeftButtonDoubleClick()
 {
 	OnUseSlot();
 
@@ -912,7 +912,7 @@ void CSlotWindow::OnUseSlot()
 		}
 }
 
-BOOL CSlotWindow::OnOverInItem(DWORD dwSlotNumber)
+int32_t CSlotWindow::OnOverInItem(uint32_t dwSlotNumber)
 {
 	TSlot* pSlot;
 	if (!GetSlotPointer(dwSlotNumber, &pSlot))
@@ -939,7 +939,7 @@ void CSlotWindow::OnOverOutItem()
 	PyCallClassMemberFunc(m_poHandler, "OnOverOutItem", Py_BuildValue("()"));
 }
 
-void CSlotWindow::OnPressedSlotButton(DWORD dwType, DWORD dwSlotNumber, BOOL isLeft)
+void CSlotWindow::OnPressedSlotButton(uint32_t dwType, uint32_t dwSlotNumber, int32_t isLeft)
 {
 	if (CSlotButton::SLOT_BUTTON_TYPE_PLUS == dwType)
 	{
@@ -956,9 +956,9 @@ void CSlotWindow::OnPressedSlotButton(DWORD dwType, DWORD dwSlotNumber, BOOL isL
 
 void CSlotWindow::OnUpdate()
 {
-	for (std::deque<DWORD>::iterator itor = m_ReserveDestroyEffectDeque.begin(); itor != m_ReserveDestroyEffectDeque.end(); ++itor)
+	for (std::deque<uint32_t>::iterator itor = m_ReserveDestroyEffectDeque.begin(); itor != m_ReserveDestroyEffectDeque.end(); ++itor)
 	{
-		DWORD dwSlotIndex = *itor;
+		uint32_t dwSlotIndex = *itor;
 
 		TSlot* pSlot;
 		if (!GetSlotPointer(dwSlotIndex, &pSlot))
@@ -1135,7 +1135,7 @@ void CSlotWindow::OnRenderPickingSlot()
 
 void CSlotWindow::OnRenderSelectedSlot()
 {
-	std::list<DWORD>::iterator itor = m_dwSelectedSlotIndexList.begin();
+	std::list<uint32_t>::iterator itor = m_dwSelectedSlotIndexList.begin();
 	for (; itor != m_dwSelectedSlotIndexList.end(); ++itor)
 	{
 		TSlot* pSlot;
@@ -1172,7 +1172,7 @@ void CSlotWindow::RenderLockedSlot()
 
 // Check Slot
 
-BOOL CSlotWindow::GetSlotPointer(DWORD dwIndex, TSlot** ppSlot)
+int32_t CSlotWindow::GetSlotPointer(uint32_t dwIndex, TSlot** ppSlot)
 {
 	for (TSlotListIterator itor = m_SlotList.begin(); itor != m_SlotList.end(); ++itor)
 	{
@@ -1188,7 +1188,7 @@ BOOL CSlotWindow::GetSlotPointer(DWORD dwIndex, TSlot** ppSlot)
 	return FALSE;
 }
 
-BOOL CSlotWindow::GetSelectedSlotPointer(TSlot** ppSlot)
+int32_t CSlotWindow::GetSelectedSlotPointer(TSlot** ppSlot)
 {
 	long lx, ly;
 	GetMouseLocalPosition(lx, ly);
@@ -1210,7 +1210,7 @@ BOOL CSlotWindow::GetSelectedSlotPointer(TSlot** ppSlot)
 	return FALSE;
 }
 
-BOOL CSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
+int32_t CSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
 {
 	long lx, ly;
 	CWindowManager::Instance().GetMousePosition(lx, ly);
@@ -1247,28 +1247,28 @@ BOOL CSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
 	return FALSE;
 }
 
-void CSlotWindow::SetUseMode(BOOL bFlag)
+void CSlotWindow::SetUseMode(int32_t bFlag)
 {
 	m_isUseMode = bFlag;
 }
 
-void CSlotWindow::SetUsableItem(BOOL bFlag)
+void CSlotWindow::SetUsableItem(int32_t bFlag)
 {
 	m_isUsableItem = bFlag;
 }
 
-void CSlotWindow::ReserveDestroyCoolTimeFinishEffect(DWORD dwSlotIndex)
+void CSlotWindow::ReserveDestroyCoolTimeFinishEffect(uint32_t dwSlotIndex)
 {
 	m_ReserveDestroyEffectDeque.push_back(dwSlotIndex);
 }
 
-DWORD CSlotWindow::Type()
+uint32_t CSlotWindow::Type()
 {
 	static int s_Type = GetCRC32("CSlotWindow", strlen("CSlotWindow"));
 	return s_Type;
 }
 
-BOOL CSlotWindow::OnIsType(DWORD dwType)
+int32_t CSlotWindow::OnIsType(uint32_t dwType)
 {
 	if (CSlotWindow::Type() == dwType)
 		return TRUE;

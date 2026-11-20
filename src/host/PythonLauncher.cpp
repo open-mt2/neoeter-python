@@ -36,7 +36,7 @@ static PyObject* py_time_sleep(PyObject* self, PyObject* args)
 		return NULL;
 #if defined(_WIN32)
 	// nanosleep is POSIX; the Windows build uses the Win32 equivalent (T1.9).
-	Sleep((DWORD)(secs * 1000.0));
+	Sleep((uint32_t)(secs * 1000.0));
 #else
 	struct timespec ts;
 	ts.tv_sec = (time_t)secs;
@@ -641,7 +641,7 @@ bool CPythonLauncher::RunMemoryTextFile(const char* c_szFileName, std::shared_pt
 
 	// ConvertPythonTextFormat
 	{
-		for (UINT i = 0; i < fileData->size(); ++i)
+		for (uint32_t i = 0; i < fileData->size(); ++i)
 		{
 			if ((*fileData)[i] != 13)
 				stConvFileData += (*fileData)[i];
@@ -654,7 +654,7 @@ bool CPythonLauncher::RunMemoryTextFile(const char* c_szFileName, std::shared_pt
 	stConvFileData += "', ";
 	stConvFileData += "'exec'))";
 
-	const CHAR* c_pcConvFileData = stConvFileData.c_str();
+	const char* c_pcConvFileData = stConvFileData.c_str();
 	return RunLine(c_pcConvFileData);
 }
 

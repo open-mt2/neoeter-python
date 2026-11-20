@@ -6,7 +6,7 @@
 
 // #define __WINDOW_LEAK_CHECK__
 
-BOOL g_bShowOverInWindowName = FALSE;
+int32_t g_bShowOverInWindowName = FALSE;
 
 namespace UI
 {
@@ -42,7 +42,7 @@ namespace UI
 
 		const char* layerTbl[] = {"GAME", "UI_BOTTOM", "UI", "TOP_MOST", "CURTAIN"};
 
-		for (DWORD layer = 0; layer < sizeof(layerTbl) / sizeof(layerTbl[0]); layer++)
+		for (uint32_t layer = 0; layer < sizeof(layerTbl) / sizeof(layerTbl[0]); layer++)
 		{
 			CWindow* pLayer = new CLayer(NULL);
 			pLayer->SetName(layerTbl[layer]);
@@ -101,7 +101,7 @@ namespace UI
 		return (pWin);
 	}
 
-	CWindow* CWindowManager::__NewWindow(PyObject* po, DWORD dwWndType)
+	CWindow* CWindowManager::__NewWindow(PyObject* po, uint32_t dwWndType)
 	{
 		switch (dwWndType)
 		{
@@ -160,7 +160,7 @@ namespace UI
 		return new CWindow(po);
 	}
 
-	CWindow* CWindowManager::RegisterTypeWindow(PyObject* po, DWORD dwWndType, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterTypeWindow(PyObject* po, uint32_t dwWndType, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -431,7 +431,7 @@ namespace UI
 		m_ReserveDeleteWindowList.push_back(pWin);
 	}
 
-	BOOL CWindowManager::IsDragging()
+	int32_t CWindowManager::IsDragging()
 	{
 		long ldx = abs(m_lMouseX - m_lPickedX);
 		long ldy = abs(m_lMouseY - m_lPickedY);
@@ -441,33 +441,33 @@ namespace UI
 		return TRUE;
 	}
 
-	BOOL CWindowManager::IsAttaching()
+	int32_t CWindowManager::IsAttaching()
 	{
 		return m_bAttachingFlag;
 	}
 
-	DWORD CWindowManager::GetAttachingType()
+	uint32_t CWindowManager::GetAttachingType()
 	{
 		return m_dwAttachingType;
 	}
 
-	DWORD CWindowManager::GetAttachingIndex()
+	uint32_t CWindowManager::GetAttachingIndex()
 	{
 		return m_dwAttachingIndex;
 	}
 
-	DWORD CWindowManager::GetAttachingSlotNumber()
+	uint32_t CWindowManager::GetAttachingSlotNumber()
 	{
 		return m_dwAttachingSlotNumber;
 	}
 
-	void CWindowManager::GetAttachingIconSize(BYTE* pbyWidth, BYTE* pbyHeight)
+	void CWindowManager::GetAttachingIconSize(uint8_t* pbyWidth, uint8_t* pbyHeight)
 	{
 		*pbyWidth = m_byAttachingIconWidth;
 		*pbyHeight = m_byAttachingIconHeight;
 	}
 
-	void CWindowManager::AttachIcon(DWORD dwType, DWORD dwIndex, DWORD dwSlotNumber, BYTE byWidth, BYTE byHeight)
+	void CWindowManager::AttachIcon(uint32_t dwType, uint32_t dwIndex, uint32_t dwSlotNumber, uint8_t byWidth, uint8_t byHeight)
 	{
 		m_bAttachingFlag = TRUE;
 		m_dwAttachingType = dwType;
@@ -478,7 +478,7 @@ namespace UI
 		m_byAttachingIconHeight = byHeight;
 	}
 
-	void CWindowManager::SetAttachingFlag(BOOL bFlag)
+	void CWindowManager::SetAttachingFlag(int32_t bFlag)
 	{
 		m_bAttachingFlag = bFlag;
 	}
@@ -1046,8 +1046,8 @@ namespace UI
 				CWindow* pParentWindow = pWindow;
 				CWindow* pCurrentWindow = pWindow->GetParent();
 
-				DWORD dwMaxLoopCount = 20;
-				for (DWORD i = 0; i < dwMaxLoopCount; ++i)
+				uint32_t dwMaxLoopCount = 20;
+				for (uint32_t i = 0; i < dwMaxLoopCount; ++i)
 				{
 					if (!pParentWindow)
 						break;

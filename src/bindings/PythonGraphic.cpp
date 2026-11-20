@@ -170,15 +170,15 @@ void CPythonGraphic::SetGamma(float fGammaFactor)
 		if (val > 32767)
 			val = 32767;
 
-		NewRamp.red[i] = (WORD)(val | (32768 * ui));
-		NewRamp.green[i] = (WORD)(val | (32768 * ui));
-		NewRamp.blue[i] = (WORD)(val | (32768 * ui));
+		NewRamp.red[i] = (uint16_t)(val | (32768 * ui));
+		NewRamp.green[i] = (uint16_t)(val | (32768 * ui));
+		NewRamp.blue[i] = (uint16_t)(val | (32768 * ui));
 	}
 
 	ms_lpd3dDevice->SetGammaRamp(0, D3DSGR_NO_CALIBRATION, &NewRamp);
 }
 
-void GenScreenShotTag(const char* src, DWORD crc32, char* leaf, size_t leafLen)
+void GenScreenShotTag(const char* src, uint32_t crc32, char* leaf, size_t leafLen)
 {
 	const char* p = src;
 	const char* n = p;
@@ -188,14 +188,14 @@ void GenScreenShotTag(const char* src, DWORD crc32, char* leaf, size_t leafLen)
 	_snprintf(leaf, leafLen, "YMIR_METIN2:%s:0x%.8x", p, crc32);
 }
 
-bool CPythonGraphic::SaveJPEG(const char* pszFileName, LPBYTE pbyBuffer, UINT uWidth, UINT uHeight)
+bool CPythonGraphic::SaveJPEG(const char* pszFileName, LPBYTE pbyBuffer, uint32_t uWidth, uint32_t uHeight)
 {
 	return jpeg_save(pbyBuffer, uWidth, uHeight, 85, pszFileName) != 0;
 }
 
 bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 {
-	HRESULT hr;
+	int32_t hr;
 	LPDIRECT3DSURFACE9 lpSurface;
 	D3DSURFACE_DESC stSurfaceDesc;
 
@@ -212,8 +212,8 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 		return false;
 	}
 
-	UINT uWidth = stSurfaceDesc.Width;
-	UINT uHeight = stSurfaceDesc.Height;
+	uint32_t uWidth = stSurfaceDesc.Width;
+	uint32_t uHeight = stSurfaceDesc.Height;
 
 	switch (stSurfaceDesc.Format)
 	{
@@ -244,7 +244,7 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 		return false;
 	}
 
-	BYTE* pbyBuffer = new BYTE[uWidth * uHeight * 3];
+	uint8_t* pbyBuffer = new uint8_t[uWidth * uHeight * 3];
 	if (pbyBuffer == NULL)
 	{
 		lpSurface->UnlockRect();
@@ -253,16 +253,16 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 		TraceError("Failed to allocate screenshot buffer");
 		return false;
 	}
-	BYTE* pbySource = (BYTE*)lockRect.pBits;
-	BYTE* pbyDestination = (BYTE*)pbyBuffer;
-	for (UINT y = 0; y < uHeight; ++y)
+	uint8_t* pbySource = (uint8_t*)lockRect.pBits;
+	uint8_t* pbyDestination = (uint8_t*)pbyBuffer;
+	for (uint32_t y = 0; y < uHeight; ++y)
 	{
-		BYTE* pRow = pbySource;
+		uint8_t* pRow = pbySource;
 
 		switch (stSurfaceDesc.Format)
 		{
 			case D3DFMT_R8G8B8:
-				for (UINT x = 0; x < uWidth; ++x)
+				for (uint32_t x = 0; x < uWidth; ++x)
 				{
 					*pbyDestination++ = pRow[2]; // Blue
 					*pbyDestination++ = pRow[1]; // Green
@@ -272,7 +272,7 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 				break;
 			case D3DFMT_A8R8G8B8:
 			case D3DFMT_X8R8G8B8:
-				for (UINT x = 0; x < uWidth; ++x)
+				for (uint32_t x = 0; x < uWidth; ++x)
 				{
 					*pbyDestination++ = pRow[2]; // Blue
 					*pbyDestination++ = pRow[1]; // Green
@@ -282,12 +282,12 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 				break;
 			case D3DFMT_R5G6B5:
 			{
-				for (UINT x = 0; x < uWidth; ++x)
+				for (uint32_t x = 0; x < uWidth; ++x)
 				{
-					UINT uColor = *((UINT*)pRow);
-					BYTE byBlue = (uColor >> 11) & 0x1F;
-					BYTE byGreen = (uColor >> 5) & 0x3F;
-					BYTE byRed = uColor & 0x1F;
+					uint32_t uColor = *((uint32_t*)pRow);
+					uint8_t byBlue = (uColor >> 11) & 0x1F;
+					uint8_t byGreen = (uColor >> 5) & 0x3F;
+					uint8_t byRed = uColor & 0x1F;
 
 					*pbyDestination++ = (byBlue << 3) | (byBlue >> 2);	 // Blue
 					*pbyDestination++ = (byGreen << 2) | (byGreen >> 2); // Green
@@ -299,12 +299,12 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 			case D3DFMT_X1R5G5B5:
 			case D3DFMT_A1R5G5B5:
 			{
-				for (UINT x = 0; x < uWidth; ++x)
+				for (uint32_t x = 0; x < uWidth; ++x)
 				{
-					UINT uColor = *((UINT*)pRow);
-					BYTE byBlue = (uColor >> 10) & 0x1F;
-					BYTE byGreen = (uColor >> 5) & 0x1F;
-					BYTE byRed = uColor & 0x1F;
+					uint32_t uColor = *((uint32_t*)pRow);
+					uint8_t byBlue = (uColor >> 10) & 0x1F;
+					uint8_t byGreen = (uColor >> 5) & 0x1F;
+					uint8_t byRed = uColor & 0x1F;
 
 					*pbyDestination++ = (byBlue << 3) | (byBlue >> 2);	 // Blue
 					*pbyDestination++ = (byGreen << 3) | (byGreen >> 2); // Green
@@ -388,10 +388,10 @@ bool CPythonGraphic::SaveScreenShot(const char* c_pszFileName)
 				0x1,
 				0x2,
 				0x0,
-				(BYTE)imgDescLen, // textLen[0],
-				0,				  // textLen[1],
-				0,				  // textLen[2],
-				0,				  // textLen[3],
+				(uint8_t)imgDescLen, // textLen[0],
+				0,					 // textLen[1],
+				0,					 // textLen[2],
+				0,					 // textLen[3],
 				0x1a,
 				0x0,
 				0x0,
@@ -641,7 +641,7 @@ void CPythonGraphic::RenderUpButton(float sx, float sy, float ex, float ey)
 	RenderLine2d(ex, sy, ex, ey);
 }
 
-DWORD CPythonGraphic::GetAvailableMemory()
+uint32_t CPythonGraphic::GetAvailableMemory()
 {
 	return ms_lpd3dDevice->GetAvailableTextureMem();
 }

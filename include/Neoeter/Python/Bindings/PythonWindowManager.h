@@ -31,7 +31,7 @@ namespace UI
 			long GetScreenWidth() { return m_lWidth; }
 			long GetScreenHeight() { return m_lHeight; }
 			void GetMousePosition(long& rx, long& ry);
-			BOOL IsDragging();
+			int32_t IsDragging();
 
 			CWindow* GetLockWindow() { return m_pLockWindow; }
 			CWindow* GetPointWindow() { return m_pPointWindow; }
@@ -63,7 +63,7 @@ namespace UI
 			};
 
 			CWindow* RegisterWindow(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterTypeWindow(PyObject* po, DWORD dwWndType, const char* c_szLayer);
+			CWindow* RegisterTypeWindow(PyObject* po, uint32_t dwWndType, const char* c_szLayer);
 
 			CWindow* RegisterSlotWindow(PyObject* po, const char* c_szLayer);
 			CWindow* RegisterGridSlotWindow(PyObject* po, const char* c_szLayer);
@@ -86,14 +86,14 @@ namespace UI
 			void NotifyDestroyWindow(CWindow* pWindow);
 
 			// Attaching Icon
-			BOOL IsAttaching();
-			DWORD GetAttachingType();
-			DWORD GetAttachingIndex();
-			DWORD GetAttachingSlotNumber();
-			void GetAttachingIconSize(BYTE* pbyWidth, BYTE* pbyHeight);
-			void AttachIcon(DWORD dwType, DWORD dwIndex, DWORD dwSlotNumber, BYTE byWidth, BYTE byHeight);
+			int32_t IsAttaching();
+			uint32_t GetAttachingType();
+			uint32_t GetAttachingIndex();
+			uint32_t GetAttachingSlotNumber();
+			void GetAttachingIconSize(uint8_t* pbyWidth, uint8_t* pbyHeight);
+			void AttachIcon(uint32_t dwType, uint32_t dwIndex, uint32_t dwSlotNumber, uint8_t byWidth, uint8_t byHeight);
 			void DeattachIcon();
-			void SetAttachingFlag(BOOL bFlag);
+			void SetAttachingFlag(int32_t bFlag);
 			// Attaching Icon
 
 			void OnceIgnoreMouseLeftButtonUpEvent();
@@ -139,7 +139,7 @@ namespace UI
 			void SetMousePosition(long x, long y);
 			CWindow* __PickWindow(long x, long y);
 
-			CWindow* __NewWindow(PyObject* po, DWORD dwWndType);
+			CWindow* __NewWindow(PyObject* po, uint32_t dwWndType);
 			void __ClearReserveDeleteWindowList();
 
 		private:
@@ -153,17 +153,17 @@ namespace UI
 			long m_lDragX, m_lDragY;
 			long m_lPickedX, m_lPickedY;
 
-			BOOL m_bOnceIgnoreMouseLeftButtonUpEventFlag;
+			int32_t m_bOnceIgnoreMouseLeftButtonUpEventFlag;
 			int m_iIgnoreEndTime;
 
 			// Attaching Icon
 			PyObject* m_poMouseHandler;
-			BOOL m_bAttachingFlag;
-			DWORD m_dwAttachingType;
-			DWORD m_dwAttachingIndex;
-			DWORD m_dwAttachingSlotNumber;
-			BYTE m_byAttachingIconWidth;
-			BYTE m_byAttachingIconHeight;
+			int32_t m_bAttachingFlag;
+			uint32_t m_dwAttachingType;
+			uint32_t m_dwAttachingIndex;
+			uint32_t m_dwAttachingSlotNumber;
+			uint8_t m_byAttachingIconWidth;
+			uint8_t m_byAttachingIconHeight;
 			// Attaching Icon
 
 			CWindow* m_pActiveWindow;

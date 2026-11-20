@@ -9,14 +9,14 @@ void CGridSlotWindow::OnRenderPickingSlot()
 	if (!UI::CWindowManager::Instance().IsAttaching())
 		return;
 
-	BYTE byWidth, byHeight;
+	uint8_t byWidth, byHeight;
 	UI::CWindowManager::Instance().GetAttachingIconSize(&byWidth, &byHeight);
 
 	std::list<TSlot*> SlotList;
 	if (GetPickedSlotList(byWidth, byHeight, &SlotList))
 	{
-		DWORD dwSlotNumber = UI::CWindowManager::Instance().GetAttachingSlotNumber();
-		DWORD dwItemIndex = UI::CWindowManager::Instance().GetAttachingIndex();
+		uint32_t dwSlotNumber = UI::CWindowManager::Instance().GetAttachingSlotNumber();
+		uint32_t dwItemIndex = UI::CWindowManager::Instance().GetAttachingIndex();
 
 		// UseMode 이고..
 		if (m_isUseMode)
@@ -65,12 +65,12 @@ void CGridSlotWindow::OnRenderPickingSlot()
 	}
 }
 
-BOOL CGridSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
+int32_t CGridSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
 {
 	if (!UI::CWindowManager::Instance().IsAttaching())
 		return CSlotWindow::GetPickedSlotPointer(ppSlot);
 
-	BYTE byWidth, byHeight;
+	uint8_t byWidth, byHeight;
 	UI::CWindowManager::Instance().GetAttachingIconSize(&byWidth, &byHeight);
 
 	std::list<TSlot*> SlotList;
@@ -78,8 +78,8 @@ BOOL CGridSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
 		return FALSE;
 
 	TSlot* pMinSlot = NULL;
-	// DWORD dwSlotNumber = UI::CWindowManager::Instance().GetAttachingSlotNumber();
-	// DWORD dwAttachingItemIndex = UI::CWindowManager::Instance().GetAttachingIndex();
+	// uint32_t dwSlotNumber = UI::CWindowManager::Instance().GetAttachingSlotNumber();
+	// uint32_t dwAttachingItemIndex = UI::CWindowManager::Instance().GetAttachingIndex();
 
 	for (std::list<TSlot*>::iterator itor = SlotList.begin(); itor != SlotList.end(); ++itor)
 	{
@@ -122,7 +122,7 @@ BOOL CGridSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
 		// 현재 아이템을 들고 있는 중이고..
 		if (UI::CWindowManager::Instance().IsAttaching())
 		{
-			DWORD dwSlotNumber = UI::CWindowManager::Instance().GetAttachingSlotNumber();
+			uint32_t dwSlotNumber = UI::CWindowManager::Instance().GetAttachingSlotNumber();
 
 			if (dwSlotNumber == pCenterSlot->dwSlotNumber)
 			{
@@ -134,7 +134,7 @@ BOOL CGridSlotWindow::GetPickedSlotPointer(TSlot** ppSlot)
 	return TRUE;
 }
 
-BOOL CGridSlotWindow::GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot*>* pSlotPointerList)
+int32_t CGridSlotWindow::GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot*>* pSlotPointerList)
 {
 	long lx, ly;
 	GetMouseLocalPosition(lx, ly);
@@ -190,16 +190,16 @@ BOOL CGridSlotWindow::GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot
 			iyStart = 0;
 		}
 
-		if (DWORD(ixEnd) >= m_dwxCount)
+		if (uint32_t(ixEnd) >= m_dwxCount)
 		{
-			int ixTemporary = DWORD(ixEnd) - m_dwxCount + 1;
+			int ixTemporary = uint32_t(ixEnd) - m_dwxCount + 1;
 			ixStart -= ixTemporary;
 			ixEnd -= ixTemporary;
 		}
 
-		if (DWORD(iyEnd) >= m_dwyCount)
+		if (uint32_t(iyEnd) >= m_dwyCount)
 		{
-			int iyTemporary = DWORD(iyEnd) - m_dwyCount + 1;
+			int iyTemporary = uint32_t(iyEnd) - m_dwyCount + 1;
 			iyStart -= iyTemporary;
 			iyEnd -= iyTemporary;
 		}
@@ -208,7 +208,7 @@ BOOL CGridSlotWindow::GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot
 			for (int j = iyStart; j <= iyEnd; ++j)
 			{
 				TSlot* pSlot;
-				if (GetGridSlotPointer(DWORD(i), DWORD(j), &pSlot))
+				if (GetGridSlotPointer(uint32_t(i), uint32_t(j), &pSlot))
 				{
 					pSlotPointerList->push_back(pSlot);
 				}
@@ -238,9 +238,9 @@ BOOL CGridSlotWindow::GetPickedSlotList(int iWidth, int iHeight, std::list<TSlot
 	return FALSE;
 }
 
-BOOL CGridSlotWindow::GetGridSlotPointer(int ix, int iy, TSlot** ppSlot)
+int32_t CGridSlotWindow::GetGridSlotPointer(int ix, int iy, TSlot** ppSlot)
 {
-	DWORD dwSlotIndex = ix + iy * m_dwxCount;
+	uint32_t dwSlotIndex = ix + iy * m_dwxCount;
 	if (dwSlotIndex >= m_SlotVector.size())
 		return FALSE;
 
@@ -249,10 +249,10 @@ BOOL CGridSlotWindow::GetGridSlotPointer(int ix, int iy, TSlot** ppSlot)
 	return TRUE;
 }
 
-BOOL CGridSlotWindow::GetPickedGridSlotPosition(int ixLocal, int iyLocal, int* pix, int* piy)
+int32_t CGridSlotWindow::GetPickedGridSlotPosition(int ixLocal, int iyLocal, int* pix, int* piy)
 {
-	for (DWORD x = 0; x < m_dwxCount; ++x)
-		for (DWORD y = 0; y < m_dwyCount; ++y)
+	for (uint32_t x = 0; x < m_dwxCount; ++x)
+		for (uint32_t y = 0; y < m_dwyCount; ++y)
 		{
 			TSlot* pSlot;
 			if (!GetGridSlotPointer(x, y, &pSlot))
@@ -272,7 +272,7 @@ BOOL CGridSlotWindow::GetPickedGridSlotPosition(int ixLocal, int iyLocal, int* p
 	return FALSE;
 }
 
-void CGridSlotWindow::ArrangeGridSlot(DWORD dwStartIndex, DWORD dwxCount, DWORD dwyCount, int ixSlotSize, int iySlotSize, int ixTemporarySize, int iyTemporarySize)
+void CGridSlotWindow::ArrangeGridSlot(uint32_t dwStartIndex, uint32_t dwxCount, uint32_t dwyCount, int ixSlotSize, int iySlotSize, int ixTemporarySize, int iyTemporarySize)
 {
 	Destroy();
 
@@ -282,10 +282,10 @@ void CGridSlotWindow::ArrangeGridSlot(DWORD dwStartIndex, DWORD dwxCount, DWORD 
 	m_SlotVector.clear();
 	m_SlotVector.resize(dwxCount * dwyCount);
 
-	for (DWORD x = 0; x < dwxCount; ++x)
-		for (DWORD y = 0; y < dwyCount; ++y)
+	for (uint32_t x = 0; x < dwxCount; ++x)
+		for (uint32_t y = 0; y < dwyCount; ++y)
 		{
-			DWORD dwIndex = dwStartIndex + x + y * dwxCount;
+			uint32_t dwIndex = dwStartIndex + x + y * dwxCount;
 			int ixPosition = x * (ixSlotSize + ixTemporarySize);
 			int iyPosition = y * (iySlotSize + iyTemporarySize);
 
@@ -301,7 +301,7 @@ void CGridSlotWindow::ArrangeGridSlot(DWORD dwStartIndex, DWORD dwxCount, DWORD 
 
 void CGridSlotWindow::OnRefreshSlot()
 {
-	DWORD x, y;
+	uint32_t x, y;
 
 	for (x = 0; x < m_dwxCount; ++x)
 		for (y = 0; y < m_dwyCount; ++y)
@@ -322,8 +322,8 @@ void CGridSlotWindow::OnRefreshSlot()
 
 			if (pSlot->isItem)
 			{
-				for (DWORD xSub = 0; xSub < pSlot->byxPlacedItemSize; ++xSub)
-					for (DWORD ySub = 0; ySub < pSlot->byyPlacedItemSize; ++ySub)
+				for (uint32_t xSub = 0; xSub < pSlot->byxPlacedItemSize; ++xSub)
+					for (uint32_t ySub = 0; ySub < pSlot->byyPlacedItemSize; ++ySub)
 					{
 						TSlot* pSubSlot;
 						if (!GetGridSlotPointer(x + xSub, y + ySub, &pSubSlot))
@@ -340,7 +340,7 @@ void CGridSlotWindow::OnRefreshSlot()
 		}
 }
 
-BOOL CGridSlotWindow::CheckMoving(DWORD dwSlotNumber, DWORD dwItemIndex, const std::list<TSlot*>& c_rSlotList)
+int32_t CGridSlotWindow::CheckMoving(uint32_t dwSlotNumber, uint32_t dwItemIndex, const std::list<TSlot*>& c_rSlotList)
 {
 	if (m_dwSlotStyle != SLOT_STYLE_PICK_UP)
 		return TRUE;
@@ -377,13 +377,13 @@ void CGridSlotWindow::__Initialize()
 	m_dwyCount = 0;
 }
 
-DWORD CGridSlotWindow::Type()
+uint32_t CGridSlotWindow::Type()
 {
 	static int s_Type = GetCRC32("CGridSlotWindow", strlen("CGridSlotWindow"));
 	return s_Type;
 }
 
-BOOL CGridSlotWindow::OnIsType(DWORD dwType)
+int32_t CGridSlotWindow::OnIsType(uint32_t dwType)
 {
 	if (CGridSlotWindow::Type() == dwType)
 		return TRUE;

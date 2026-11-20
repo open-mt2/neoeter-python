@@ -459,7 +459,7 @@ PyObject* grpSetColor(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetInteger(poArgs, 0, &color))
 		return Py_BuildException();
 
-	CPythonGraphic::Instance().SetDiffuseColor(DWORD(color));
+	CPythonGraphic::Instance().SetDiffuseColor(uint32_t(color));
 	return Py_BuildNone();
 }
 
@@ -831,7 +831,7 @@ PyObject* grpSaveScreenShotToPath(PyObject* poSelf, PyObject* poArgs)
 			 tmNow->tm_min,
 			 tmNow->tm_sec);
 
-	BOOL bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
+	int32_t bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
 	return Py_BuildValue("(is)", bResult, szPath);
 }
 // END_OF_SCREENSHOT_CWDSAVE
@@ -870,7 +870,7 @@ PyObject* grpSaveScreenShot(PyObject* poSelf, PyObject* poArgs)
 			tmNow->tm_min,
 			tmNow->tm_sec);
 
-	BOOL bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
+	int32_t bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
 	return Py_BuildValue("(is)", bResult, szPath);
 }
 
@@ -913,8 +913,8 @@ PyObject* grpSetViewport(PyObject* poSelf, PyObject* poArgs)
 	if (!PyTuple_GetFloat(poArgs, 3, &fHeight))
 		return Py_BuildException();
 
-	UINT uWidth;
-	UINT uHeight;
+	uint32_t uWidth;
+	uint32_t uHeight;
 	CPythonGraphic::Instance().GetBackBufferSize(&uWidth, &uHeight);
 	CPythonGraphic::Instance().SetViewport(fx * uWidth, fy * uHeight, fWidth * uWidth, fHeight * uHeight);
 	return Py_BuildNone();

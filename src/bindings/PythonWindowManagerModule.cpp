@@ -1595,7 +1595,7 @@ PyObject* wndMgrDeattachIcon(PyObject* poSelf, PyObject* poArgs)
 
 PyObject* wndMgrSetAttachingFlag(PyObject* poSelf, PyObject* poArgs)
 {
-	BOOL bFlag;
+	int32_t bFlag;
 	if (!PyTuple_GetInteger(poArgs, 0, &bFlag))
 		return Py_BuildException();
 
@@ -1726,13 +1726,13 @@ PyObject* wndTextSetFontColor(PyObject* poSelf, PyObject* poArgs)
 			return Py_BuildException();
 		float fa = 1.0f;
 
-		BYTE argb[4] =
+		uint8_t argb[4] =
 			{
-				(BYTE)(255.0f * fb),
-				(BYTE)(255.0f * fg),
-				(BYTE)(255.0f * fr),
-				(BYTE)(255.0f * fa)};
-		((UI::CTextLine*)pWindow)->SetFontColor(*((DWORD*)argb));
+				(uint8_t)(255.0f * fb),
+				(uint8_t)(255.0f * fg),
+				(uint8_t)(255.0f * fr),
+				(uint8_t)(255.0f * fa)};
+		((UI::CTextLine*)pWindow)->SetFontColor(*((uint32_t*)argb));
 	}
 	else
 	{
@@ -2267,8 +2267,8 @@ PyObject* wndButtonIsDown(PyObject* poSelf, PyObject* poArgs)
 	return Py_BuildValue("i", ((UI::CButton*)pWindow)->IsPressed());
 }
 
-extern BOOL g_bOutlineBoxEnable;
-extern BOOL g_bShowOverInWindowName;
+extern int32_t g_bOutlineBoxEnable;
+extern int32_t g_bShowOverInWindowName;
 
 PyObject* wndMgrSetOutlineFlag(PyObject* poSelf, PyObject* poArgs)
 {

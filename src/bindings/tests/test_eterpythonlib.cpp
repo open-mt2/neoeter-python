@@ -204,8 +204,8 @@ namespace
 		PyObject* pyColor = PyDict_GetItemString(dict, "color_val");
 		assert(pyColor != nullptr);
 
-		DWORD expectedColor = CPythonGraphic::Instance().GenerateColor(1.0f, 0.5f, 0.25f, 1.0f);
-		assert(static_cast<DWORD>(PyLong_AsUnsignedLong(pyColor)) == expectedColor);
+		uint32_t expectedColor = CPythonGraphic::Instance().GenerateColor(1.0f, 0.5f, 0.25f, 1.0f);
+		assert(static_cast<uint32_t>(PyLong_AsUnsignedLong(pyColor)) == expectedColor);
 
 		std::printf("[PASS] test_grp_module\n");
 	}

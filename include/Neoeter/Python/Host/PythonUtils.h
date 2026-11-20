@@ -5,7 +5,7 @@
 bool PyTuple_GetString(PyObject* poArgs, int pos, char** ret);
 bool PyTuple_GetInteger(PyObject* poArgs, int pos, unsigned char* ret);
 bool PyTuple_GetInteger(PyObject* poArgs, int pos, int* ret);
-bool PyTuple_GetInteger(PyObject* poArgs, int pos, WORD* ret);
+bool PyTuple_GetInteger(PyObject* poArgs, int pos, uint16_t* ret);
 bool PyTuple_GetByte(PyObject* poArgs, int pos, unsigned char* ret);
 bool PyTuple_GetUnsignedInteger(PyObject* poArgs, int pos, unsigned int* ret);
 bool PyTuple_GetLong(PyObject* poArgs, int pos, long* ret);

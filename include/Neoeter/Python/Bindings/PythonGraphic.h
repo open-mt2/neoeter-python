@@ -44,10 +44,10 @@ class CPythonGraphic : public CScreen, public CSingleton<CPythonGraphic>
 		void RenderAlphaImage(CGraphicImageInstance* pImageInstance, float x, float y, float aLeft, float aRight);
 		void RenderCoolTimeBox(float fxCenter, float fyCenter, float fRadius, float fTime);
 
-		bool SaveJPEG(const char* pszFileName, LPBYTE pbyBuffer, UINT uWidth, UINT uHeight);
+		bool SaveJPEG(const char* pszFileName, LPBYTE pbyBuffer, uint32_t uWidth, uint32_t uHeight);
 		bool SaveScreenShot(const char* szFileName);
 
-		DWORD GetAvailableMemory();
+		uint32_t GetAvailableMemory();
 		void SetGamma(float fGammaFactor = 1.0f);
 
 	protected:
@@ -57,8 +57,8 @@ class CPythonGraphic : public CScreen, public CSingleton<CPythonGraphic>
 				D3DXMATRIX matProj;
 		} TState;
 
-		DWORD m_lightColor;
-		DWORD m_darkColor;
+		uint32_t m_lightColor;
+		uint32_t m_darkColor;
 
 	protected:
 		std::stack<TState> m_stateStack;
