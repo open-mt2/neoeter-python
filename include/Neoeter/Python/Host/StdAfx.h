@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Platform/Platform.h>
+#include <Neoeter/Platform/Platform.h>
 #include <Neoeter/Render/StdAfx.h>
 #include <Neoeter/Model/Grn/StdAfx.h>
 

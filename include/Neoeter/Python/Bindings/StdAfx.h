@@ -4,7 +4,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include <Platform/Platform.h>
+#include <Neoeter/Platform/Platform.h>
 #include <Neoeter/Render/StdAfx.h>
 #include <Neoeter/Python/Host/StdAfx.h>
 
