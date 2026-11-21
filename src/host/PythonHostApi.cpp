@@ -7,9 +7,9 @@
 
 struct neoeter_python_host
 {
-	CPythonLauncher* launcher = nullptr;
-	std::string lastError;
-	bool loaded = false;
+		CPythonLauncher* launcher = nullptr;
+		std::string lastError;
+		bool loaded = false;
 };
 
 namespace

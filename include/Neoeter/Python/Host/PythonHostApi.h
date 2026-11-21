@@ -24,20 +24,20 @@ extern "C"
 
 	typedef struct neoeter_python_module
 	{
-		const char* name;
-		neoeter_python_register_module register_module;
+			const char* name;
+			neoeter_python_register_module register_module;
 	} neoeter_python_module;
 
 	typedef struct neoeter_python_pack
 	{
-		uint32_t struct_size;
-		uint32_t abi_version;
-		const char* pack_name;
-		const char* entry;
-		const char* command_line;
-		int32_t debug;
-		const neoeter_python_module* modules;
-		uint32_t module_count;
+			uint32_t struct_size;
+			uint32_t abi_version;
+			const char* pack_name;
+			const char* entry;
+			const char* command_line;
+			int32_t debug;
+			const neoeter_python_module* modules;
+			uint32_t module_count;
 	} neoeter_python_pack;
 
 	neoeter_python_result neoeter_python_host_create(neoeter_python_host** out);
