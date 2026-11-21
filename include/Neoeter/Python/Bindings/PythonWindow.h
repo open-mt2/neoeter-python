@@ -2,6 +2,9 @@
 
 #include <Neoeter/Platform/Base/Utils.h>
 
+#include <list>
+#include <Python.h>
+
 namespace UI
 {
 	class CWindow
