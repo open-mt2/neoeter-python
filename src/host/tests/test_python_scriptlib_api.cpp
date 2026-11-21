@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <vector>
 
-// TA.6: boot the embedded Python 2.7 interpreter without a display, register
+// Boot the embedded Python 2.7 interpreter without a display, register
 // the modules owned by ScriptLib and pin the exposed API surface.
 int main(int argc, char** argv)
 {

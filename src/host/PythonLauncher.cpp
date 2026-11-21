@@ -35,7 +35,7 @@ static PyObject* py_time_sleep(PyObject* self, PyObject* args)
 	if (!PyArg_ParseTuple(args, "d", &secs))
 		return NULL;
 #if defined(_WIN32)
-	// nanosleep is POSIX; the Windows build uses the Win32 equivalent (T1.9).
+	// nanosleep is POSIX; the Windows build uses the Win32 equivalent.
 	Sleep((uint32_t)(secs * 1000.0));
 #else
 	struct timespec ts;

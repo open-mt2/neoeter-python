@@ -4,7 +4,7 @@
 #include <Neoeter/Render/StdAfx.h>
 #include <Neoeter/Model/Grn/StdAfx.h>
 
-#include <Python.h> // T1.9: the include dir selects the platform copy
+#include <Python.h> // the include dir selects the platform copy
 
 #include <Neoeter/Python/Host/PythonModules.h>
 #include <Neoeter/Python/Host/PythonUtils.h>
