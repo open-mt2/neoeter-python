@@ -6,12 +6,11 @@
 
 #include <Python.h> // T1.9: the include dir selects the platform copy
 
+#include <Neoeter/Python/Host/PythonModules.h>
 #include <Neoeter/Python/Host/PythonUtils.h>
 #include <Neoeter/Python/Host/PythonLauncher.h>
 #include <Neoeter/Python/Host/PythonMarshal.h>
 #include <Neoeter/Python/Host/Resource.h>
-
-void initdbg();
 
 // PYTHON_EXCEPTION_SENDER
 class IPythonExceptionSender

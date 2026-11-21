@@ -10,10 +10,7 @@
 
 #include <Neoeter/Python/Bindings/PythonGraphic.h>
 #include <Neoeter/Python/Bindings/PythonWindowManager.h>
+#include <Neoeter/Python/Host/PythonModules.h>
 
-void initgrp();
-void initgrpImage();
-void initgrpText();
 void initgrpThing();
 void initscriptWindow();
-void initwndMgr();

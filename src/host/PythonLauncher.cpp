@@ -361,7 +361,8 @@ CPythonLauncher::~CPythonLauncher()
 
 void CPythonLauncher::Clear()
 {
-	Py_Finalize();
+	if (Py_IsInitialized())
+		Py_Finalize();
 }
 
 std::string g_stTraceBuffer[512];
@@ -686,14 +687,24 @@ bool CPythonLauncher::RunLine(const char* c_szSrc)
 
 const char* CPythonLauncher::GetError()
 {
+	if (!PyErr_Occurred())
+		return "";
+
 	PyObject* exc;
 	PyObject* v;
 	PyObject* tb;
 
 	PyErr_Fetch(&exc, &v, &tb);
 
-	if (PyString_Check(v))
-		return PyString_AS_STRING(v);
+	static std::string s_error;
+	s_error.clear();
 
-	return "";
+	if (v && PyString_Check(v))
+		s_error = PyString_AS_STRING(v);
+
+	Py_XDECREF(exc);
+	Py_XDECREF(v);
+	Py_XDECREF(tb);
+
+	return s_error.c_str();
 }
