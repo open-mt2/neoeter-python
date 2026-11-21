@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 project(NeoeterPython VERSION 0.1.8 LANGUAGES C CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Python 2.7 host + bindings. One header root, one directory per package.
 
 set(CMAKE_CXX_STANDARD 17)
