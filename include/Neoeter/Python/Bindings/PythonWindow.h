@@ -4,6 +4,10 @@
 
 #include <list>
 #include <Python.h>
+#include <Neoeter/Render/GrpTextInstance.h>
+#include <Neoeter/Render/GrpImageInstance.h>
+#include <Neoeter/Render/GrpMarkInstance.h>
+#include <Neoeter/Render/GrpExpandedImageInstance.h>
 
 namespace UI
 {

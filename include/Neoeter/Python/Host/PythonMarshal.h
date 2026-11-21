@@ -1,5 +1,6 @@
 #ifndef __INC_ETERMARSHAL_H__
 #define __INC_ETERMARSHAL_H__
+#include <Python.h>
 
 extern PyObject* _PyMarshal_ReadObjectFromFile(FILE* fp);
 extern PyObject* _PyMarshal_ReadLastObjectFromFile(FILE* fp);

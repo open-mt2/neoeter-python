@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <Python.h>
 #include <python2.7/frameobject.h>
 
 #include <Neoeter/Platform/Base/Singleton.h>

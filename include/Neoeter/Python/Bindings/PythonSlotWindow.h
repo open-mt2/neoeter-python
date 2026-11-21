@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Neoeter/Python/Bindings/PythonWindow.h>
+#include <deque>
 
 namespace UI
 {

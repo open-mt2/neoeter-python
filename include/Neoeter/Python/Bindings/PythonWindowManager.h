@@ -1,4 +1,8 @@
 #pragma once
+#include <Neoeter/Platform/Base/Singleton.h>
+#include <map>
+#include <list>
+#include <Python.h>
 
 namespace UI
 {
