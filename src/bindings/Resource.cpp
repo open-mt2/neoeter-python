@@ -1,4 +1,4 @@
-#include <Neoeter/Python/Host/StdAfx.h>
+#include <Neoeter/Python/Bindings/StdAfx.h>
 #include <Neoeter/Render/GrpExpandedImageInstance.h>
 #include <Neoeter/Render/GrpTextInstance.h>
 #include <Neoeter/Render/GrpMarkInstance.h>
@@ -10,7 +10,7 @@
 #include <Neoeter/Effect/EffectMesh.h>
 #include <Neoeter/Effect/EffectInstance.h>
 
-#include <Neoeter/Python/Host/Resource.h>
+#include <Neoeter/Python/Bindings/Resource.h>
 
 std::vector<CPythonResource::TDestroyHandler> CPythonResource::ms_destroyHandlers;
 

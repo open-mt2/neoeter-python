@@ -27,7 +27,7 @@ namespace UI
 				ry = m_iVres;
 			}
 
-			void SetMouseHandler(PyObject* poMouseHandler);
+			void SetMouseHandler(ScriptObject* poMouseHandler);
 			long GetScreenWidth() { return m_lWidth; }
 			long GetScreenHeight() { return m_lHeight; }
 			void GetMousePosition(long& rx, long& ry);
@@ -62,25 +62,25 @@ namespace UI
 				WT_NUMLINE,
 			};
 
-			CWindow* RegisterWindow(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterTypeWindow(PyObject* po, DWORD dwWndType, const char* c_szLayer);
+			CWindow* RegisterWindow(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterTypeWindow(ScriptObject* po, DWORD dwWndType, const char* c_szLayer);
 
-			CWindow* RegisterSlotWindow(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterGridSlotWindow(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterTextLine(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterMarkBox(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterImageBox(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterExpandedImageBox(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterAniImageBox(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterButton(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterRadioButton(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterToggleButton(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterDragButton(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterBox(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterBar(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterLine(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterBar3D(PyObject* po, const char* c_szLayer);
-			CWindow* RegisterNumberLine(PyObject* po, const char* c_szLayer);
+			CWindow* RegisterSlotWindow(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterGridSlotWindow(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterTextLine(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterMarkBox(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterImageBox(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterExpandedImageBox(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterAniImageBox(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterButton(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterRadioButton(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterToggleButton(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterDragButton(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterBox(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterBar(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterLine(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterBar3D(ScriptObject* po, const char* c_szLayer);
+			CWindow* RegisterNumberLine(ScriptObject* po, const char* c_szLayer);
 
 			void DestroyWindow(CWindow* pWin);
 			void NotifyDestroyWindow(CWindow* pWindow);
@@ -139,7 +139,7 @@ namespace UI
 			void SetMousePosition(long x, long y);
 			CWindow* __PickWindow(long x, long y);
 
-			CWindow* __NewWindow(PyObject* po, DWORD dwWndType);
+			CWindow* __NewWindow(ScriptObject* po, DWORD dwWndType);
 			void __ClearReserveDeleteWindowList();
 
 		private:
@@ -157,7 +157,7 @@ namespace UI
 			int m_iIgnoreEndTime;
 
 			// Attaching Icon
-			PyObject* m_poMouseHandler;
+			ScriptObject* m_poMouseHandler;
 			BOOL m_bAttachingFlag;
 			DWORD m_dwAttachingType;
 			DWORD m_dwAttachingIndex;
@@ -183,5 +183,5 @@ namespace UI
 			TLayerContainer m_LayerWindowMap;
 	};
 
-	PyObject* BuildEmptyTuple();
+	ScriptObject* BuildEmptyTuple();
 };

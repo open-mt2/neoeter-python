@@ -1,10 +1,10 @@
 #include <Neoeter/Python/Bindings/StdAfx.h>
 
-bool PyTuple_GetImageInstance(PyObject* poArgs, int pos, CGraphicImageInstance** ppRetImageInstance)
+bool ScriptTuple_GetImageInstance(ScriptObject* poArgs, int pos, CGraphicImageInstance** ppRetImageInstance)
 {
 	CGraphicImageInstance* pImageInstance;
 
-	if (!PyTuple_GetHandle(poArgs, pos, &pImageInstance))
+	if (!ScriptTuple_GetHandle(poArgs, pos, &pImageInstance))
 		return false;
 
 	if (!pImageInstance)
@@ -14,11 +14,11 @@ bool PyTuple_GetImageInstance(PyObject* poArgs, int pos, CGraphicImageInstance**
 	return true;
 }
 
-bool PyTuple_GetExpandedImageInstance(PyObject* poArgs, int pos, CGraphicExpandedImageInstance** ppRetImageInstance)
+bool ScriptTuple_GetExpandedImageInstance(ScriptObject* poArgs, int pos, CGraphicExpandedImageInstance** ppRetImageInstance)
 {
 	CGraphicImageInstance* pImageInstance;
 
-	if (!PyTuple_GetHandle(poArgs, pos, &pImageInstance))
+	if (!ScriptTuple_GetHandle(poArgs, pos, &pImageInstance))
 		return false;
 
 	if (!pImageInstance)
@@ -32,279 +32,279 @@ bool PyTuple_GetExpandedImageInstance(PyObject* poArgs, int pos, CGraphicExpande
 	return true;
 }
 
-PyObject* grpImageGenerate(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageGenerate(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	char* szFileName;
 
-	if (!PyTuple_GetString(poArgs, 0, &szFileName))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetString(poArgs, 0, &szFileName))
+		return Script_BadArgument();
 
 	if (!*szFileName)
-		return Py_BuildHandle(NULL);
+		return Script_BuildHandle(NULL);
 
 	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicImage::Type()))
-		return Py_BuildException("Resource is not an image (filename: %s)", szFileName);
+		return Script_BuildException("Resource is not an image (filename: %s)", szFileName);
 
 	CGraphicImageInstance* pImageInstance = CGraphicImageInstance::New();
 	pImageInstance->SetImagePointer(static_cast<CGraphicImage*>(pResource));
 
 	if (pImageInstance->IsEmpty())
-		return Py_BuildException("Cannot load image (filename: %s)", szFileName);
+		return Script_BuildException("Cannot load image (filename: %s)", szFileName);
 
-	return Py_BuildHandle(pImageInstance);
+	return Script_BuildHandle(pImageInstance);
 }
 
-PyObject* grpImageGenerateExpanded(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageGenerateExpanded(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	char* szFileName;
 
-	if (!PyTuple_GetString(poArgs, 0, &szFileName))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetString(poArgs, 0, &szFileName))
+		return Script_BadArgument();
 
 	if (strlen(szFileName) <= 0)
-		return Py_BuildHandle(NULL);
+		return Script_BuildHandle(NULL);
 
 	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicImage::Type()))
-		return Py_BuildException("Resource is not an image (filename: %s)", szFileName);
+		return Script_BuildException("Resource is not an image (filename: %s)", szFileName);
 
 	CGraphicExpandedImageInstance* pImageInstance = CGraphicExpandedImageInstance::New();
 	pImageInstance->SetImagePointer(static_cast<CGraphicImage*>(pResource));
 
 	if (pImageInstance->IsEmpty())
-		return Py_BuildException("Cannot load image (filename: %s)", szFileName);
+		return Script_BuildException("Cannot load image (filename: %s)", szFileName);
 
-	return Py_BuildHandle(pImageInstance);
+	return Script_BuildHandle(pImageInstance);
 }
 
-PyObject* grpImageGenerateFromHandle(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageGenerateFromHandle(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImage* pImage;
-	if (!PyTuple_GetHandle(poArgs, 0, &pImage))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetHandle(poArgs, 0, &pImage))
+		return Script_BadArgument();
 
 	CGraphicImageInstance* pImageInstance = CGraphicImageInstance::New();
 	pImageInstance->SetImagePointer(pImage);
 
-	return Py_BuildHandle(pImageInstance);
+	return Script_BuildHandle(pImageInstance);
 }
 
-PyObject* grpImageDelete(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageDelete(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
 
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	if (!pImageInstance)
-		return Py_BuildNone();
+		return Script_BuildNone();
 
 	CGraphicImageInstance::Delete(pImageInstance);
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpImageDeleteExpanded(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageDeleteExpanded(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicExpandedImageInstance* pExpandedImageInstance;
-	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pExpandedImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetExpandedImageInstance(poArgs, 0, &pExpandedImageInstance))
+		return Script_BadArgument();
 
 	CGraphicExpandedImageInstance::Delete(pExpandedImageInstance);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpImageSetFileName(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageSetFileName(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	char* szFileName;
-	if (!PyTuple_GetString(poArgs, 1, &szFileName))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetString(poArgs, 1, &szFileName))
+		return Script_BadArgument();
 
 	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicImage::Type()))
-		return Py_BuildException("Resource is not an image (filename: %s)", szFileName);
+		return Script_BuildException("Resource is not an image (filename: %s)", szFileName);
 
 	pImageInstance->SetImagePointer(static_cast<CGraphicImage*>(pResource));
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpImageRender(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpImageRender(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	pImageInstance->Render();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetImagePosition(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetImagePosition(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 1, &x))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &x))
+		return Script_BadArgument();
 
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 2, &y))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &y))
+		return Script_BadArgument();
 
 	pImageInstance->SetPosition(x, y);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetImageOrigin(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetImageOrigin(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicExpandedImageInstance* pImageInstance;
-	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 1, &x))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &x))
+		return Script_BadArgument();
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 2, &y))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &y))
+		return Script_BadArgument();
 
 	pImageInstance->SetOrigin(x, y);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetImageRotation(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetImageRotation(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicExpandedImageInstance* pImageInstance;
-	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	float Degree;
-	if (!PyTuple_GetFloat(poArgs, 1, &Degree))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &Degree))
+		return Script_BadArgument();
 
 	pImageInstance->SetRotation(Degree);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetImageScale(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetImageScale(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicExpandedImageInstance* pImageInstance;
-	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 1, &x))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &x))
+		return Script_BadArgument();
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 2, &y))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &y))
+		return Script_BadArgument();
 
 	pImageInstance->SetScale(x, y);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetRenderingRect(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetRenderingRect(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicExpandedImageInstance* pImageInstance;
-	if (!PyTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetExpandedImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	float fLeft;
-	if (!PyTuple_GetFloat(poArgs, 1, &fLeft))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &fLeft))
+		return Script_BadArgument();
 	float fTop;
-	if (!PyTuple_GetFloat(poArgs, 2, &fTop))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &fTop))
+		return Script_BadArgument();
 	float fRight;
-	if (!PyTuple_GetFloat(poArgs, 3, &fRight))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &fRight))
+		return Script_BadArgument();
 	float fBottom;
-	if (!PyTuple_GetFloat(poArgs, 4, &fBottom))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 4, &fBottom))
+		return Script_BadArgument();
 
 	pImageInstance->SetRenderingRect(fLeft, fTop, fRight, fBottom);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetImageDiffuseColor(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetImageDiffuseColor(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	float r;
-	if (!PyTuple_GetFloat(poArgs, 1, &r))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &r))
+		return Script_BadArgument();
 	float g;
-	if (!PyTuple_GetFloat(poArgs, 2, &g))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &g))
+		return Script_BadArgument();
 	float b;
-	if (!PyTuple_GetFloat(poArgs, 3, &b))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &b))
+		return Script_BadArgument();
 	float a;
-	if (!PyTuple_GetFloat(poArgs, 4, &a))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetFloat(poArgs, 4, &a))
+		return Script_BadArgument();
 
 	pImageInstance->SetDiffuseColor(r, g, b, a);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpGetWidth(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGetWidth(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
 
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	if (pImageInstance->IsEmpty())
-		return Py_BuildException("Image is empty");
+		return Script_BuildException("Image is empty");
 
-	return Py_BuildValue("i", pImageInstance->GetWidth());
+	return Script_BuildValue("i", pImageInstance->GetWidth());
 }
 
-PyObject* grpGetHeight(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGetHeight(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicImageInstance* pImageInstance;
 
-	if (!PyTuple_GetImageInstance(poArgs, 0, &pImageInstance))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetImageInstance(poArgs, 0, &pImageInstance))
+		return Script_BadArgument();
 
 	if (pImageInstance->IsEmpty())
-		return Py_BuildException("Image is empty");
+		return Script_BuildException("Image is empty");
 
-	return Py_BuildValue("i", pImageInstance->GetHeight());
+	return Script_BuildValue("i", pImageInstance->GetHeight());
 }
 
 void initgrpImage()
 {
-	static PyMethodDef s_methods[] =
+	static ScriptMethodDef s_methods[] =
 		{
-			{"Render", grpImageRender, METH_VARARGS, NULL},
-			{"SetPosition", grpSetImagePosition, METH_VARARGS, NULL},
-			{"Generate", grpImageGenerate, METH_VARARGS, NULL},
-			{"GenerateExpanded", grpImageGenerateExpanded, METH_VARARGS, NULL},
-			{"GenerateFromHandle", grpImageGenerateFromHandle, METH_VARARGS, NULL},
-			{"Delete", grpImageDelete, METH_VARARGS, NULL},
-			{"DeleteExpanded", grpImageDeleteExpanded, METH_VARARGS, NULL},
-			{"SetFileName", grpImageSetFileName, METH_VARARGS, NULL},
-			{"SetOrigin", grpSetImageOrigin, METH_VARARGS, NULL},
-			{"SetRotation", grpSetImageRotation, METH_VARARGS, NULL},
-			{"SetScale", grpSetImageScale, METH_VARARGS, NULL},
-			{"SetRenderingRect", grpSetRenderingRect, METH_VARARGS, NULL},
-			{"SetDiffuseColor", grpSetImageDiffuseColor, METH_VARARGS, NULL},
-			{"GetWidth", grpGetWidth, METH_VARARGS, NULL},
-			{"GetHeight", grpGetHeight, METH_VARARGS, NULL},
+			{"Render", grpImageRender, SCRIPT_VARARGS, NULL},
+			{"SetPosition", grpSetImagePosition, SCRIPT_VARARGS, NULL},
+			{"Generate", grpImageGenerate, SCRIPT_VARARGS, NULL},
+			{"GenerateExpanded", grpImageGenerateExpanded, SCRIPT_VARARGS, NULL},
+			{"GenerateFromHandle", grpImageGenerateFromHandle, SCRIPT_VARARGS, NULL},
+			{"Delete", grpImageDelete, SCRIPT_VARARGS, NULL},
+			{"DeleteExpanded", grpImageDeleteExpanded, SCRIPT_VARARGS, NULL},
+			{"SetFileName", grpImageSetFileName, SCRIPT_VARARGS, NULL},
+			{"SetOrigin", grpSetImageOrigin, SCRIPT_VARARGS, NULL},
+			{"SetRotation", grpSetImageRotation, SCRIPT_VARARGS, NULL},
+			{"SetScale", grpSetImageScale, SCRIPT_VARARGS, NULL},
+			{"SetRenderingRect", grpSetRenderingRect, SCRIPT_VARARGS, NULL},
+			{"SetDiffuseColor", grpSetImageDiffuseColor, SCRIPT_VARARGS, NULL},
+			{"GetWidth", grpGetWidth, SCRIPT_VARARGS, NULL},
+			{"GetHeight", grpGetHeight, SCRIPT_VARARGS, NULL},
 			{NULL, NULL, 0, NULL},
 		};
 
-	Py_InitModule("grpImage", s_methods);
+	ScriptModule_Create("grpImage", s_methods);
 }

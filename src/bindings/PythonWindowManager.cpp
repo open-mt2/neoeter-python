@@ -10,11 +10,11 @@ BOOL g_bShowOverInWindowName = FALSE;
 
 namespace UI
 {
-	static PyObject* gs_poEmptyTuple = NULL;
+	static ScriptObject* gs_poEmptyTuple = NULL;
 
-	PyObject* BuildEmptyTuple()
+	ScriptObject* BuildEmptyTuple()
 	{
-		Py_INCREF(gs_poEmptyTuple);
+		Script_INCREF(gs_poEmptyTuple);
 		return gs_poEmptyTuple;
 	}
 
@@ -55,12 +55,12 @@ namespace UI
 		m_ActiveWindowList.clear();
 		m_LockWindowList.clear();
 
-		gs_poEmptyTuple = Py_BuildValue("()");
+		gs_poEmptyTuple = Script_BuildValue("()");
 	}
 
 	CWindowManager::~CWindowManager()
 	{
-		Py_DECREF(gs_poEmptyTuple);
+		Script_DECREF(gs_poEmptyTuple);
 
 		stl_wipe_second(m_LayerWindowMap);
 		m_LayerWindowMap.clear();
@@ -84,12 +84,12 @@ namespace UI
 #endif
 	}
 
-	void CWindowManager::SetMouseHandler(PyObject* poMouseHandler)
+	void CWindowManager::SetMouseHandler(ScriptObject* poMouseHandler)
 	{
 		m_poMouseHandler = poMouseHandler;
 	}
 
-	CWindow* CWindowManager::RegisterWindow(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterWindow(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -101,7 +101,7 @@ namespace UI
 		return (pWin);
 	}
 
-	CWindow* CWindowManager::__NewWindow(PyObject* po, DWORD dwWndType)
+	CWindow* CWindowManager::__NewWindow(ScriptObject* po, DWORD dwWndType)
 	{
 		switch (dwWndType)
 		{
@@ -160,7 +160,7 @@ namespace UI
 		return new CWindow(po);
 	}
 
-	CWindow* CWindowManager::RegisterTypeWindow(PyObject* po, DWORD dwWndType, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterTypeWindow(ScriptObject* po, DWORD dwWndType, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -173,7 +173,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterSlotWindow(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterSlotWindow(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -186,7 +186,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterGridSlotWindow(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterGridSlotWindow(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -199,7 +199,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterTextLine(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterTextLine(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -212,7 +212,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterImageBox(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterImageBox(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -225,7 +225,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterMarkBox(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterMarkBox(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -238,7 +238,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterExpandedImageBox(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterExpandedImageBox(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -251,7 +251,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterAniImageBox(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterAniImageBox(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -264,7 +264,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterButton(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterButton(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -277,7 +277,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterRadioButton(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterRadioButton(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -290,7 +290,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterToggleButton(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterToggleButton(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -303,7 +303,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterDragButton(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterDragButton(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -316,7 +316,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterBox(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterBox(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -329,7 +329,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterBar(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterBar(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -342,7 +342,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterLine(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterLine(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -355,7 +355,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterBar3D(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterBar3D(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -368,7 +368,7 @@ namespace UI
 		return pWin;
 	}
 
-	CWindow* CWindowManager::RegisterNumberLine(PyObject* po, const char* c_szLayer)
+	CWindow* CWindowManager::RegisterNumberLine(ScriptObject* po, const char* c_szLayer)
 	{
 		assert(m_LayerWindowMap.end() != m_LayerWindowMap.find(c_szLayer));
 
@@ -487,7 +487,7 @@ namespace UI
 	{
 		SetAttachingFlag(FALSE);
 		if (m_poMouseHandler)
-			PyCallClassMemberFunc(m_poMouseHandler, "DeattachObject", BuildEmptyTuple());
+			Script_CallMethod(m_poMouseHandler, "DeattachObject", BuildEmptyTuple());
 	}
 
 	void CWindowManager::SetParent(CWindow* pWindow, CWindow* pParentWindow)

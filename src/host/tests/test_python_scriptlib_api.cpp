@@ -1,5 +1,6 @@
 #include <Neoeter/Python/Host/StdAfx.h>
 #include <Neoeter/Python/Host/PythonLauncher.h>
+#include <Neoeter/Python/Bindings/ScriptDebugModule.h>
 
 #include <support/PythonApiSnapshot.h>
 #include <support/TestAssert.h>

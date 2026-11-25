@@ -884,23 +884,23 @@ void CSlotWindow::OnMouseOver()
 
 void CSlotWindow::OnSelectEmptySlot(int iSlotNumber)
 {
-	PyCallClassMemberFunc(m_poHandler, "OnSelectEmptySlot", Py_BuildValue("(i)", iSlotNumber));
+	Script_CallMethod(m_poHandler, "OnSelectEmptySlot", Script_BuildValue("(i)", iSlotNumber));
 }
 void CSlotWindow::OnSelectItemSlot(int iSlotNumber)
 {
 	//	OnOverOutItem();
-	PyCallClassMemberFunc(m_poHandler, "OnSelectItemSlot", Py_BuildValue("(i)", iSlotNumber));
+	Script_CallMethod(m_poHandler, "OnSelectItemSlot", Script_BuildValue("(i)", iSlotNumber));
 
 	if (UI::CWindowManager::Instance().IsAttaching())
 		OnOverOutItem();
 }
 void CSlotWindow::OnUnselectEmptySlot(int iSlotNumber)
 {
-	PyCallClassMemberFunc(m_poHandler, "OnUnselectEmptySlot", Py_BuildValue("(i)", iSlotNumber));
+	Script_CallMethod(m_poHandler, "OnUnselectEmptySlot", Script_BuildValue("(i)", iSlotNumber));
 }
 void CSlotWindow::OnUnselectItemSlot(int iSlotNumber)
 {
-	PyCallClassMemberFunc(m_poHandler, "OnUnselectItemSlot", Py_BuildValue("(i)", iSlotNumber));
+	Script_CallMethod(m_poHandler, "OnUnselectItemSlot", Script_BuildValue("(i)", iSlotNumber));
 }
 void CSlotWindow::OnUseSlot()
 {
@@ -908,7 +908,7 @@ void CSlotWindow::OnUseSlot()
 	if (GetPickedSlotPointer(&pSlot))
 		if (pSlot->isItem)
 		{
-			PyCallClassMemberFunc(m_poHandler, "OnUseSlot", Py_BuildValue("(i)", pSlot->dwSlotNumber));
+			Script_CallMethod(m_poHandler, "OnUseSlot", Script_BuildValue("(i)", pSlot->dwSlotNumber));
 		}
 }
 
@@ -925,7 +925,7 @@ BOOL CSlotWindow::OnOverInItem(DWORD dwSlotNumber)
 		return TRUE;
 
 	m_dwToolTipSlotNumber = dwSlotNumber;
-	PyCallClassMemberFunc(m_poHandler, "OnOverInItem", Py_BuildValue("(i)", dwSlotNumber));
+	Script_CallMethod(m_poHandler, "OnOverInItem", Script_BuildValue("(i)", dwSlotNumber));
 
 	return TRUE;
 }
@@ -936,14 +936,14 @@ void CSlotWindow::OnOverOutItem()
 		return;
 
 	m_dwToolTipSlotNumber = SLOT_NUMBER_NONE;
-	PyCallClassMemberFunc(m_poHandler, "OnOverOutItem", Py_BuildValue("()"));
+	Script_CallMethod(m_poHandler, "OnOverOutItem", Script_BuildValue("()"));
 }
 
 void CSlotWindow::OnPressedSlotButton(DWORD dwType, DWORD dwSlotNumber, BOOL isLeft)
 {
 	if (CSlotButton::SLOT_BUTTON_TYPE_PLUS == dwType)
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnPressedSlotButton", Py_BuildValue("(i)", dwSlotNumber));
+		Script_CallMethod(m_poHandler, "OnPressedSlotButton", Script_BuildValue("(i)", dwSlotNumber));
 	}
 	else if (CSlotButton::SLOT_BUTTON_TYPE_COVER == dwType)
 	{
@@ -1431,7 +1431,7 @@ void CSlotWindow::Destroy()
 	__Initialize();
 }
 
-CSlotWindow::CSlotWindow(PyObject* ppyObject) : CWindow(ppyObject)
+CSlotWindow::CSlotWindow(ScriptObject* ppyObject) : CWindow(ppyObject)
 {
 	__Initialize();
 }

@@ -23,6 +23,7 @@ target_link_libraries(test_eterpythonlib
 target_link_libraries(test_python_eterpythonlib_api
     PRIVATE
         neoeter_python_bindings
+        neoeter_python_host
         ${PYTHON_LIBRARIES}
         util
         dl

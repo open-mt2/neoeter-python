@@ -77,7 +77,7 @@ namespace UI
 			typedef TSlotList::iterator TSlotListIterator;
 
 		public:
-			CSlotWindow(PyObject* ppyObject);
+			CSlotWindow(ScriptObject* ppyObject);
 			virtual ~CSlotWindow();
 
 			void Destroy();

@@ -14,7 +14,7 @@ endif()
 if(ETERPYTHONLIB_STANDALONE)
     include(FetchContent)
 
-    foreach(dep EterBase:pkg_eterbase EterLocale:pkg_eterlocale EterPack:pkg_eterpack EterImageLib:pkg_eterimagelib SphereLib:pkg_spherelib client_webbrowser:pkg_cwebbrowser EterLib:pkg_eterlib MilesLib:pkg_mileslib EterGrnLib:pkg_etergrnlib EffectLib:pkg_effectlib neoeter_python_host:pkg_scriptlib)
+    foreach(dep EterBase:pkg_eterbase EterLocale:pkg_eterlocale EterPack:pkg_eterpack EterImageLib:pkg_eterimagelib SphereLib:pkg_spherelib client_webbrowser:pkg_cwebbrowser EterLib:pkg_eterlib MilesLib:pkg_mileslib EterGrnLib:pkg_etergrnlib EffectLib:pkg_effectlib)
         string(REPLACE ":" ";" dep_list ${dep})
         list(GET dep_list 0 dep_name)
         list(GET dep_list 1 dep_repo)
@@ -39,36 +39,8 @@ if(ETERPYTHONLIB_STANDALONE)
     endforeach()
 endif()
 
-# Locate Python 2.7
-find_package(PythonLibs 2.7 QUIET)
-
-if(NOT PYTHON_LIBRARIES)
-    find_library(PYTHON_LIBRARIES NAMES python2.7 python27 libpython2.7 libpython27
-        HINTS
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../extern/lib
-            ${CMAKE_CURRENT_SOURCE_DIR}/../extern/lib
-            ${CMAKE_CURRENT_SOURCE_DIR}/extern/lib
-            ${CMAKE_SOURCE_DIR}/extern/lib
-            /usr/lib
-            /usr/lib/x86_64-linux-gnu
-            /usr/local/lib
-    )
-endif()
-
-if(NOT PYTHON_INCLUDE_DIRS)
-    find_path(PYTHON_INCLUDE_DIRS NAMES python2.7/Python.h Python.h
-        HINTS
-            ${NEOETER_PYTHON_INCLUDE_DIR}/python2.7
-            ${NEOETER_PYTHON_INCLUDE_DIR}
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../extern/include/python2.7
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../extern/include
-            ${CMAKE_SOURCE_DIR}/extern/include/python2.7
-            ${CMAKE_SOURCE_DIR}/extern/include
-            /usr/include/python2.7
-            /usr/include
-    )
-endif()
-
+# Runtime-neutral bindings: they only use the Neoeter script API, so the same
+# modules serve the Python and the .NET runtimes.
 file(GLOB_RECURSE ETERPYTHONLIB_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
@@ -86,16 +58,6 @@ target_include_directories(neoeter_python_bindings
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Python's own headers are third-party: include them as SYSTEM so their
-# warnings (`register` in C++17) do not drown the project's own.
-target_include_directories(neoeter_python_bindings SYSTEM
-    PUBLIC
-        # The vendored copy is a Linux Python 2.7 include set; on Windows the
-        # headers must come from the cross-built prefix (T2.4/T1.9).
-        $<$<NOT:$<PLATFORM_ID:Windows>>:$<BUILD_INTERFACE:${NEOETER_PYTHON_INCLUDE_DIR}/python2.7>>
-        ${PYTHON_INCLUDE_DIRS}
-)
-
 target_link_libraries(neoeter_python_bindings
     PUBLIC
         neoeter_platform_base
@@ -103,8 +65,7 @@ target_link_libraries(neoeter_python_bindings
         neoeter_render
         neoeter_model_grn
         neoeter_effect
-        neoeter_python_host
-        ${PYTHON_LIBRARIES}
+        neoeter_script
         $<$<PLATFORM_ID:Linux>:util>
         $<$<PLATFORM_ID:Linux>:dl>
 )
@@ -116,7 +77,6 @@ if(UNIX)
         OPENMT2_SDL_WINDOW=1
         _GNU_SOURCE
     )
-    target_compile_options(neoeter_python_bindings PUBLIC -Wno-register)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_options(neoeter_python_bindings PUBLIC -Wno-macro-redefined)
     endif()

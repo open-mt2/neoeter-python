@@ -391,7 +391,7 @@ BOOL CGridSlotWindow::OnIsType(DWORD dwType)
 	return CSlotWindow::OnIsType(dwType);
 }
 
-CGridSlotWindow::CGridSlotWindow(PyObject* ppyObject) : CSlotWindow(ppyObject)
+CGridSlotWindow::CGridSlotWindow(ScriptObject* ppyObject) : CSlotWindow(ppyObject)
 {
 }
 

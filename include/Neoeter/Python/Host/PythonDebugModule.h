@@ -1,3 +1,4 @@
 #pragma once
 
-void initdbg();
+// Moved to the runtime-neutral bindings library.
+#include <Neoeter/Python/Bindings/ScriptDebugModule.h>

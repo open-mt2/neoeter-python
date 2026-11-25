@@ -43,7 +43,7 @@ namespace UI
 			};
 
 		public:
-			CWindow(PyObject* ppyObject);
+			CWindow(ScriptObject* ppyObject);
 			virtual ~CWindow();
 
 			void AddChild(CWindow* pWin);
@@ -176,7 +176,7 @@ namespace UI
 
 			DWORD m_dwFlag;
 
-			PyObject* m_poHandler;
+			ScriptObject* m_poHandler;
 
 			CWindow* m_pParent;
 			TWindowContainer m_pChildList;
@@ -193,7 +193,7 @@ namespace UI
 	class CLayer : public CWindow
 	{
 		public:
-			CLayer(PyObject* ppyObject) : CWindow(ppyObject) {}
+			CLayer(ScriptObject* ppyObject) : CWindow(ppyObject) {}
 			virtual ~CLayer() {}
 
 			BOOL IsWindow() { return FALSE; }
@@ -202,7 +202,7 @@ namespace UI
 	class CBox : public CWindow
 	{
 		public:
-			CBox(PyObject* ppyObject);
+			CBox(ScriptObject* ppyObject);
 			virtual ~CBox();
 
 			void SetColor(DWORD dwColor);
@@ -217,7 +217,7 @@ namespace UI
 	class CBar : public CWindow
 	{
 		public:
-			CBar(PyObject* ppyObject);
+			CBar(ScriptObject* ppyObject);
 			virtual ~CBar();
 
 			void SetColor(DWORD dwColor);
@@ -232,7 +232,7 @@ namespace UI
 	class CLine : public CWindow
 	{
 		public:
-			CLine(PyObject* ppyObject);
+			CLine(ScriptObject* ppyObject);
 			virtual ~CLine();
 
 			void SetColor(DWORD dwColor);
@@ -250,7 +250,7 @@ namespace UI
 			static DWORD Type();
 
 		public:
-			CBar3D(PyObject* ppyObject);
+			CBar3D(ScriptObject* ppyObject);
 			virtual ~CBar3D();
 
 			using CWindow::SetColor;
@@ -270,7 +270,7 @@ namespace UI
 	class CTextLine : public CWindow
 	{
 		public:
-			CTextLine(PyObject* ppyObject);
+			CTextLine(ScriptObject* ppyObject);
 			virtual ~CTextLine();
 
 			void SetMax(int iMax);
@@ -307,7 +307,7 @@ namespace UI
 	class CNumberLine : public CWindow
 	{
 		public:
-			CNumberLine(PyObject* ppyObject);
+			CNumberLine(ScriptObject* ppyObject);
 			CNumberLine(CWindow* pParent);
 			virtual ~CNumberLine();
 
@@ -333,7 +333,7 @@ namespace UI
 	class CImageBox : public CWindow
 	{
 		public:
-			CImageBox(PyObject* ppyObject);
+			CImageBox(ScriptObject* ppyObject);
 			virtual ~CImageBox();
 
 			BOOL LoadImage(const char* c_szFileName);
@@ -356,7 +356,7 @@ namespace UI
 	class CMarkBox : public CWindow
 	{
 		public:
-			CMarkBox(PyObject* ppyObject);
+			CMarkBox(ScriptObject* ppyObject);
 			virtual ~CMarkBox();
 
 			void LoadImage(const char* c_szFilename);
@@ -381,7 +381,7 @@ namespace UI
 			static DWORD Type();
 
 		public:
-			CExpandedImageBox(PyObject* ppyObject);
+			CExpandedImageBox(ScriptObject* ppyObject);
 			virtual ~CExpandedImageBox();
 
 			void SetScale(float fx, float fy);
@@ -405,7 +405,7 @@ namespace UI
 			static DWORD Type();
 
 		public:
-			CAniImageBox(PyObject* ppyObject);
+			CAniImageBox(ScriptObject* ppyObject);
 			virtual ~CAniImageBox();
 
 			void SetDelay(int iDelay);
@@ -434,7 +434,7 @@ namespace UI
 	class CButton : public CWindow
 	{
 		public:
-			CButton(PyObject* ppyObject);
+			CButton(ScriptObject* ppyObject);
 			virtual ~CButton();
 
 			BOOL SetUpVisual(const char* c_szFileName);
@@ -486,7 +486,7 @@ namespace UI
 	class CRadioButton : public CButton
 	{
 		public:
-			CRadioButton(PyObject* ppyObject);
+			CRadioButton(ScriptObject* ppyObject);
 			virtual ~CRadioButton();
 
 		protected:
@@ -498,7 +498,7 @@ namespace UI
 	class CToggleButton : public CButton
 	{
 		public:
-			CToggleButton(PyObject* ppyObject);
+			CToggleButton(ScriptObject* ppyObject);
 			virtual ~CToggleButton();
 
 		protected:
@@ -510,7 +510,7 @@ namespace UI
 	class CDragButton : public CButton
 	{
 		public:
-			CDragButton(PyObject* ppyObject);
+			CDragButton(ScriptObject* ppyObject);
 			virtual ~CDragButton();
 
 			void SetRestrictMovementArea(int ix, int iy, int iwidth, int iheight);

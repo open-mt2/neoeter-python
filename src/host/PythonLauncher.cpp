@@ -361,6 +361,7 @@ CPythonLauncher::~CPythonLauncher()
 
 void CPythonLauncher::Clear()
 {
+	CPythonScriptBackend::Instance().Uninstall();
 	Py_Finalize();
 }
 
@@ -554,6 +555,9 @@ bool CPythonLauncher::Create(const char* c_szProgramName)
 
 	init_embedded_time();
 	init_embedded_math();
+
+	// Expose the runtime-neutral native modules (registered now or later).
+	CPythonScriptBackend::Instance().Install();
 
 	if (!RunLine("import __main__"))
 		return false;

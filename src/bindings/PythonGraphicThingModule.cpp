@@ -1,9 +1,9 @@
 #include <Neoeter/Python/Bindings/StdAfx.h>
 
-bool PyTuple_GetThingInstance(PyObject* poArgs, int pos, CGraphicThingInstance** ppRetThingInstance)
+bool ScriptTuple_GetThingInstance(ScriptObject* poArgs, int pos, CGraphicThingInstance** ppRetThingInstance)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetHandle(poArgs, pos, &pThingInstance))
+	if (!ScriptTuple_GetHandle(poArgs, pos, &pThingInstance))
 		return false;
 
 	if (!pThingInstance)
@@ -13,152 +13,152 @@ bool PyTuple_GetThingInstance(PyObject* poArgs, int pos, CGraphicThingInstance**
 	return true;
 }
 
-PyObject* grpThingGenerate(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpThingGenerate(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	char* szFileName;
-	if (!PyTuple_GetString(poArgs, 0, &szFileName))
-		return Py_BuildException();
+	if (!ScriptTuple_GetString(poArgs, 0, &szFileName))
+		return Script_BuildException();
 
 	if (strlen(szFileName) <= 0)
-		return Py_BuildHandle(NULL);
+		return Script_BuildHandle(NULL);
 
 	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicThing::Type()))
-		return Py_BuildException();
+		return Script_BuildException();
 
 	CGraphicThingInstance* pThingInstance = CGraphicThingInstance::New();
 	pThingInstance->ReserveModelThing(1);
 	pThingInstance->ReserveModelInstance(1);
 	pThingInstance->RegisterModelThing(0, static_cast<CGraphicThing*>(pResource));
 	pThingInstance->SetModelInstance(0, 0, 0);
-	return Py_BuildHandle(pThingInstance);
+	return Script_BuildHandle(pThingInstance);
 }
 
-PyObject* grpThingDelete(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpThingDelete(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	CGraphicThingInstance::Delete(pThingInstance);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpThingSetFileName(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpThingSetFileName(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	char* szFileName;
-	if (!PyTuple_GetString(poArgs, 1, &szFileName))
-		return Py_BuildException();
+	if (!ScriptTuple_GetString(poArgs, 1, &szFileName))
+		return Script_BuildException();
 
 	CResource* pResource = CResourceManager::Instance().GetResourcePointer(szFileName);
 
 	if (!pResource->IsType(CGraphicThing::Type()))
-		return Py_BuildException();
+		return Script_BuildException();
 
 	pThingInstance->Clear();
 	pThingInstance->ReserveModelThing(1);
 	pThingInstance->ReserveModelInstance(1);
 	pThingInstance->RegisterModelThing(0, static_cast<CGraphicThing*>(pResource));
 	pThingInstance->SetModelInstance(0, 0, 0);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpThingRender(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpThingRender(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	pThingInstance->Render();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpThingUpdate(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpThingUpdate(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	pThingInstance->Update();
 	pThingInstance->Deform();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetThingPosition(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetThingPosition(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 1, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &x))
+		return Script_BuildException();
 
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 2, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &y))
+		return Script_BuildException();
 
 	float z;
-	if (!PyTuple_GetFloat(poArgs, 3, &z))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &z))
+		return Script_BuildException();
 
 	pThingInstance->SetPosition(x, y, z);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetThingRotation(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetThingRotation(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	float fDegree;
-	if (!PyTuple_GetFloat(poArgs, 1, &fDegree))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &fDegree))
+		return Script_BuildException();
 
 	pThingInstance->SetRotation(fDegree);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetThingScale(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetThingScale(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CGraphicThingInstance* pThingInstance;
-	if (!PyTuple_GetThingInstance(poArgs, 0, &pThingInstance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetThingInstance(poArgs, 0, &pThingInstance))
+		return Script_BuildException();
 
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 1, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &x))
+		return Script_BuildException();
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 2, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &y))
+		return Script_BuildException();
 	float z;
-	if (!PyTuple_GetFloat(poArgs, 3, &z))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &z))
+		return Script_BuildException();
 
 	pThingInstance->SetScale(x, y, z);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
 void initgrpThing()
 {
-	static PyMethodDef s_methods[] =
+	static ScriptMethodDef s_methods[] =
 		{
-			{"Update", grpThingUpdate, METH_VARARGS, NULL},
-			{"Render", grpThingRender, METH_VARARGS, NULL},
-			{"SetPosition", grpSetThingPosition, METH_VARARGS, NULL},
-			{"Generate", grpThingGenerate, METH_VARARGS, NULL},
-			{"Delete", grpThingDelete, METH_VARARGS, NULL},
-			{"SetFileName", grpThingSetFileName, METH_VARARGS, NULL},
-			{"SetRotation", grpSetThingRotation, METH_VARARGS, NULL},
-			{"SetScale", grpSetThingScale, METH_VARARGS, NULL},
+			{"Update", grpThingUpdate, SCRIPT_VARARGS, NULL},
+			{"Render", grpThingRender, SCRIPT_VARARGS, NULL},
+			{"SetPosition", grpSetThingPosition, SCRIPT_VARARGS, NULL},
+			{"Generate", grpThingGenerate, SCRIPT_VARARGS, NULL},
+			{"Delete", grpThingDelete, SCRIPT_VARARGS, NULL},
+			{"SetFileName", grpThingSetFileName, SCRIPT_VARARGS, NULL},
+			{"SetRotation", grpSetThingRotation, SCRIPT_VARARGS, NULL},
+			{"SetScale", grpSetThingScale, SCRIPT_VARARGS, NULL},
 			{NULL, NULL, 0, NULL},
 		};
 
-	Py_InitModule("grpThing", s_methods);
+	ScriptModule_Create("grpThing", s_methods);
 }

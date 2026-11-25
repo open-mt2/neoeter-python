@@ -10,7 +10,7 @@ namespace UI
 			static DWORD Type();
 
 		public:
-			CGridSlotWindow(PyObject* ppyObject);
+			CGridSlotWindow(ScriptObject* ppyObject);
 			virtual ~CGridSlotWindow();
 
 			void Destroy();

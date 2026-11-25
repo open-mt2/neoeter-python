@@ -9,15 +9,15 @@ BOOL g_bOutlineBoxEnable = FALSE;
 namespace UI
 {
 
-	CWindow::CWindow(PyObject* ppyObject) : m_x(0),
-											m_y(0),
-											m_lWidth(0),
-											m_lHeight(0),
-											m_bShow(false),
-											m_dwFlag(0),
-											m_poHandler(ppyObject),
-											m_pParent(NULL),
-											m_isUpdatingChildren(FALSE)
+	CWindow::CWindow(ScriptObject* ppyObject) : m_x(0),
+												m_y(0),
+												m_lWidth(0),
+												m_lHeight(0),
+												m_bShow(false),
+												m_dwFlag(0),
+												m_poHandler(ppyObject),
+												m_pParent(NULL),
+												m_isUpdatingChildren(FALSE)
 	{
 #ifdef _DEBUG
 		static DWORD DEBUG_dwGlobalCounter = 0;
@@ -163,10 +163,7 @@ namespace UI
 		if (!IsShow())
 			return;
 
-		static PyObject* poFuncName_OnUpdate = PyString_InternFromString("OnUpdate");
-
-		// PyCallClassMemberFunc(m_poHandler, "OnUpdate", BuildEmptyTuple());
-		PyCallClassMemberFunc_ByPyString(m_poHandler, poFuncName_OnUpdate, BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnUpdate", BuildEmptyTuple());
 	}
 
 	void CWindow::OnRender()
@@ -177,8 +174,8 @@ namespace UI
 		if (!IsShow())
 			return;
 
-		// PyCallClassMemberFunc(m_poHandler, "OnRender", BuildEmptyTuple());
-		PyCallClassMemberFunc(m_poHandler, "OnRender", BuildEmptyTuple());
+		// Script_CallMethod(m_poHandler, "OnRender", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnRender", BuildEmptyTuple());
 	}
 
 	void CWindow::SetName(const char* c_szName)
@@ -387,33 +384,33 @@ namespace UI
 
 	void CWindow::OnMouseDrag(long lx, long ly)
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnMouseDrag", Py_BuildValue("(ii)", lx, ly));
+		Script_CallMethod(m_poHandler, "OnMouseDrag", Script_BuildValue("(ii)", lx, ly));
 	}
 
 	void CWindow::OnMoveWindow(long lx, long ly)
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnMoveWindow", Py_BuildValue("(ii)", lx, ly));
+		Script_CallMethod(m_poHandler, "OnMoveWindow", Script_BuildValue("(ii)", lx, ly));
 	}
 
 	void CWindow::OnSetFocus()
 	{
-		// PyCallClassMemberFunc(m_poHandler, "OnSetFocus", BuildEmptyTuple());
-		PyCallClassMemberFunc(m_poHandler, "OnSetFocus", BuildEmptyTuple());
+		// Script_CallMethod(m_poHandler, "OnSetFocus", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnSetFocus", BuildEmptyTuple());
 	}
 
 	void CWindow::OnKillFocus()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnKillFocus", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnKillFocus", BuildEmptyTuple());
 	}
 
 	void CWindow::OnMouseOverIn()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnMouseOverIn", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnMouseOverIn", BuildEmptyTuple());
 	}
 
 	void CWindow::OnMouseOverOut()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnMouseOverOut", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnMouseOverOut", BuildEmptyTuple());
 	}
 
 	void CWindow::OnMouseOver()
@@ -422,17 +419,17 @@ namespace UI
 
 	void CWindow::OnDrop()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnDrop", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnDrop", BuildEmptyTuple());
 	}
 
 	void CWindow::OnTop()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnTop", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnTop", BuildEmptyTuple());
 	}
 
 	void CWindow::OnIMEUpdate()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnIMEUpdate", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnIMEUpdate", BuildEmptyTuple());
 	}
 
 	BOOL CWindow::RunIMETabEvent()
@@ -575,7 +572,7 @@ namespace UI
 	BOOL CWindow::OnMouseLeftButtonDown()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseLeftButtonDown", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseLeftButtonDown", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -584,14 +581,14 @@ namespace UI
 
 	BOOL CWindow::OnMouseLeftButtonUp()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnMouseLeftButtonUp", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnMouseLeftButtonUp", BuildEmptyTuple());
 		return TRUE; // NOTE : ButtonUp은 예외로 무조건 TRUE
 	}
 
 	BOOL CWindow::OnMouseLeftButtonDoubleClick()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseLeftButtonDoubleClick", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseLeftButtonDoubleClick", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -601,7 +598,7 @@ namespace UI
 	BOOL CWindow::OnMouseRightButtonDown()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseRightButtonDown", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseRightButtonDown", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -611,7 +608,7 @@ namespace UI
 	BOOL CWindow::OnMouseRightButtonUp()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseRightButtonUp", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseRightButtonUp", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -621,7 +618,7 @@ namespace UI
 	BOOL CWindow::OnMouseRightButtonDoubleClick()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseRightButtonDoubleClick", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseRightButtonDoubleClick", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -631,7 +628,7 @@ namespace UI
 	BOOL CWindow::OnMouseMiddleButtonDown()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseMiddleButtonDown", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseMiddleButtonDown", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -641,7 +638,7 @@ namespace UI
 	BOOL CWindow::OnMouseMiddleButtonUp()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnMouseMiddleButtonUp", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnMouseMiddleButtonUp", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -651,7 +648,7 @@ namespace UI
 	BOOL CWindow::OnIMETabEvent()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMETab", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMETab", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -661,7 +658,7 @@ namespace UI
 	BOOL CWindow::OnIMEReturnEvent()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMEReturn", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMEReturn", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -671,7 +668,7 @@ namespace UI
 	BOOL CWindow::OnIMEKeyDownEvent(int ikey)
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMEKeyDown", Py_BuildValue("(i)", ikey), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMEKeyDown", Script_BuildValue("(i)", ikey), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -681,7 +678,7 @@ namespace UI
 	BOOL CWindow::OnIMEChangeCodePage()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMEChangeCodePage", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMEChangeCodePage", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -691,7 +688,7 @@ namespace UI
 	BOOL CWindow::OnIMEOpenCandidateListEvent()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMEOpenCandidateList", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMEOpenCandidateList", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -701,7 +698,7 @@ namespace UI
 	BOOL CWindow::OnIMECloseCandidateListEvent()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMECloseCandidateList", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMECloseCandidateList", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -711,7 +708,7 @@ namespace UI
 	BOOL CWindow::OnIMEOpenReadingWndEvent()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMEOpenReadingWnd", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMEOpenReadingWnd", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -721,7 +718,7 @@ namespace UI
 	BOOL CWindow::OnIMECloseReadingWndEvent()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnIMECloseReadingWnd", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnIMECloseReadingWnd", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -731,7 +728,7 @@ namespace UI
 	BOOL CWindow::OnKeyDown(int ikey)
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnKeyDown", Py_BuildValue("(i)", ikey), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnKeyDown", Script_BuildValue("(i)", ikey), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -741,7 +738,7 @@ namespace UI
 	BOOL CWindow::OnKeyUp(int ikey)
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnKeyUp", Py_BuildValue("(i)", ikey), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnKeyUp", Script_BuildValue("(i)", ikey), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -751,7 +748,7 @@ namespace UI
 	BOOL CWindow::OnPressEscapeKey()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnPressEscapeKey", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnPressEscapeKey", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -761,7 +758,7 @@ namespace UI
 	BOOL CWindow::OnPressExitKey()
 	{
 		long lValue;
-		if (PyCallClassMemberFunc(m_poHandler, "OnPressExitKey", BuildEmptyTuple(), &lValue))
+		if (Script_CallMethod(m_poHandler, "OnPressExitKey", BuildEmptyTuple(), &lValue))
 			if (0 != lValue)
 				return TRUE;
 
@@ -837,7 +834,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CBox::CBox(PyObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
+	CBox::CBox(ScriptObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
 	{
 	}
 	CBox::~CBox()
@@ -859,7 +856,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CBar::CBar(PyObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
+	CBar::CBar(ScriptObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
 	{
 	}
 	CBar::~CBar()
@@ -881,7 +878,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CLine::CLine(PyObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
+	CLine::CLine(ScriptObject* ppyObject) : CWindow(ppyObject), m_dwColor(0xff000000)
 	{
 	}
 	CLine::~CLine()
@@ -910,7 +907,7 @@ namespace UI
 		return (s_dwType);
 	}
 
-	CBar3D::CBar3D(PyObject* ppyObject) : CWindow(ppyObject)
+	CBar3D::CBar3D(ScriptObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_dwLeftColor = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 		m_dwRightColor = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
@@ -947,7 +944,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CTextLine::CTextLine(PyObject* ppyObject) : CWindow(ppyObject)
+	CTextLine::CTextLine(ScriptObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_TextInstance.SetColor(0.78f, 0.78f, 0.78f);
 		m_TextInstance.SetHorizonalAlign(CGraphicTextInstance::HORIZONTAL_ALIGN_LEFT);
@@ -1066,7 +1063,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CNumberLine::CNumberLine(PyObject* ppyObject) : CWindow(ppyObject)
+	CNumberLine::CNumberLine(ScriptObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_strPath = "d:/ymir work/ui/game/taskbar/";
 		m_iHorizontalAlign = HORIZONTAL_ALIGN_LEFT;
@@ -1210,7 +1207,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CImageBox::CImageBox(PyObject* ppyObject) : CWindow(ppyObject)
+	CImageBox::CImageBox(ScriptObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_pImageInstance = NULL;
 	}
@@ -1312,7 +1309,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// MarkBox - 마크 출력용 UI 윈도우
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	CMarkBox::CMarkBox(PyObject* ppyObject) : CWindow(ppyObject)
+	CMarkBox::CMarkBox(ScriptObject* ppyObject) : CWindow(ppyObject)
 	{
 		m_pMarkInstance = NULL;
 	}
@@ -1411,7 +1408,7 @@ namespace UI
 		return FALSE;
 	}
 
-	CExpandedImageBox::CExpandedImageBox(PyObject* ppyObject) : CImageBox(ppyObject)
+	CExpandedImageBox::CExpandedImageBox(ScriptObject* ppyObject) : CImageBox(ppyObject)
 	{
 	}
 	CExpandedImageBox::~CExpandedImageBox()
@@ -1499,7 +1496,7 @@ namespace UI
 		return FALSE;
 	}
 
-	CAniImageBox::CAniImageBox(PyObject* ppyObject)
+	CAniImageBox::CAniImageBox(ScriptObject* ppyObject)
 		: CWindow(ppyObject),
 		  m_bycurDelay(0),
 		  m_byDelay(4),
@@ -1620,14 +1617,14 @@ namespace UI
 
 	void CAniImageBox::OnEndFrame()
 	{
-		PyCallClassMemberFunc(m_poHandler, "OnEndFrame", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnEndFrame", BuildEmptyTuple());
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CButton::CButton(PyObject* ppyObject)
+	CButton::CButton(ScriptObject* ppyObject)
 		: CWindow(ppyObject),
 		  m_bEnable(TRUE),
 		  m_isPressed(FALSE),
@@ -1748,7 +1745,7 @@ namespace UI
 		else
 			SetCurrentVisual(&m_upVisual);
 
-		PyCallClassMemberFunc(m_poHandler, "CallEvent", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "CallEvent", BuildEmptyTuple());
 	}
 	void CButton::Over()
 	{
@@ -1758,7 +1755,7 @@ namespace UI
 	{
 		m_isPressed = TRUE;
 		SetCurrentVisual(&m_downVisual);
-		PyCallClassMemberFunc(m_poHandler, "DownEvent", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "DownEvent", BuildEmptyTuple());
 	}
 
 	void CButton::OnUpdate()
@@ -1781,7 +1778,7 @@ namespace UI
 			m_pcurVisual->Render();
 		}
 
-		PyCallClassMemberFunc(m_poHandler, "OnRender", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnRender", BuildEmptyTuple());
 	}
 	void CButton::OnChangePosition()
 	{
@@ -1826,7 +1823,7 @@ namespace UI
 			return;
 
 		Over();
-		PyCallClassMemberFunc(m_poHandler, "ShowToolTip", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "ShowToolTip", BuildEmptyTuple());
 	}
 	void CButton::OnMouseOverOut()
 	{
@@ -1834,7 +1831,7 @@ namespace UI
 			return;
 
 		SetUp();
-		PyCallClassMemberFunc(m_poHandler, "HideToolTip", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "HideToolTip", BuildEmptyTuple());
 	}
 
 	void CButton::SetCurrentVisual(CGraphicImageInstance* pVisual)
@@ -1857,7 +1854,7 @@ namespace UI
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CRadioButton::CRadioButton(PyObject* ppyObject) : CButton(ppyObject)
+	CRadioButton::CRadioButton(ScriptObject* ppyObject) : CButton(ppyObject)
 	{
 	}
 	CRadioButton::~CRadioButton()
@@ -1872,7 +1869,7 @@ namespace UI
 		if (!m_isPressed)
 		{
 			Down();
-			PyCallClassMemberFunc(m_poHandler, "CallEvent", BuildEmptyTuple());
+			Script_CallMethod(m_poHandler, "CallEvent", BuildEmptyTuple());
 		}
 
 		return TRUE;
@@ -1891,7 +1888,7 @@ namespace UI
 			SetCurrentVisual(&m_overVisual);
 		}
 
-		PyCallClassMemberFunc(m_poHandler, "ShowToolTip", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "ShowToolTip", BuildEmptyTuple());
 	}
 	void CRadioButton::OnMouseOverOut()
 	{
@@ -1903,14 +1900,14 @@ namespace UI
 			SetCurrentVisual(&m_upVisual);
 		}
 
-		PyCallClassMemberFunc(m_poHandler, "HideToolTip", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "HideToolTip", BuildEmptyTuple());
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CToggleButton::CToggleButton(PyObject* ppyObject) : CButton(ppyObject)
+	CToggleButton::CToggleButton(ScriptObject* ppyObject) : CButton(ppyObject)
 	{
 	}
 	CToggleButton::~CToggleButton()
@@ -1929,12 +1926,12 @@ namespace UI
 				SetCurrentVisual(&m_overVisual);
 			else
 				SetCurrentVisual(&m_upVisual);
-			PyCallClassMemberFunc(m_poHandler, "OnToggleUp", BuildEmptyTuple());
+			Script_CallMethod(m_poHandler, "OnToggleUp", BuildEmptyTuple());
 		}
 		else
 		{
 			Down();
-			PyCallClassMemberFunc(m_poHandler, "OnToggleDown", BuildEmptyTuple());
+			Script_CallMethod(m_poHandler, "OnToggleDown", BuildEmptyTuple());
 		}
 
 		return TRUE;
@@ -1954,7 +1951,7 @@ namespace UI
 			SetCurrentVisual(&m_overVisual);
 		}
 
-		PyCallClassMemberFunc(m_poHandler, "ShowToolTip", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "ShowToolTip", BuildEmptyTuple());
 	}
 	void CToggleButton::OnMouseOverOut()
 	{
@@ -1966,14 +1963,14 @@ namespace UI
 			SetCurrentVisual(&m_upVisual);
 		}
 
-		PyCallClassMemberFunc(m_poHandler, "HideToolTip", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "HideToolTip", BuildEmptyTuple());
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	CDragButton::CDragButton(PyObject* ppyObject) : CButton(ppyObject)
+	CDragButton::CDragButton(ScriptObject* ppyObject) : CButton(ppyObject)
 	{
 		CWindow::RemoveFlag(CWindow::FLAG_NOT_CAPTURE);
 		m_restrictArea.left = 0;
@@ -2019,7 +2016,7 @@ namespace UI
 			m_pcurVisual->SetPosition(m_rect.left, m_rect.top);
 
 		if (IsPressed())
-			PyCallClassMemberFunc(m_poHandler, "OnMove", BuildEmptyTuple());
+			Script_CallMethod(m_poHandler, "OnMove", BuildEmptyTuple());
 	}
 
 	void CDragButton::OnMouseOverIn()
@@ -2029,7 +2026,7 @@ namespace UI
 			return;
 
 		CButton::OnMouseOverIn();
-		PyCallClassMemberFunc(m_poHandler, "OnMouseOverIn", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnMouseOverIn", BuildEmptyTuple());
 	}
 
 	void CDragButton::OnMouseOverOut()
@@ -2038,6 +2035,6 @@ namespace UI
 			return;
 
 		CButton::OnMouseOverIn();
-		PyCallClassMemberFunc(m_poHandler, "OnMouseOverOut", BuildEmptyTuple());
+		Script_CallMethod(m_poHandler, "OnMouseOverOut", BuildEmptyTuple());
 	}
 };

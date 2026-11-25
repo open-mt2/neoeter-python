@@ -4,8 +4,6 @@
 #define PyLong_AsLong PyLong_AsLongLong
 #define Pylong_AsUnsignedLong PyLong_AsUnsignedLongLong
 
-IPythonExceptionSender* g_pkExceptionSender = NULL;
-
 bool __PyCallClassMemberFunc_ByCString(PyObject* poClass, const char* c_szFunc, PyObject* poArgs, PyObject** poRet);
 bool __PyCallClassMemberFunc_ByPyString(PyObject* poClass, PyObject* poFuncName, PyObject* poArgs, PyObject** poRet);
 bool __PyCallClassMemberFunc(PyObject* poClass, PyObject* poFunc, PyObject* poArgs, PyObject** poRet);

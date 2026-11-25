@@ -4,11 +4,13 @@ add_executable(test_python_scriptlib_api test_python_scriptlib_api.cpp)
 target_link_libraries(test_scriptlib
     PRIVATE
         neoeter_python_host
+        neoeter_python_bindings
 )
 
 target_link_libraries(test_python_scriptlib_api
     PRIVATE
         neoeter_python_host
+        neoeter_python_bindings
 )
 
 add_test(NAME ScriptLib_SmokeTests COMMAND test_scriptlib)

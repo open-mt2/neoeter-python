@@ -9,169 +9,169 @@
 #include <sys/stat.h>
 #endif
 
-bool PyTuple_GetTextBar(PyObject* poArgs, int pos, CTextBar** ppTextBar)
+bool ScriptTuple_GetTextBar(ScriptObject* poArgs, int pos, CTextBar** ppTextBar)
 {
-	return PyTuple_GetHandle(poArgs, pos, ppTextBar);
+	return ScriptTuple_GetHandle(poArgs, pos, ppTextBar);
 }
 
-PyObject* grpCreateTextBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpCreateTextBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int iWidth;
-	if (!PyTuple_GetInteger(poArgs, 0, &iWidth))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &iWidth))
+		return Script_BuildException();
 	int iHeight;
-	if (!PyTuple_GetInteger(poArgs, 1, &iHeight))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &iHeight))
+		return Script_BuildException();
 
 	CTextBar* pTextBar = new CTextBar(12, false);
 	if (!pTextBar->Create(NULL, iWidth, iHeight))
 	{
 		delete pTextBar;
-		return Py_BuildHandle(NULL);
+		return Script_BuildHandle(NULL);
 	}
 
-	return Py_BuildHandle(pTextBar);
+	return Script_BuildHandle(pTextBar);
 }
 
-PyObject* grpCreateBigTextBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpCreateBigTextBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int iWidth;
-	if (!PyTuple_GetInteger(poArgs, 0, &iWidth))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &iWidth))
+		return Script_BuildException();
 	int iHeight;
-	if (!PyTuple_GetInteger(poArgs, 1, &iHeight))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &iHeight))
+		return Script_BuildException();
 
 	int iFontSize;
-	if (!PyTuple_GetInteger(poArgs, 2, &iFontSize))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &iFontSize))
+		return Script_BuildException();
 
 	CTextBar* pTextBar = new CTextBar(iFontSize, true);
 	if (!pTextBar->Create(NULL, iWidth, iHeight))
 	{
 		delete pTextBar;
-		return Py_BuildHandle(NULL);
+		return Script_BuildHandle(NULL);
 	}
 
-	return Py_BuildHandle(pTextBar);
+	return Script_BuildHandle(pTextBar);
 }
 
-PyObject* grpDestroyTextBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpDestroyTextBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 
 	delete pTextBar;
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderTextBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderTextBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 	int ix;
-	if (!PyTuple_GetInteger(poArgs, 1, &ix))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &ix))
+		return Script_BuildException();
 	int iy;
-	if (!PyTuple_GetInteger(poArgs, 2, &iy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &iy))
+		return Script_BuildException();
 
 	if (pTextBar)
 		pTextBar->Render(ix, iy);
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpTextBarSetTextColor(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpTextBarSetTextColor(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 	int r;
-	if (!PyTuple_GetInteger(poArgs, 1, &r))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &r))
+		return Script_BuildException();
 	int g;
-	if (!PyTuple_GetInteger(poArgs, 2, &g))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &g))
+		return Script_BuildException();
 	int b;
-	if (!PyTuple_GetInteger(poArgs, 3, &b))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &b))
+		return Script_BuildException();
 
 	if (pTextBar)
 		pTextBar->SetTextColor(r, g, b);
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpTextBarGetTextExtent(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpTextBarGetTextExtent(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 	char* szText;
-	if (!PyTuple_GetString(poArgs, 1, &szText))
-		return Py_BuildException();
+	if (!ScriptTuple_GetString(poArgs, 1, &szText))
+		return Script_BuildException();
 
 	SIZE size = {0, 0};
 	if (pTextBar)
 		pTextBar->GetTextExtent(szText, &size);
 
-	return Py_BuildValue("ii", size.cx, size.cy);
+	return Script_BuildValue("ii", size.cx, size.cy);
 }
 
-PyObject* grpTextBarTextOut(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpTextBarTextOut(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 	int ix;
-	if (!PyTuple_GetInteger(poArgs, 1, &ix))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &ix))
+		return Script_BuildException();
 	int iy;
-	if (!PyTuple_GetInteger(poArgs, 2, &iy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &iy))
+		return Script_BuildException();
 	char* szText;
-	if (!PyTuple_GetString(poArgs, 3, &szText))
-		return Py_BuildException();
+	if (!ScriptTuple_GetString(poArgs, 3, &szText))
+		return Script_BuildException();
 
 	if (pTextBar)
 		pTextBar->TextOut(ix, iy, szText);
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpClearTextBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpClearTextBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 
 	if (pTextBar)
 		pTextBar->ClearBar();
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetTextBarClipRect(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetTextBarClipRect(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CTextBar* pTextBar;
-	if (!PyTuple_GetTextBar(poArgs, 0, &pTextBar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetTextBar(poArgs, 0, &pTextBar))
+		return Script_BuildException();
 	int isx;
-	if (!PyTuple_GetInteger(poArgs, 1, &isx))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &isx))
+		return Script_BuildException();
 	int isy;
-	if (!PyTuple_GetInteger(poArgs, 2, &isy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &isy))
+		return Script_BuildException();
 	int iex;
-	if (!PyTuple_GetInteger(poArgs, 3, &iex))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &iex))
+		return Script_BuildException();
 	int iey;
-	if (!PyTuple_GetInteger(poArgs, 4, &iey))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 4, &iey))
+		return Script_BuildException();
 
 	if (pTextBar)
 	{
@@ -184,354 +184,354 @@ PyObject* grpSetTextBarClipRect(PyObject* poSelf, PyObject* poArgs)
 		pTextBar->SetClipRect(rect);
 	}
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpCulling(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpCulling(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CCullingManager::Instance().Process();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpInitScreenEffect(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpInitScreenEffect(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().InitScreenEffect();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpClearDepthBuffer(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpClearDepthBuffer(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().ClearDepthBuffer();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpPushState(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpPushState(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().PushState();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpPopState(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpPopState(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().PopState();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpPushMatrix(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpPushMatrix(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().PushMatrix();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpPopMatrix(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpPopMatrix(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().PopMatrix();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpTranslate(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpTranslate(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 0, &x))
-		return Py_BuildException("grp.Translate:Wrong X");
+	if (!ScriptTuple_GetFloat(poArgs, 0, &x))
+		return Script_BuildException("grp.Translate:Wrong X");
 
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 1, &y))
-		return Py_BuildException("grp.Translate:Wrong Y");
+	if (!ScriptTuple_GetFloat(poArgs, 1, &y))
+		return Script_BuildException("grp.Translate:Wrong Y");
 
 	float z;
-	if (!PyTuple_GetFloat(poArgs, 2, &z))
-		return Py_BuildException("grp.Translate:Wrong Z");
+	if (!ScriptTuple_GetFloat(poArgs, 2, &z))
+		return Script_BuildException("grp.Translate:Wrong Z");
 
 	CPythonGraphic::Instance().Translate(x, y, z);
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRotate(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRotate(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float Degree;
-	if (!PyTuple_GetFloat(poArgs, 0, &Degree))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &Degree))
+		return Script_BuildException();
 
 	float x;
-	if (!PyTuple_GetFloat(poArgs, 1, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &x))
+		return Script_BuildException();
 
 	float y;
-	if (!PyTuple_GetFloat(poArgs, 2, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &y))
+		return Script_BuildException();
 
 	float z;
-	if (!PyTuple_GetFloat(poArgs, 3, &z))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &z))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().Rotate(Degree, x, y, z);
 
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetColorRenderState(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetColorRenderState(ScriptObject* poSelf, ScriptObject* poArgs)
 {
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetAroundCamera(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetAroundCamera(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float distance;
-	if (!PyTuple_GetFloat(poArgs, 0, &distance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &distance))
+		return Script_BuildException();
 
 	float pitch;
-	if (!PyTuple_GetFloat(poArgs, 1, &pitch))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &pitch))
+		return Script_BuildException();
 
 	float roll;
-	if (!PyTuple_GetFloat(poArgs, 2, &roll))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &roll))
+		return Script_BuildException();
 
 	float lookAtZ;
-	if (!PyTuple_GetFloat(poArgs, 3, &lookAtZ))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &lookAtZ))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetAroundCamera(distance, pitch, roll, lookAtZ);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetPositionCamera(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetPositionCamera(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float fx;
-	if (!PyTuple_GetFloat(poArgs, 0, &fx))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &fx))
+		return Script_BuildException();
 
 	float fy;
-	if (!PyTuple_GetFloat(poArgs, 1, &fy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &fy))
+		return Script_BuildException();
 
 	float fz;
-	if (!PyTuple_GetFloat(poArgs, 2, &fz))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &fz))
+		return Script_BuildException();
 
 	float distance;
-	if (!PyTuple_GetFloat(poArgs, 3, &distance))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &distance))
+		return Script_BuildException();
 
 	float pitch;
-	if (!PyTuple_GetFloat(poArgs, 4, &pitch))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 4, &pitch))
+		return Script_BuildException();
 
 	float roll;
-	if (!PyTuple_GetFloat(poArgs, 5, &roll))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 5, &roll))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetPositionCamera(fx, fy, fz, distance, pitch, roll);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetEyeCamera(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetEyeCamera(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float xEye;
-	if (!PyTuple_GetFloat(poArgs, 0, &xEye))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &xEye))
+		return Script_BuildException();
 
 	float yEye;
-	if (!PyTuple_GetFloat(poArgs, 1, &yEye))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &yEye))
+		return Script_BuildException();
 
 	float zEye;
-	if (!PyTuple_GetFloat(poArgs, 2, &zEye))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &zEye))
+		return Script_BuildException();
 
 	float xCenter;
-	if (!PyTuple_GetFloat(poArgs, 3, &xCenter))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &xCenter))
+		return Script_BuildException();
 
 	float yCenter;
-	if (!PyTuple_GetFloat(poArgs, 4, &yCenter))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 4, &yCenter))
+		return Script_BuildException();
 
 	float zCenter;
-	if (!PyTuple_GetFloat(poArgs, 5, &zCenter))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 5, &zCenter))
+		return Script_BuildException();
 
 	float xUp;
-	if (!PyTuple_GetFloat(poArgs, 6, &xUp))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 6, &xUp))
+		return Script_BuildException();
 
 	float yUp;
-	if (!PyTuple_GetFloat(poArgs, 7, &yUp))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 7, &yUp))
+		return Script_BuildException();
 
 	float zUp;
-	if (!PyTuple_GetFloat(poArgs, 8, &zUp))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 8, &zUp))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetEyeCamera(xEye, yEye, zEye, xCenter, yCenter, zCenter, xUp, yUp, zUp);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetPerspective(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetPerspective(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float fov;
-	if (!PyTuple_GetFloat(poArgs, 0, &fov))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &fov))
+		return Script_BuildException();
 
 	float aspect;
-	if (!PyTuple_GetFloat(poArgs, 1, &aspect))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &aspect))
+		return Script_BuildException();
 
 	float zNear;
-	if (!PyTuple_GetFloat(poArgs, 2, &zNear))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &zNear))
+		return Script_BuildException();
 
 	float zFar;
-	if (!PyTuple_GetFloat(poArgs, 3, &zFar))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &zFar))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetPerspective(fov, aspect, zNear, zFar);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetOrtho2D(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetOrtho2D(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float width;
-	if (!PyTuple_GetFloat(poArgs, 0, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &width))
+		return Script_BuildException();
 
 	float height;
-	if (!PyTuple_GetFloat(poArgs, 1, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &height))
+		return Script_BuildException();
 
 	float length;
-	if (!PyTuple_GetFloat(poArgs, 2, &length))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &length))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetOrtho2D(width, height, length);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetOrtho3D(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetOrtho3D(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float width;
-	if (!PyTuple_GetFloat(poArgs, 0, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &width))
+		return Script_BuildException();
 
 	float height;
-	if (!PyTuple_GetFloat(poArgs, 1, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &height))
+		return Script_BuildException();
 
 	float zmin;
-	if (!PyTuple_GetFloat(poArgs, 2, &zmin))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &zmin))
+		return Script_BuildException();
 
 	float zmax;
-	if (!PyTuple_GetFloat(poArgs, 3, &zmax))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &zmax))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetOrtho3D(width, height, zmin, zmax);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpGenerateColor(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGenerateColor(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float r;
-	if (!PyTuple_GetFloat(poArgs, 0, &r))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &r))
+		return Script_BuildException();
 
 	float g;
-	if (!PyTuple_GetFloat(poArgs, 1, &g))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &g))
+		return Script_BuildException();
 
 	float b;
-	if (!PyTuple_GetFloat(poArgs, 2, &b))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &b))
+		return Script_BuildException();
 
 	float a;
-	if (!PyTuple_GetFloat(poArgs, 3, &a))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &a))
+		return Script_BuildException();
 
-	return Py_BuildValue("l", CPythonGraphic::Instance().GenerateColor(r, g, b, a));
+	return Script_BuildValue("l", CPythonGraphic::Instance().GenerateColor(r, g, b, a));
 }
 
-PyObject* grpSetColor(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetColor(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int color;
-	if (!PyTuple_GetInteger(poArgs, 0, &color))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &color))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetDiffuseColor(DWORD(color));
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetAlpha(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetAlpha(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float Alpha;
-	if (!PyTuple_GetFloat(poArgs, 0, &Alpha))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &Alpha))
+		return Script_BuildException();
 
 	// CPythonGraphic::Instance().SetAlpha(Alpha);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpGetCursorPosition3d(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGetCursorPosition3d(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float x, y, z;
 	CPythonGraphic::Instance().GetCursorPosition(&x, &y, &z);
-	return Py_BuildValue("(fff)", x, y, z);
+	return Script_BuildValue("(fff)", x, y, z);
 }
 
-PyObject* grpSetCursorPosition(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetCursorPosition(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int ix;
-	if (!PyTuple_GetInteger(poArgs, 0, &ix))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &ix))
+		return Script_BuildException();
 	int iy;
-	if (!PyTuple_GetInteger(poArgs, 1, &iy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &iy))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetCursorPosition(ix, iy);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderLine(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderLine(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BuildException();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BuildException();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BuildException();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderLine2d((float)x, (float)y, (float)x + width, (float)y + height);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderRoundBox(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderRoundBox(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BuildException();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BuildException();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BuildException();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BuildException();
 
 	float fx = float(x);
 	float fy = float(y);
@@ -546,275 +546,275 @@ PyObject* grpRenderRoundBox(PyObject* poSelf, PyObject* poArgs)
 	CPythonGraphic::Instance().RenderLine2d(fx, fy + fHeight - 2.0f, fx + 2.0f, fy + fHeight);
 	CPythonGraphic::Instance().RenderLine2d(fx + fWidth - 2.0f, fy, fx + fWidth, fy + 2.0f);
 	CPythonGraphic::Instance().RenderLine2d(fx + fWidth - 2.0f, fy + fHeight, fx + fWidth, fy + fHeight - 2.0f);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderBox(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderBox(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BuildException();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BuildException();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BuildException();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderBox2d((float)x, (float)y, (float)x + width, (float)y + height);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BuildException();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BuildException();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BuildException();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderBar2d((float)x, (float)y, (float)x + width, (float)y + height);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderCube(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderCube(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float sx;
-	if (!PyTuple_GetFloat(poArgs, 0, &sx))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &sx))
+		return Script_BuildException();
 
 	float sy;
-	if (!PyTuple_GetFloat(poArgs, 1, &sy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &sy))
+		return Script_BuildException();
 
 	float sz;
-	if (!PyTuple_GetFloat(poArgs, 2, &sz))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &sz))
+		return Script_BuildException();
 
 	float ex;
-	if (!PyTuple_GetFloat(poArgs, 3, &ex))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &ex))
+		return Script_BuildException();
 
 	float ey;
-	if (!PyTuple_GetFloat(poArgs, 4, &ey))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 4, &ey))
+		return Script_BuildException();
 
 	float ez;
-	if (!PyTuple_GetFloat(poArgs, 5, &ez))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 5, &ez))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderCube(sx, sy, sz, ex, ey, ez);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderBar3d(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderBar3d(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int sx;
-	if (!PyTuple_GetInteger(poArgs, 0, &sx))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &sx))
+		return Script_BuildException();
 
 	int sy;
-	if (!PyTuple_GetInteger(poArgs, 1, &sy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &sy))
+		return Script_BuildException();
 
 	int sz;
-	if (!PyTuple_GetInteger(poArgs, 2, &sz))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &sz))
+		return Script_BuildException();
 
 	int ex;
-	if (!PyTuple_GetInteger(poArgs, 3, &ex))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &ex))
+		return Script_BuildException();
 
 	int ey;
-	if (!PyTuple_GetInteger(poArgs, 4, &ey))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 4, &ey))
+		return Script_BuildException();
 
 	int ez;
-	if (!PyTuple_GetInteger(poArgs, 5, &ez))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 5, &ez))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderBar3d(sx, sy, sz, ex, ey, ez);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderGradationBar(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderGradationBar(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BadArgument();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BadArgument();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BadArgument();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BadArgument();
 
 	int iStartColor;
-	if (!PyTuple_GetInteger(poArgs, 4, &iStartColor))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetInteger(poArgs, 4, &iStartColor))
+		return Script_BadArgument();
 
 	int iEndColor;
-	if (!PyTuple_GetInteger(poArgs, 5, &iEndColor))
-		return Py_BadArgument();
+	if (!ScriptTuple_GetInteger(poArgs, 5, &iEndColor))
+		return Script_BadArgument();
 
 	CPythonGraphic::Instance().RenderGradationBar2d((float)x, (float)y, (float)x + width, (float)y + height, iStartColor, iEndColor);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderDownButton(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderDownButton(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BuildException();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BuildException();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BuildException();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderDownButton((float)x, (float)y, (float)x + width, (float)y + height);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderUpButton(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderUpButton(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int x;
-	if (!PyTuple_GetInteger(poArgs, 0, &x))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 0, &x))
+		return Script_BuildException();
 
 	int y;
-	if (!PyTuple_GetInteger(poArgs, 1, &y))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 1, &y))
+		return Script_BuildException();
 
 	int width;
-	if (!PyTuple_GetInteger(poArgs, 2, &width))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 2, &width))
+		return Script_BuildException();
 
 	int height;
-	if (!PyTuple_GetInteger(poArgs, 3, &height))
-		return Py_BuildException();
+	if (!ScriptTuple_GetInteger(poArgs, 3, &height))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderUpButton((float)x, (float)y, (float)x + width, (float)y + height);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRenderBox3d(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRenderBox3d(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float sx;
-	if (!PyTuple_GetFloat(poArgs, 0, &sx))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &sx))
+		return Script_BuildException();
 
 	float sy;
-	if (!PyTuple_GetFloat(poArgs, 1, &sy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &sy))
+		return Script_BuildException();
 
 	float sz;
-	if (!PyTuple_GetFloat(poArgs, 2, &sz))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &sz))
+		return Script_BuildException();
 
 	float ex;
-	if (!PyTuple_GetFloat(poArgs, 3, &ex))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &ex))
+		return Script_BuildException();
 
 	float ey;
-	if (!PyTuple_GetFloat(poArgs, 4, &ey))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 4, &ey))
+		return Script_BuildException();
 
 	float ez;
-	if (!PyTuple_GetFloat(poArgs, 5, &ez))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 5, &ez))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().RenderBox3d((float)sx, (float)sy, (float)sz, (float)ex, (float)ey, (float)ez);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetClearColor(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetClearColor(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float fr;
-	if (!PyTuple_GetFloat(poArgs, 0, &fr))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &fr))
+		return Script_BuildException();
 
 	float fg;
-	if (!PyTuple_GetFloat(poArgs, 1, &fg))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &fg))
+		return Script_BuildException();
 
 	float fb;
-	if (!PyTuple_GetFloat(poArgs, 2, &fb))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &fb))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetClearColor(fr, fg, fb, 1.0f);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetDiffuseColor(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetDiffuseColor(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float r;
-	if (!PyTuple_GetFloat(poArgs, 0, &r))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &r))
+		return Script_BuildException();
 
 	float g;
-	if (!PyTuple_GetFloat(poArgs, 1, &g))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &g))
+		return Script_BuildException();
 
 	float b;
-	if (!PyTuple_GetFloat(poArgs, 2, &b))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &b))
+		return Script_BuildException();
 
 	float a;
-	if (!PyTuple_GetFloat(poArgs, 3, &a))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &a))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetDiffuseColor(r, g, b, a);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpIdentity(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpIdentity(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().Identity();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpGetAvailableMemory(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGetAvailableMemory(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	int iValue = CPythonGraphic::Instance().GetAvailableMemory();
-	return Py_BuildValue("i", iValue);
+	return Script_BuildValue("i", iValue);
 }
 
 // SCREENSHOT_CWDSAVE
-PyObject* grpSaveScreenShotToPath(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSaveScreenShotToPath(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	char* szBasePath;
-	if (!PyTuple_GetString(poArgs, 0, &szBasePath))
-		return Py_BuildException();
+	if (!ScriptTuple_GetString(poArgs, 0, &szBasePath))
+		return Script_BuildException();
 
 	struct tm* tmNow;
 	time_t ct;
@@ -832,11 +832,11 @@ PyObject* grpSaveScreenShotToPath(PyObject* poSelf, PyObject* poArgs)
 			 tmNow->tm_sec);
 
 	BOOL bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
-	return Py_BuildValue("(is)", bResult, szPath);
+	return Script_BuildValue("(is)", bResult, szPath);
 }
 // END_OF_SCREENSHOT_CWDSAVE
 
-PyObject* grpSaveScreenShot(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSaveScreenShot(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	struct tm* tmNow;
 	time_t ct;
@@ -860,7 +860,7 @@ PyObject* grpSaveScreenShot(PyObject* poSelf, PyObject* poArgs)
 		if (!CreateDirectory(szPath, NULL))
 		{
 			TraceError("Failed to create directory [%s]\n", szPath);
-			return Py_BuildValue("(is)", FALSE, "");
+			return Script_BuildValue("(is)", FALSE, "");
 		}
 
 	sprintf(szPath + strlen(szPath), "%02d%02d_%02d%02d%02d.jpg",
@@ -871,141 +871,141 @@ PyObject* grpSaveScreenShot(PyObject* poSelf, PyObject* poArgs)
 			tmNow->tm_sec);
 
 	BOOL bResult = CPythonGraphic::Instance().SaveScreenShot(szPath);
-	return Py_BuildValue("(is)", bResult, szPath);
+	return Script_BuildValue("(is)", bResult, szPath);
 }
 
-PyObject* grpSetGamma(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetGamma(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float gamma;
 
-	if (!PyTuple_GetFloat(poArgs, 0, &gamma))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &gamma))
+		return Script_BuildException();
 
 	CPythonGraphic::Instance().SetGamma(gamma);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetInterfaceRenderState(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetInterfaceRenderState(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().SetInterfaceRenderState();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetGameRenderState(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetGameRenderState(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().SetGameRenderState();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetViewport(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetViewport(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	float fx;
-	if (!PyTuple_GetFloat(poArgs, 0, &fx))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 0, &fx))
+		return Script_BuildException();
 	float fy;
-	if (!PyTuple_GetFloat(poArgs, 1, &fy))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 1, &fy))
+		return Script_BuildException();
 
 	float fWidth;
-	if (!PyTuple_GetFloat(poArgs, 2, &fWidth))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 2, &fWidth))
+		return Script_BuildException();
 	float fHeight;
-	if (!PyTuple_GetFloat(poArgs, 3, &fHeight))
-		return Py_BuildException();
+	if (!ScriptTuple_GetFloat(poArgs, 3, &fHeight))
+		return Script_BuildException();
 
 	UINT uWidth;
 	UINT uHeight;
 	CPythonGraphic::Instance().GetBackBufferSize(&uWidth, &uHeight);
 	CPythonGraphic::Instance().SetViewport(fx * uWidth, fy * uHeight, fWidth * uWidth, fHeight * uHeight);
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpRestoreViewport(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpRestoreViewport(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().RestoreViewport();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpSetOmniLight(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpSetOmniLight(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	CPythonGraphic::Instance().SetOmniLight();
-	return Py_BuildNone();
+	return Script_BuildNone();
 }
 
-PyObject* grpGetCameraPosition(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGetCameraPosition(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	D3DXVECTOR3 v3Eye = CCameraManager::Instance().GetCurrentCamera()->GetEye();
-	return Py_BuildValue("fff", v3Eye.x, v3Eye.y, v3Eye.z);
+	return Script_BuildValue("fff", v3Eye.x, v3Eye.y, v3Eye.z);
 }
 
-PyObject* grpGetTargetPosition(PyObject* poSelf, PyObject* poArgs)
+ScriptObject* grpGetTargetPosition(ScriptObject* poSelf, ScriptObject* poArgs)
 {
 	D3DXVECTOR3 v3Target = CCameraManager::Instance().GetCurrentCamera()->GetTarget();
-	return Py_BuildValue("fff", v3Target.x, v3Target.y, v3Target.z);
+	return Script_BuildValue("fff", v3Target.x, v3Target.y, v3Target.z);
 }
 
 void initgrp()
 {
-	static PyMethodDef s_methods[] =
+	static ScriptMethodDef s_methods[] =
 		{
-			{"InitScreenEffect", grpInitScreenEffect, METH_VARARGS, NULL},
-			{"Culling", grpCulling, METH_VARARGS, NULL},
-			{"ClearDepthBuffer", grpClearDepthBuffer, METH_VARARGS, NULL},
-			{"Identity", grpIdentity, METH_VARARGS, NULL},
-			{"GenerateColor", grpGenerateColor, METH_VARARGS, NULL},
-			{"PopState", grpPopState, METH_VARARGS, NULL},
-			{"PushState", grpPushState, METH_VARARGS, NULL},
-			{"PushMatrix", grpPushMatrix, METH_VARARGS, NULL},
-			{"PopMatrix", grpPopMatrix, METH_VARARGS, NULL},
-			{"Translate", grpTranslate, METH_VARARGS, NULL},
-			{"Rotate", grpRotate, METH_VARARGS, NULL},
-			{"SetColorRenderState", grpSetColorRenderState, METH_VARARGS, NULL},
-			{"SetAroundCamera", grpSetAroundCamera, METH_VARARGS, NULL},
-			{"SetPositionCamera", grpSetPositionCamera, METH_VARARGS, NULL},
-			{"SetEyeCamera", grpSetEyeCamera, METH_VARARGS, NULL},
-			{"SetPerspective", grpSetPerspective, METH_VARARGS, NULL},
-			{"SetOrtho2d", grpSetOrtho2D, METH_VARARGS, NULL},
-			{"SetOrtho3d", grpSetOrtho3D, METH_VARARGS, NULL},
-			{"SetColor", grpSetColor, METH_VARARGS, NULL},
-			{"SetAlpha", grpSetAlpha, METH_VARARGS, NULL},
-			{"SetDiffuseColor", grpSetDiffuseColor, METH_VARARGS, NULL},
-			{"SetClearColor", grpSetClearColor, METH_VARARGS, NULL},
-			{"GetCursorPosition3d", grpGetCursorPosition3d, METH_VARARGS, NULL},
-			{"SetCursorPosition", grpSetCursorPosition, METH_VARARGS, NULL},
-			{"RenderLine", grpRenderLine, METH_VARARGS, NULL},
-			{"RenderBox", grpRenderBox, METH_VARARGS, NULL},
-			{"RenderRoundBox", grpRenderRoundBox, METH_VARARGS, NULL},
-			{"RenderBox3d", grpRenderBox3d, METH_VARARGS, NULL},
-			{"RenderBar", grpRenderBar, METH_VARARGS, NULL},
-			{"RenderBar3d", grpRenderBar3d, METH_VARARGS, NULL},
-			{"RenderGradationBar", grpRenderGradationBar, METH_VARARGS, NULL},
-			{"RenderCube", grpRenderCube, METH_VARARGS, NULL},
-			{"RenderDownButton", grpRenderDownButton, METH_VARARGS, NULL},
-			{"RenderUpButton", grpRenderUpButton, METH_VARARGS, NULL},
-			{"GetAvailableMemory", grpGetAvailableMemory, METH_VARARGS, NULL},
-			{"SaveScreenShot", grpSaveScreenShot, METH_VARARGS, NULL},
-			{"SaveScreenShotToPath", grpSaveScreenShotToPath, METH_VARARGS, NULL},
-			{"SetGamma", grpSetGamma, METH_VARARGS, NULL},
-			{"SetInterfaceRenderState", grpSetInterfaceRenderState, METH_VARARGS, NULL},
-			{"SetGameRenderState", grpSetGameRenderState, METH_VARARGS, NULL},
-			{"SetViewport", grpSetViewport, METH_VARARGS, NULL},
-			{"RestoreViewport", grpRestoreViewport, METH_VARARGS, NULL},
-			{"SetOmniLight", grpSetOmniLight, METH_VARARGS, NULL},
-			{"GetCameraPosition", grpGetCameraPosition, METH_VARARGS, NULL},
-			{"GetTargetPosition", grpGetTargetPosition, METH_VARARGS, NULL},
+			{"InitScreenEffect", grpInitScreenEffect, SCRIPT_VARARGS, NULL},
+			{"Culling", grpCulling, SCRIPT_VARARGS, NULL},
+			{"ClearDepthBuffer", grpClearDepthBuffer, SCRIPT_VARARGS, NULL},
+			{"Identity", grpIdentity, SCRIPT_VARARGS, NULL},
+			{"GenerateColor", grpGenerateColor, SCRIPT_VARARGS, NULL},
+			{"PopState", grpPopState, SCRIPT_VARARGS, NULL},
+			{"PushState", grpPushState, SCRIPT_VARARGS, NULL},
+			{"PushMatrix", grpPushMatrix, SCRIPT_VARARGS, NULL},
+			{"PopMatrix", grpPopMatrix, SCRIPT_VARARGS, NULL},
+			{"Translate", grpTranslate, SCRIPT_VARARGS, NULL},
+			{"Rotate", grpRotate, SCRIPT_VARARGS, NULL},
+			{"SetColorRenderState", grpSetColorRenderState, SCRIPT_VARARGS, NULL},
+			{"SetAroundCamera", grpSetAroundCamera, SCRIPT_VARARGS, NULL},
+			{"SetPositionCamera", grpSetPositionCamera, SCRIPT_VARARGS, NULL},
+			{"SetEyeCamera", grpSetEyeCamera, SCRIPT_VARARGS, NULL},
+			{"SetPerspective", grpSetPerspective, SCRIPT_VARARGS, NULL},
+			{"SetOrtho2d", grpSetOrtho2D, SCRIPT_VARARGS, NULL},
+			{"SetOrtho3d", grpSetOrtho3D, SCRIPT_VARARGS, NULL},
+			{"SetColor", grpSetColor, SCRIPT_VARARGS, NULL},
+			{"SetAlpha", grpSetAlpha, SCRIPT_VARARGS, NULL},
+			{"SetDiffuseColor", grpSetDiffuseColor, SCRIPT_VARARGS, NULL},
+			{"SetClearColor", grpSetClearColor, SCRIPT_VARARGS, NULL},
+			{"GetCursorPosition3d", grpGetCursorPosition3d, SCRIPT_VARARGS, NULL},
+			{"SetCursorPosition", grpSetCursorPosition, SCRIPT_VARARGS, NULL},
+			{"RenderLine", grpRenderLine, SCRIPT_VARARGS, NULL},
+			{"RenderBox", grpRenderBox, SCRIPT_VARARGS, NULL},
+			{"RenderRoundBox", grpRenderRoundBox, SCRIPT_VARARGS, NULL},
+			{"RenderBox3d", grpRenderBox3d, SCRIPT_VARARGS, NULL},
+			{"RenderBar", grpRenderBar, SCRIPT_VARARGS, NULL},
+			{"RenderBar3d", grpRenderBar3d, SCRIPT_VARARGS, NULL},
+			{"RenderGradationBar", grpRenderGradationBar, SCRIPT_VARARGS, NULL},
+			{"RenderCube", grpRenderCube, SCRIPT_VARARGS, NULL},
+			{"RenderDownButton", grpRenderDownButton, SCRIPT_VARARGS, NULL},
+			{"RenderUpButton", grpRenderUpButton, SCRIPT_VARARGS, NULL},
+			{"GetAvailableMemory", grpGetAvailableMemory, SCRIPT_VARARGS, NULL},
+			{"SaveScreenShot", grpSaveScreenShot, SCRIPT_VARARGS, NULL},
+			{"SaveScreenShotToPath", grpSaveScreenShotToPath, SCRIPT_VARARGS, NULL},
+			{"SetGamma", grpSetGamma, SCRIPT_VARARGS, NULL},
+			{"SetInterfaceRenderState", grpSetInterfaceRenderState, SCRIPT_VARARGS, NULL},
+			{"SetGameRenderState", grpSetGameRenderState, SCRIPT_VARARGS, NULL},
+			{"SetViewport", grpSetViewport, SCRIPT_VARARGS, NULL},
+			{"RestoreViewport", grpRestoreViewport, SCRIPT_VARARGS, NULL},
+			{"SetOmniLight", grpSetOmniLight, SCRIPT_VARARGS, NULL},
+			{"GetCameraPosition", grpGetCameraPosition, SCRIPT_VARARGS, NULL},
+			{"GetTargetPosition", grpGetTargetPosition, SCRIPT_VARARGS, NULL},
 
-			{"CreateTextBar", grpCreateTextBar, METH_VARARGS, NULL},
-			{"CreateBigTextBar", grpCreateBigTextBar, METH_VARARGS, NULL},
-			{"DestroyTextBar", grpDestroyTextBar, METH_VARARGS, NULL},
-			{"RenderTextBar", grpRenderTextBar, METH_VARARGS, NULL},
-			{"TextBarTextOut", grpTextBarTextOut, METH_VARARGS, NULL},
-			{"TextBarSetTextColor", grpTextBarSetTextColor, METH_VARARGS, NULL},
-			{"TextBarGetTextExtent", grpTextBarGetTextExtent, METH_VARARGS, NULL},
-			{"ClearTextBar", grpClearTextBar, METH_VARARGS, NULL},
-			{"SetTextBarClipRect", grpSetTextBarClipRect, METH_VARARGS, NULL},
+			{"CreateTextBar", grpCreateTextBar, SCRIPT_VARARGS, NULL},
+			{"CreateBigTextBar", grpCreateBigTextBar, SCRIPT_VARARGS, NULL},
+			{"DestroyTextBar", grpDestroyTextBar, SCRIPT_VARARGS, NULL},
+			{"RenderTextBar", grpRenderTextBar, SCRIPT_VARARGS, NULL},
+			{"TextBarTextOut", grpTextBarTextOut, SCRIPT_VARARGS, NULL},
+			{"TextBarSetTextColor", grpTextBarSetTextColor, SCRIPT_VARARGS, NULL},
+			{"TextBarGetTextExtent", grpTextBarGetTextExtent, SCRIPT_VARARGS, NULL},
+			{"ClearTextBar", grpClearTextBar, SCRIPT_VARARGS, NULL},
+			{"SetTextBarClipRect", grpSetTextBarClipRect, SCRIPT_VARARGS, NULL},
 
 			{NULL, NULL, 0, NULL},
 		};
 
-	Py_InitModule("grp", s_methods);
+	ScriptModule_Create("grp", s_methods);
 }

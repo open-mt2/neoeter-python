@@ -103,6 +103,7 @@ target_link_libraries(neoeter_python_host
         neoeter_render
         neoeter_model_grn
         neoeter_effect
+        neoeter_script
         ${PYTHON_LIBRARIES}
         $<$<PLATFORM_ID:Linux>:util>
         $<$<PLATFORM_ID:Linux>:dl>

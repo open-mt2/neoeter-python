@@ -1,5 +1,6 @@
 #include <Neoeter/Python/Host/StdAfx.h>
 #include <Neoeter/Python/Host/PythonLauncher.h>
+#include <Neoeter/Python/Bindings/ScriptDebugModule.h>
 #include <Neoeter/Python/Host/PythonUtils.h>
 #include <Neoeter/Python/Host/PythonMarshal.h>
 #include <Neoeter/Python/Host/Resource.h>
